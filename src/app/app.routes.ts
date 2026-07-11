@@ -70,6 +70,11 @@ export const routes: Routes = [
         title: 'Tableau de bord — GK SupportIT',
       },
       {
+        path: 'demandes',
+        loadComponent: () => import('./admin/demandes/demandes').then((m) => m.DemandesComponent),
+        title: 'Demandes — GK SupportIT',
+      },
+      {
         path: 'tresorerie',
         loadComponent: () =>
           import('./admin/tresorerie/tresorerie').then((m) => m.TresorerieComponent),

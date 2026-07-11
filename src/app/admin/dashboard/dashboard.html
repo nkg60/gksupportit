@@ -13,6 +13,14 @@
   }
 </div>
 
+<!-- Nouvelles demandes (prospects à traiter) -->
+@if (nouvellesDemandes() > 0) {
+  <a routerLink="/admin/demandes" class="dash-demandes">
+    📨 <strong>{{ nouvellesDemandes() }}</strong>
+    nouvelle(s) demande(s) à traiter — voir les demandes →
+  </a>
+}
+
 <!-- Indicateurs -->
 <div class="adm-kpis">
   <div class="adm-kpi">

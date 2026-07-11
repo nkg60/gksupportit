@@ -1,0 +1,54 @@
+<div class="adm-head">
+  <h1>Demandes</h1>
+  <p class="dem-count">{{ liste().length }} demande(s)</p>
+</div>
+
+<div class="adm-table-wrap">
+  <table class="adm-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Client</th>
+        <th>Contact</th>
+        <th>Appareil</th>
+        <th>Problème</th>
+        <th>Secteur</th>
+        <th>Statut</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (d of liste(); track d.id) {
+        <tr [class.dem-nouveau]="(d.statut ?? 'nouveau') === 'nouveau'">
+          <td>{{ fmtDate(d.date ?? '') }}</td>
+          <td class="dem-nom">{{ d.nom }}</td>
+          <td>{{ d.contact }}</td>
+          <td>{{ d.appareil }}</td>
+          <td class="dem-probleme">
+            {{ d.description }}
+            @if (d.service) { <span class="dem-service">Service souhaité : {{ d.service }}</span> }
+          </td>
+          <td>{{ d.secteur }}</td>
+          <td>
+            <select
+              class="dem-statut"
+              [value]="d.statut ?? 'nouveau'"
+              (change)="changerStatut(d, $any($event.target).value)"
+            >
+              @for (s of statuts; track s) { <option [value]="s">{{ s }}</option> }
+            </select>
+          </td>
+          <td class="adm-rowactions">
+            @if (lienWa(d); as wa) {
+              <a class="adm-icobtn" [href]="wa" target="_blank" rel="noopener" title="Contacter sur WhatsApp">💬</a>
+            }
+            <button type="button" class="adm-icobtn" (click)="convertir(d)" title="Convertir en intervention">➡️</button>
+            <button type="button" class="adm-icobtn adm-icobtn--danger" (click)="supprimer(d)" title="Supprimer">🗑️</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="8" class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucune demande pour le moment.' }}</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

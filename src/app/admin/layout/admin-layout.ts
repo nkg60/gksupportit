@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { DemandesBadgeService } from '../services/demandes-badge.service';
 import { LogoComponent } from '../../shared/logo/logo';
 
 /**
@@ -17,12 +18,17 @@ import { LogoComponent } from '../../shared/logo/logo';
 })
 export class AdminLayoutComponent {
   private auth = inject(AuthService);
+  private badge = inject(DemandesBadgeService);
+
+  /** Compteur de nouvelles demandes (badge de navigation). */
+  readonly nouvellesDemandes = this.badge.nouvelles;
 
   /** Menu latéral ouvert (mobile). */
   readonly menuOuvert = signal(false);
 
   readonly liens = [
     { chemin: 'dashboard', libelle: 'Tableau de bord', icone: '📊' },
+    { chemin: 'demandes', libelle: 'Demandes', icone: '📨' },
     { chemin: 'tresorerie', libelle: 'Trésorerie', icone: '💰' },
     { chemin: 'interventions', libelle: 'Interventions', icone: '🛠️' },
     { chemin: 'depannage', libelle: 'Dépannage', icone: '🩺' },
@@ -30,6 +36,11 @@ export class AdminLayoutComponent {
     { chemin: 'cartes', libelle: 'Cartes de visite', icone: '📇' },
     { chemin: 'parametres', libelle: 'Paramètres', icone: '⚙️' },
   ];
+
+  constructor() {
+    // Charge le compteur de demandes dès l'entrée dans l'admin.
+    this.badge.refresh();
+  }
 
   basculer(): void {
     this.menuOuvert.update((v) => !v);

@@ -1,0 +1,46 @@
+:host {
+  display: block;
+}
+.dem-count {
+  margin: 0;
+  color: var(--gk-ink-soft);
+  font-weight: 600;
+}
+.dem-nom {
+  font-weight: 600;
+}
+.dem-probleme {
+  white-space: normal;
+  min-width: 240px;
+  max-width: 360px;
+}
+.dem-service {
+  display: block;
+  color: var(--gk-ink-soft);
+  font-size: 0.82rem;
+  font-style: italic;
+  margin-top: 0.2rem;
+}
+.dem-statut {
+  font-family: inherit;
+  padding: 0.35rem 0.5rem;
+  border: 1.5px solid var(--gk-border);
+  border-radius: var(--gk-radius-sm);
+  background: var(--gk-white);
+}
+/* Ligne « nouveau » mise en avant (barre ambre à gauche). */
+.dem-nouveau td:first-child {
+  box-shadow: inset 3px 0 0 var(--gk-amber);
+}
+.dem-nouveau .dem-nom::after {
+  content: 'nouveau';
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: var(--gk-radius-pill);
+  background: rgba(242, 169, 0, 0.18);
+  color: #b26a00;
+  font-size: 0.7rem;
+  font-weight: 700;
+  vertical-align: middle;
+}

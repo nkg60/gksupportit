@@ -8,6 +8,9 @@
       @for (l of liens; track l.chemin) {
         <a [routerLink]="l.chemin" routerLinkActive="is-active" (click)="fermer()">
           <span class="admin__nav-ico" aria-hidden="true">{{ l.icone }}</span>{{ l.libelle }}
+          @if (l.chemin === 'demandes' && nouvellesDemandes() > 0) {
+            <span class="admin__badge">{{ nouvellesDemandes() }}</span>
+          }
         </a>
       }
     </nav>

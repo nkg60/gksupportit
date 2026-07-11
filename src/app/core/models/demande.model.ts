@@ -23,3 +23,6 @@ export interface Demande {
   /** Statut du suivi (défaut : « nouveau »). */
   statut?: string;
 }
+
+/** Statuts possibles d'une demande entrante. */
+export const STATUTS_DEMANDE = ['nouveau', 'contacté', 'converti', 'clos'] as const;

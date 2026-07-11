@@ -51,6 +51,24 @@
 .admin__nav-ico {
   font-size: 1.05rem;
 }
+.admin__badge {
+  margin-left: auto;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--gk-radius-pill);
+  background: var(--gk-amber);
+  color: var(--gk-navy);
+  font-size: 0.78rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin__nav a.is-active .admin__badge {
+  background: var(--gk-navy);
+  color: var(--gk-amber);
+}
 .admin__logout {
   margin-top: 1rem;
   background: transparent;

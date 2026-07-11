@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AdminApiService } from '../services/admin-api.service';
+import { DemandesBadgeService } from '../services/demandes-badge.service';
 import { Mouvement } from '../../core/models/mouvement.model';
 import { Intervention } from '../../core/models/intervention.model';
 import { formatMontant } from '../../core/utils/format.util';
@@ -13,11 +15,20 @@ import { formatMontant } from '../../core/utils/format.util';
   selector: 'gk-admin-dashboard',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
 export class DashboardComponent {
   private api = inject(AdminApiService);
+  private badge = inject(DemandesBadgeService);
+
+  /** Nombre de nouvelles demandes (prospects non traités). */
+  readonly nouvellesDemandes = this.badge.nouvelles;
+
+  constructor() {
+    this.badge.refresh();
+  }
 
   readonly settings = toSignal(this.api.getSettings());
   readonly mouvements = toSignal(this.api.list<Mouvement>('tresorerie'), { initialValue: [] });
