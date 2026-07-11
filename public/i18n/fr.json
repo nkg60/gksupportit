@@ -1,0 +1,109 @@
+{
+  "brand": {
+    "name": "GK SupportIT",
+    "slogan": "Réparation informatique à domicile — Déplacement inclus partout à Ottawa."
+  },
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "describe": "Décrire mon problème",
+    "about": "À propos",
+    "contact": "Contact",
+    "admin": "Connexion admin",
+    "menu": "Menu"
+  },
+  "common": {
+    "chooseService": "Choisir ce service",
+    "contactWhatsapp": "Contactez-nous sur WhatsApp",
+    "continueWhatsapp": "Continuer sur WhatsApp",
+    "marketPrice": "Prix marché",
+    "gkPrice": "Prix GK",
+    "language": "Langue",
+    "learnMore": "En savoir plus"
+  },
+  "hero": {
+    "ctaSecondary": "Décrire mon problème",
+    "badge": "Déplacement inclus"
+  },
+  "home": {
+    "args": {
+      "title": "Pourquoi GK SupportIT ?",
+      "deplacement": { "t": "Déplacement inclus", "d": "Nous venons chez vous partout à Ottawa, sans frais de déplacement." },
+      "bilingue": { "t": "Bilingue FR / EN", "d": "Un service dans votre langue, français comme anglais." },
+      "prix": { "t": "Prix sous le marché", "d": "Des tarifs transparents, plus bas que la moyenne d'Ottawa." },
+      "diagnostic": { "t": "Diagnostic gratuit", "d": "Le diagnostic est gratuit si vous acceptez la réparation." }
+    },
+    "featured": {
+      "title": "Nos services phares",
+      "seeAll": "Voir tous les services"
+    },
+    "how": {
+      "title": "Comment ça marche",
+      "step1": { "t": "Vous nous décrivez le problème", "d": "Par WhatsApp ou via le formulaire, en quelques mots." },
+      "step2": { "t": "Nous venons chez vous", "d": "À Ottawa, au moment qui vous convient (soirs et week-ends)." },
+      "step3": { "t": "Nous réparons, vous payez", "d": "Prix annoncé avant l'intervention. Aucune surprise." }
+    },
+    "trust": {
+      "title": "Vous pouvez nous faire confiance",
+      "data": { "t": "Vos données d'abord", "d": "Sauvegarde avant toute manipulation risquée. Vos fichiers restent les vôtres." },
+      "prices": { "t": "Prix transparents", "d": "Le prix est annoncé avant de commencer. Pas de mauvaise surprise." },
+      "parts": { "t": "Pièces au prix coûtant", "d": "Les pièces sont facturées au prix coûtant, avec le reçu à l'appui." }
+    }
+  },
+  "services": {
+    "title": "Nos services",
+    "subtitle": "Des prix clairs, sous le marché d'Ottawa. Déplacement inclus.",
+    "empty": "Aucun service à afficher pour le moment."
+  },
+  "form": {
+    "title": "Décrire mon problème",
+    "subtitle": "Décrivez votre souci en quelques mots : nous revenons vers vous rapidement.",
+    "name": "Nom",
+    "contact": "Téléphone ou WhatsApp",
+    "device": "Type d'appareil",
+    "devicePlaceholder": "Ex. : portable HP, tour de bureau, imprimante…",
+    "description": "Description du problème",
+    "descriptionPlaceholder": "Ex. : mon ordinateur est très lent et le ventilateur fait du bruit.",
+    "service": "Service souhaité (optionnel)",
+    "servicePlaceholder": "— Je ne sais pas encore —",
+    "sector": "Secteur d'Ottawa",
+    "sectorPlaceholder": "Ex. : Orléans, Barrhaven, centre-ville…",
+    "submit": "Envoyer ma demande",
+    "sending": "Envoi en cours…",
+    "successTitle": "Demande envoyée ✓",
+    "successText": "Merci ! Nous avons bien reçu votre demande. Pour aller plus vite, continuez la conversation sur WhatsApp.",
+    "newRequest": "Envoyer une autre demande",
+    "errors": {
+      "required": "Ce champ est obligatoire.",
+      "contact": "Indiquez un téléphone ou un numéro WhatsApp valide.",
+      "minLength": "Merci de donner un peu plus de détails."
+    }
+  },
+  "about": {
+    "title": "À propos de GK SupportIT",
+    "engagementTitle": "Notre engagement de confiance",
+    "engagement": {
+      "data": "Vos données d'abord : sauvegarde avant toute manipulation risquée.",
+      "prices": "Prix transparents, toujours annoncés avant l'intervention.",
+      "parts": "Pièces facturées au prix coûtant, avec reçu."
+    },
+    "zoneTitle": "Zone de service",
+    "zoneText": "Nous intervenons partout à {{zone}}. Un supplément s'applique hors zone : {{supplement}}."
+  },
+  "contact": {
+    "title": "Nous contacter",
+    "subtitle": "Le plus simple et le plus rapide : WhatsApp.",
+    "whatsapp": "WhatsApp",
+    "email": "Courriel",
+    "hours": "Horaires",
+    "zone": "Zone de service"
+  },
+  "footer": {
+    "tagline": "Réparation informatique à domicile à Ottawa, bilingue FR / EN.",
+    "navTitle": "Navigation",
+    "contactTitle": "Contact",
+    "bilingualNote": "Service bilingue — français et anglais.",
+    "admin": "Espace admin",
+    "rights": "Tous droits réservés."
+  }
+}

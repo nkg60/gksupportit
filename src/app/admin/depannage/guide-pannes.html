@@ -1,0 +1,92 @@
+<div class="gp-head">
+  <p class="gp-count">{{ liste().length }} pannes dans le guide</p>
+  <button type="button" class="gk-btn gk-btn--primary" (click)="ouvrirNouveau()">+ Panne</button>
+</div>
+
+<div class="adm-table-wrap">
+  <table class="adm-table">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Famille</th>
+        <th>Panne</th>
+        <th>Service recommandé</th>
+        <th>Prix</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of liste(); track p.id) {
+        <tr>
+          <td>{{ p.numero }}</td>
+          <td><span class="gp-fam">{{ p.famille }}</span></td>
+          <td class="gp-titre">
+            <strong>{{ p.titre }}</strong>
+            <span class="gp-sympt">{{ p.symptome }}</span>
+          </td>
+          <td class="gp-serv">{{ p.serviceRecommande }}</td>
+          <td>{{ p.prix }}</td>
+          <td class="adm-rowactions">
+            <button type="button" class="adm-icobtn" (click)="ouvrirEdition(p)" title="Modifier">✏️</button>
+            <button type="button" class="adm-icobtn adm-icobtn--danger" (click)="supprimer(p)" title="Supprimer">🗑️</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="6" class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucune panne.' }}</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Modale -->
+@if (editionId() !== null) {
+  <div class="adm-modal-backdrop" (click)="fermer()">
+    <div class="adm-modal" (click)="$event.stopPropagation()">
+      <h2>{{ editionId() ? 'Modifier la panne' : 'Nouvelle panne' }}</h2>
+      <form [formGroup]="form" (ngSubmit)="enregistrer()" novalidate>
+        <div class="adm-grid2">
+          <div class="adm-field">
+            <label for="g-fam">Famille</label>
+            <select id="g-fam" formControlName="famille">
+              @for (k of famillesKeys; track k) { <option [value]="k">{{ familles[k] }}</option> }
+            </select>
+          </div>
+          <div class="adm-field">
+            <label for="g-num">Numéro</label>
+            <input id="g-num" type="number" min="1" formControlName="numero" />
+          </div>
+        </div>
+        <div class="adm-field">
+          <label for="g-titre">Titre</label>
+          <input id="g-titre" type="text" formControlName="titre" />
+        </div>
+        <div class="adm-field">
+          <label for="g-sympt">Symptôme (sous-titre)</label>
+          <input id="g-sympt" type="text" formControlName="symptome" />
+        </div>
+
+        <div class="adm-field"><label for="g-a">Étape A</label><textarea id="g-a" rows="2" formControlName="etapeA"></textarea></div>
+        <div class="adm-field"><label for="g-b">Étape B</label><textarea id="g-b" rows="2" formControlName="etapeB"></textarea></div>
+        <div class="adm-field"><label for="g-c">Étape C</label><textarea id="g-c" rows="2" formControlName="etapeC"></textarea></div>
+        <div class="adm-field"><label for="g-d">Étape D</label><textarea id="g-d" rows="2" formControlName="etapeD"></textarea></div>
+
+        <div class="adm-field"><label for="g-verdict">Verdict</label><textarea id="g-verdict" rows="2" formControlName="verdict"></textarea></div>
+        <div class="adm-grid2">
+          <div class="adm-field">
+            <label for="g-serv">Service recommandé</label>
+            <input id="g-serv" type="text" formControlName="serviceRecommande" />
+          </div>
+          <div class="adm-field">
+            <label for="g-prix">Prix</label>
+            <input id="g-prix" type="text" formControlName="prix" />
+          </div>
+        </div>
+
+        <div class="adm-modal__footer">
+          <button type="button" class="gk-btn gk-btn--navy" (click)="fermer()">Annuler</button>
+          <button type="submit" class="gk-btn gk-btn--primary" [disabled]="form.invalid">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

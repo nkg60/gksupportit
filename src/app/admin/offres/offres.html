@@ -1,0 +1,107 @@
+<div class="adm-head">
+  <h1>Offres &amp; affiches</h1>
+  <div class="adm-actions">
+    <button type="button" class="gk-btn gk-btn--primary" (click)="ouvrirNouveau()">+ Service</button>
+  </div>
+</div>
+
+<div class="adm-table-wrap">
+  <table class="adm-table">
+    <thead>
+      <tr>
+        <th>Ordre</th>
+        <th>Affiche</th>
+        <th>Nom</th>
+        <th class="num">Prix marché</th>
+        <th class="num">Prix GK</th>
+        <th>Actif</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (s of liste(); track s.id; let first = $first; let last = $last) {
+        <tr [class.off-inactif]="!s.actif">
+          <td class="off-ordre">
+            <button type="button" class="adm-icobtn" [disabled]="first" (click)="deplacer(s, -1)" title="Monter">▲</button>
+            <button type="button" class="adm-icobtn" [disabled]="last" (click)="deplacer(s, 1)" title="Descendre">▼</button>
+          </td>
+          <td><img class="off-thumb" [src]="apercu(s.image)" [alt]="s.nom" loading="lazy" /></td>
+          <td class="off-nom">{{ s.nom }}</td>
+          <td class="num">{{ s.prixMarche }}</td>
+          <td class="num">{{ s.prixGK }}</td>
+          <td>
+            <button type="button" class="adm-tag" [class.adm-tag--done]="s.actif" (click)="basculerActif(s)">
+              {{ s.actif ? 'Actif' : 'Inactif' }}
+            </button>
+          </td>
+          <td class="adm-rowactions">
+            <button type="button" class="adm-icobtn" (click)="ouvrirEdition(s)" title="Modifier">✏️</button>
+            <button type="button" class="adm-icobtn adm-icobtn--danger" (click)="supprimer(s)" title="Supprimer">🗑️</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="7" class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucun service.' }}</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Modale ajout/édition -->
+@if (editionId() !== null) {
+  <div class="adm-modal-backdrop" (click)="fermer()">
+    <div class="adm-modal" (click)="$event.stopPropagation()">
+      <h2>{{ editionId() ? 'Modifier le service' : 'Nouveau service' }}</h2>
+      <form [formGroup]="form" (ngSubmit)="enregistrer()" novalidate>
+        <div class="adm-field">
+          <label for="o-nom">Nom</label>
+          <input id="o-nom" type="text" formControlName="nom" />
+        </div>
+        <div class="adm-grid2">
+          <div class="adm-field">
+            <label for="o-marche">Prix marché</label>
+            <input id="o-marche" type="text" formControlName="prixMarche" placeholder="Ex. : 100 $" />
+          </div>
+          <div class="adm-field">
+            <label for="o-gk">Prix GK</label>
+            <input id="o-gk" type="text" formControlName="prixGK" placeholder="Ex. : 75 $" />
+          </div>
+        </div>
+        <div class="adm-field">
+          <label for="o-desc">Description</label>
+          <textarea id="o-desc" rows="4" formControlName="description"></textarea>
+        </div>
+
+        <!-- Affiche -->
+        <div class="adm-field">
+          <label>Affiche</label>
+          <div class="off-upload">
+            <img class="off-upload__preview" [src]="apercu(form.getRawValue().image)" alt="Aperçu" />
+            <div>
+              <input type="file" accept="image/png,image/jpeg,image/webp" (change)="onFichier($event)" [disabled]="uploadEnCours()" />
+              @if (uploadEnCours()) { <p class="off-upload__state">Téléversement…</p> }
+              @if (erreurUpload()) { <p class="adm-num--neg">{{ erreurUpload() }}</p> }
+              <p class="off-upload__hint">PNG, JPEG ou WebP. Redimensionnée automatiquement.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="adm-grid2">
+          <div class="adm-field">
+            <label for="o-ordre">Ordre d'affichage</label>
+            <input id="o-ordre" type="number" min="1" formControlName="ordre" />
+          </div>
+          <div class="adm-field off-actif">
+            <label><input type="checkbox" formControlName="actif" /> Service actif (visible sur le site)</label>
+          </div>
+        </div>
+
+        <div class="adm-modal__footer">
+          <button type="button" class="gk-btn gk-btn--navy" (click)="fermer()">Annuler</button>
+          <button type="submit" class="gk-btn gk-btn--primary" [disabled]="form.invalid || uploadEnCours()">
+            Enregistrer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

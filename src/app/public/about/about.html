@@ -1,0 +1,32 @@
+<ng-container *transloco="let t">
+  <section class="gk-section--navy page-head">
+    <div class="gk-container">
+      <h1>{{ t('about.title') }}</h1>
+    </div>
+  </section>
+
+  <section class="gk-section">
+    <div class="gk-container about">
+      @if (settings(); as s) {
+        <p class="about__story">{{ s.aboutText }}</p>
+
+        <div class="about__cols">
+          <div class="about__block gk-card">
+            <h2>{{ t('about.engagementTitle') }}</h2>
+            <ul class="about__list">
+              <li><span aria-hidden="true">✓</span> {{ t('about.engagement.data') }}</li>
+              <li><span aria-hidden="true">✓</span> {{ t('about.engagement.prices') }}</li>
+              <li><span aria-hidden="true">✓</span> {{ t('about.engagement.parts') }}</li>
+            </ul>
+          </div>
+
+          <div class="about__block gk-card">
+            <h2>{{ t('about.zoneTitle') }}</h2>
+            <p>{{ t('about.zoneText', { zone: s.zoneService, supplement: s.supplementHorsZone }) }}</p>
+            <span class="gk-badge"><span class="gk-badge__check">✓</span> {{ t('hero.badge') }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</ng-container>

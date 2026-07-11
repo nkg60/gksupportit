@@ -1,0 +1,109 @@
+{
+  "brand": {
+    "name": "GK SupportIT",
+    "slogan": "In-home computer repair — Travel included everywhere in Ottawa."
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "describe": "Describe my problem",
+    "about": "About",
+    "contact": "Contact",
+    "admin": "Admin login",
+    "menu": "Menu"
+  },
+  "common": {
+    "chooseService": "Choose this service",
+    "contactWhatsapp": "Contact us on WhatsApp",
+    "continueWhatsapp": "Continue on WhatsApp",
+    "marketPrice": "Market price",
+    "gkPrice": "GK price",
+    "language": "Language",
+    "learnMore": "Learn more"
+  },
+  "hero": {
+    "ctaSecondary": "Describe my problem",
+    "badge": "Travel included"
+  },
+  "home": {
+    "args": {
+      "title": "Why GK SupportIT?",
+      "deplacement": { "t": "Travel included", "d": "We come to your home anywhere in Ottawa, at no travel cost." },
+      "bilingue": { "t": "Bilingual FR / EN", "d": "Service in your language, French or English." },
+      "prix": { "t": "Below-market prices", "d": "Transparent rates, lower than the Ottawa average." },
+      "diagnostic": { "t": "Free diagnostic", "d": "The diagnostic is free if you go ahead with the repair." }
+    },
+    "featured": {
+      "title": "Our featured services",
+      "seeAll": "See all services"
+    },
+    "how": {
+      "title": "How it works",
+      "step1": { "t": "You describe the problem", "d": "By WhatsApp or through the form, in a few words." },
+      "step2": { "t": "We come to your home", "d": "In Ottawa, at a time that suits you (evenings and weekends)." },
+      "step3": { "t": "We repair, you pay", "d": "Price agreed before the work starts. No surprises." }
+    },
+    "trust": {
+      "title": "You can trust us",
+      "data": { "t": "Your data first", "d": "Backup before any risky operation. Your files stay yours." },
+      "prices": { "t": "Transparent prices", "d": "The price is agreed before we start. No bad surprises." },
+      "parts": { "t": "Parts at cost", "d": "Parts are billed at cost, with the receipt to prove it." }
+    }
+  },
+  "services": {
+    "title": "Our services",
+    "subtitle": "Clear prices, below the Ottawa market. Travel included.",
+    "empty": "No services to display at the moment."
+  },
+  "form": {
+    "title": "Describe my problem",
+    "subtitle": "Describe your issue in a few words: we'll get back to you quickly.",
+    "name": "Name",
+    "contact": "Phone or WhatsApp",
+    "device": "Device type",
+    "devicePlaceholder": "E.g. HP laptop, desktop tower, printer…",
+    "description": "Problem description",
+    "descriptionPlaceholder": "E.g. my computer is very slow and the fan is noisy.",
+    "service": "Desired service (optional)",
+    "servicePlaceholder": "— I'm not sure yet —",
+    "sector": "Ottawa area",
+    "sectorPlaceholder": "E.g. Orléans, Barrhaven, downtown…",
+    "submit": "Send my request",
+    "sending": "Sending…",
+    "successTitle": "Request sent ✓",
+    "successText": "Thank you! We received your request. To move faster, continue the conversation on WhatsApp.",
+    "newRequest": "Send another request",
+    "errors": {
+      "required": "This field is required.",
+      "contact": "Please provide a valid phone or WhatsApp number.",
+      "minLength": "Please give us a little more detail."
+    }
+  },
+  "about": {
+    "title": "About GK SupportIT",
+    "engagementTitle": "Our trust commitment",
+    "engagement": {
+      "data": "Your data first: backup before any risky operation.",
+      "prices": "Transparent prices, always agreed before the work.",
+      "parts": "Parts billed at cost, with a receipt."
+    },
+    "zoneTitle": "Service area",
+    "zoneText": "We serve all of {{zone}}. A surcharge applies outside the area: {{supplement}}."
+  },
+  "contact": {
+    "title": "Contact us",
+    "subtitle": "The simplest and fastest way: WhatsApp.",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "hours": "Hours",
+    "zone": "Service area"
+  },
+  "footer": {
+    "tagline": "In-home computer repair in Ottawa, bilingual FR / EN.",
+    "navTitle": "Navigation",
+    "contactTitle": "Contact",
+    "bilingualNote": "Bilingual service — French and English.",
+    "admin": "Admin area",
+    "rights": "All rights reserved."
+  }
+}

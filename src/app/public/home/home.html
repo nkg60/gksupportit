@@ -1,0 +1,82 @@
+<ng-container *transloco="let t">
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="gk-container hero__inner">
+      <div class="hero__content">
+        <span class="gk-badge gk-badge--on-navy hero__badge">
+          <span class="gk-badge__check">✓</span> {{ t('hero.badge') }}
+        </span>
+        <h1 class="hero__title">{{ t('brand.slogan') }}</h1>
+        <div class="hero__cta">
+          <a class="gk-btn gk-btn--whatsapp" [href]="lienContact()" target="_blank" rel="noopener">
+            {{ t('common.contactWhatsapp') }}
+          </a>
+          <a class="gk-btn gk-btn--ghost" routerLink="/decrire">{{ t('hero.ctaSecondary') }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ARGUMENTS CLÉS ===== -->
+  <section class="gk-section args">
+    <div class="gk-container">
+      <h2 class="gk-section__title">{{ t('home.args.title') }}</h2>
+      <div class="args__grid">
+        @for (a of ['deplacement', 'bilingue', 'prix', 'diagnostic']; track a) {
+          <div class="args__item gk-card">
+            <span class="args__icon">✓</span>
+            <h3>{{ t('home.args.' + a + '.t') }}</h3>
+            <p>{{ t('home.args.' + a + '.d') }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES PHARES ===== -->
+  <section class="gk-section services-featured">
+    <div class="gk-container">
+      <h2 class="gk-section__title">{{ t('home.featured.title') }}</h2>
+      <div class="services-featured__grid">
+        @for (s of servicesPhares(); track s.id) {
+          <gk-service-card [service]="s" [whatsappNumber]="settings()?.whatsappNumber ?? ''" />
+        }
+      </div>
+      <div class="services-featured__more">
+        <a class="gk-btn gk-btn--navy" routerLink="/services">{{ t('home.featured.seeAll') }}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMMENT ÇA MARCHE ===== -->
+  <section class="gk-section gk-section--navy how">
+    <div class="gk-container">
+      <h2 class="gk-section__title">{{ t('home.how.title') }}</h2>
+      <div class="how__grid">
+        @for (n of [1, 2, 3]; track n) {
+          <div class="how__step">
+            <span class="how__num">{{ n }}</span>
+            <h3>{{ t('home.how.step' + n + '.t') }}</h3>
+            <p>{{ t('home.how.step' + n + '.d') }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONFIANCE ===== -->
+  <section class="gk-section trust">
+    <div class="gk-container">
+      <h2 class="gk-section__title">{{ t('home.trust.title') }}</h2>
+      <div class="trust__grid">
+        @for (k of ['data', 'prices', 'parts']; track k) {
+          <div class="trust__item">
+            <span class="trust__icon" aria-hidden="true">★</span>
+            <h3>{{ t('home.trust.' + k + '.t') }}</h3>
+            <p>{{ t('home.trust.' + k + '.d') }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+</ng-container>

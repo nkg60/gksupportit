@@ -1,0 +1,36 @@
+# Configuration Netlify — GK SupportIT
+# -------------------------------------
+# Build Angular + fonctions serverless + redirections (API et SPA).
+
+[build]
+  # Commande de build Angular (génère dist/gk-supportit/browser).
+  command = "npm run build"
+  # Dossier publié (sortie du build Angular 22 : navigateur).
+  publish = "dist/gk-supportit/browser"
+  # Dossier des fonctions serverless.
+  functions = "netlify/functions"
+
+[build.environment]
+  # Angular 22 exige Node 20.19+ ou 22.12+. On fige Node 22.
+  NODE_VERSION = "22"
+
+[functions]
+  # Bundler recommandé pour les fonctions TypeScript.
+  node_bundler = "esbuild"
+
+# Développement local avec `netlify dev` : lance le serveur Angular (ng serve)
+# et proxifie l'API (/api/*) + Netlify Blobs (bac à sable local).
+[dev]
+  command = "npm start"
+  targetPort = 4200
+  framework = "#custom"
+
+# --- Redirections ---
+# Les fonctions déclarent elles-mêmes leur route via `config.path` (/api/...),
+# et ces routes de fonction sont évaluées AVANT la redirection SPA ci-dessous.
+
+# Repli SPA : toute route non gérée renvoie l'application Angular (index.html).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

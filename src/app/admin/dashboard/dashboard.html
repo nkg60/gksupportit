@@ -1,0 +1,65 @@
+<div class="adm-head">
+  <h1>Tableau de bord</h1>
+</div>
+
+<!-- Alerte : passage en nom commercial au 5e client -->
+<div class="dash-alert" [class.dash-alert--go]="seuilAtteint()">
+  @if (seuilAtteint()) {
+    <strong>🎉 Objectif atteint !</strong> Vous avez {{ clientsServis() }} clients servis —
+    c'est le moment de passer en nom commercial.
+  } @else {
+    <strong>Objectif « nom commercial » :</strong> {{ clientsServis() }} / 5 clients servis.
+    Plus que {{ 5 - clientsServis() }} avant le passage en nom commercial.
+  }
+</div>
+
+<!-- Indicateurs -->
+<div class="adm-kpis">
+  <div class="adm-kpi">
+    <p class="adm-kpi__label">Capital de départ</p>
+    <p class="adm-kpi__value">{{ fmt(capitalDepart()) }}</p>
+    <p class="adm-kpi__hint">Apport initial</p>
+  </div>
+
+  <div class="adm-kpi">
+    <p class="adm-kpi__label">Total encaissé</p>
+    <p class="adm-kpi__value">{{ fmt(totalEncaisse()) }}</p>
+    <p class="adm-kpi__hint">Revenus clients (hors capital)</p>
+  </div>
+
+  <div class="adm-kpi">
+    <p class="adm-kpi__label">Total dépensé</p>
+    <p class="adm-kpi__value">{{ fmt(totalDepense()) }}</p>
+    <p class="adm-kpi__hint">Matériel, pièces, marketing…</p>
+  </div>
+
+  <div class="adm-kpi">
+    <p class="adm-kpi__label">Solde de trésorerie</p>
+    <p class="adm-kpi__value">{{ fmt(solde()) }}</p>
+    <p class="adm-kpi__hint">Argent disponible aujourd'hui</p>
+  </div>
+
+  <div class="adm-kpi">
+    <p class="adm-kpi__label">Bénéfice net</p>
+    <p
+      class="adm-kpi__value"
+      [class.adm-kpi__value--pos]="benefice() > 0"
+      [class.adm-kpi__value--neg]="benefice() < 0"
+    >
+      {{ fmt(benefice()) }}
+    </p>
+    <p class="adm-kpi__hint">Revenus − dépenses (hors capital)</p>
+  </div>
+
+  <div class="adm-kpi">
+    <p class="adm-kpi__label">Interventions</p>
+    <p class="adm-kpi__value">{{ nbInterventions() }}</p>
+    <p class="adm-kpi__hint">Lignes du registre</p>
+  </div>
+
+  <div class="adm-kpi">
+    <p class="adm-kpi__label">Revenu moyen</p>
+    <p class="adm-kpi__value">{{ fmt(revenuMoyen()) }}</p>
+    <p class="adm-kpi__hint">Par intervention</p>
+  </div>
+</div>

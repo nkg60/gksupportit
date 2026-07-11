@@ -1,0 +1,33 @@
+<div class="admin" [class.admin--menu-open]="menuOuvert()">
+  <!-- Barre latérale -->
+  <aside class="admin__side">
+    <div class="admin__brand">
+      <a routerLink="/" title="Voir le site public"><gk-logo variant="dark" /></a>
+    </div>
+    <nav class="admin__nav">
+      @for (l of liens; track l.chemin) {
+        <a [routerLink]="l.chemin" routerLinkActive="is-active" (click)="fermer()">
+          <span class="admin__nav-ico" aria-hidden="true">{{ l.icone }}</span>{{ l.libelle }}
+        </a>
+      }
+    </nav>
+    <button type="button" class="admin__logout" (click)="deconnexion()">↩ Déconnexion</button>
+  </aside>
+
+  <!-- Contenu -->
+  <div class="admin__main">
+    <header class="admin__topbar">
+      <button type="button" class="admin__burger" (click)="basculer()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="admin__topbar-title">Espace administrateur</span>
+      <a routerLink="/" class="admin__view-site">Voir le site ↗</a>
+    </header>
+    <main class="admin__content">
+      <router-outlet />
+    </main>
+  </div>
+
+  <!-- Voile mobile -->
+  <div class="admin__scrim" (click)="fermer()"></div>
+</div>

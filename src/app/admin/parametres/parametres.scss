@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+.param-card {
+  max-width: 780px;
+}
+.param-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.param-ok {
+  color: var(--gk-success);
+  font-weight: 700;
+}

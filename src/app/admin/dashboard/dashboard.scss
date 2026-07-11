@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.dash-alert {
+  background: rgba(242, 169, 0, 0.12);
+  border: 1px solid rgba(242, 169, 0, 0.5);
+  color: var(--gk-navy);
+  border-radius: var(--gk-radius);
+  padding: 0.9rem 1.15rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+.dash-alert--go {
+  background: rgba(31, 157, 90, 0.12);
+  border-color: rgba(31, 157, 90, 0.5);
+}

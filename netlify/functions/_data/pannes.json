@@ -1,0 +1,352 @@
+[
+  {
+    "id": "panne-01", "famille": "A", "numero": 1,
+    "titre": "Ne s'allume pas du tout",
+    "symptome": "aucune lumière, aucun bruit",
+    "etapes": [
+      "Chargeur branché et prise fonctionnelle ? Teste la prise avec un autre appareil. Regarde si une LED de charge s'allume.",
+      "Essaie un autre chargeur compatible. Si ça s'allume → chargeur défectueux (pièce au prix coûtant).",
+      "Reset alimentation : débranche tout, retire la batterie amovible, maintiens power 30 s, rebranche sur secteur seul.",
+      "Toujours rien → batterie morte (teste sur secteur sans batterie) ou carte d'alimentation / carte mère."
+    ],
+    "verdict": "Chargeur/batterie → réparation simple. Carte mère → hors scope au départ, oriente vers un atelier. Diagnostic 25 $ si non réparé.",
+    "serviceRecommande": "Diagnostic / réparation alimentation",
+    "prix": "Diagnostic 25 $ si non réparé"
+  },
+  {
+    "id": "panne-02", "famille": "A", "numero": 2,
+    "titre": "S'allume mais écran reste noir",
+    "symptome": "ventilateur tourne, rien à l'écran",
+    "etapes": [
+      "Écran noir ou juste sombre ? Éclaire-le en biais. Image faible visible → rétroéclairage HS.",
+      "Branche un écran externe (HDMI). Image dessus → dalle ou nappe d'écran défectueuse.",
+      "Rien sur l'externe → RAM : réinsère les barrettes, teste avec MemTest86 (clé 1).",
+      "Écoute les bips au démarrage = code d'erreur matériel (RAM, carte graphique)."
+    ],
+    "verdict": "RAM mal insérée = rapide. Dalle = pièce à commander. Réparation matérielle + pièce, ou diagnostic 25 $.",
+    "serviceRecommande": "Réparation matérielle (RAM / écran)",
+    "prix": "diagnostic 25 $ (+ pièce)"
+  },
+  {
+    "id": "panne-03", "famille": "A", "numero": 3,
+    "titre": "Windows ne démarre pas",
+    "symptome": "logo en boucle, écran de réparation",
+    "etapes": [
+      "Message précis ? « No boot device » → disque non détecté. « Automatic Repair » en boucle → système corrompu.",
+      "Priorité : sauvegarde. Démarre sur la clé Ubuntu, copie les fichiers sur ta clé 2. Avant tout.",
+      "Santé du disque avec CrystalDiskInfo (via Hiren's). « Caution/Bad » → disque en fin de vie.",
+      "Disque sain → répare via WinRE (Réparation au démarrage, sfc /scannow, chkdsk). Échec → réinstallation propre."
+    ],
+    "verdict": "Disque mourant → migration SSD (100 $ + pièce). Système corrompu → réinstallation (85 $).",
+    "serviceRecommande": "Migration SSD ou réinstallation système",
+    "prix": "réinstallation 85 $ / SSD 100 $ + pièce"
+  },
+  {
+    "id": "panne-04", "famille": "A", "numero": 4,
+    "titre": "Redémarre ou s'éteint tout seul",
+    "symptome": "coupures soudaines, sans prévenir",
+    "etapes": [
+      "Surchauffe ? Mesure avec HWMonitor. Coupure = protection thermique → traite comme la panne 7.",
+      "Alimentation instable : teste un autre chargeur, vérifie le port de charge et le câble.",
+      "RAM défectueuse → MemTest86. Disque qui décroche → CrystalDiskInfo.",
+      "Matériel OK → cause logicielle : pilotes, Windows corrompu, ou paramètre « redémarrer en cas d'erreur » masquant un BSOD (panne 8)."
+    ],
+    "verdict": "Le plus souvent thermique → nettoyage + pâte (70 $). Sinon RAM/disque (pièce) ou optimisation (75 $).",
+    "serviceRecommande": "Nettoyage + pâte thermique (ou optimisation)",
+    "prix": "70 $ (thermique) / 75 $ (logiciel)"
+  },
+  {
+    "id": "panne-05", "famille": "A", "numero": 5,
+    "titre": "Batterie : ne tient pas / ne charge pas",
+    "symptome": "décharge vite, « branché non chargé »",
+    "etapes": [
+      "Rapport batterie : powercfg /batteryreport. Compare « Full Charge » vs « Design Capacity ». Sous ~60 % = usée.",
+      "« Branché, ne charge pas » : teste un autre chargeur, inspecte le port de charge (jeu, oxydation).",
+      "Batterie amovible : retire, nettoie les contacts, réinsère. Non amovible → remplacement interne (pièce).",
+      "Mets à jour BIOS / pilotes d'alimentation — parfois un bug logiciel bloque la charge."
+    ],
+    "verdict": "Batterie usée → remplacement (pièce) + main-d'œuvre. Chargeur → pièce simple. Diagnostic 25 $ si non réparé.",
+    "serviceRecommande": "Remplacement batterie / chargeur",
+    "prix": "pièce + main-d'œuvre (diag 25 $)"
+  },
+  {
+    "id": "panne-06", "famille": "B", "numero": 6,
+    "titre": "L'ordinateur est très lent",
+    "symptome": "la panne n°1 de la clientèle",
+    "etapes": [
+      "Type de disque ? Gestionnaire des tâches → Performance → Disque. « HDD » à 100 % → disque mécanique, cause n°1.",
+      "Santé du disque avec CrystalDiskInfo. HDD vieillissant → la migration SSD transforme la machine.",
+      "RAM suffisante ? Moins de 8 Go sous Windows 11 → ajout recommandé. Vérifie l'usage mémoire.",
+      "Démarrage : désactive l'inutile. Bloatware / virus → Malwarebytes (panne 11)."
+    ],
+    "verdict": "Combo gagnant = migration SSD (100 $) + ajout RAM (50 $) + optimisation. Ton intervention la plus rentable et spectaculaire.",
+    "serviceRecommande": "Migration SSD + ajout RAM + optimisation",
+    "prix": "SSD 100 $ + RAM 50 $ + optimisation"
+  },
+  {
+    "id": "panne-07", "famille": "B", "numero": 7,
+    "titre": "Surchauffe et bruit de ventilateur",
+    "symptome": "chaud, bruyant, s'éteint seul",
+    "etapes": [
+      "Mesure les températures avec HWMonitor. CPU au repos > 70 °C ou > 90 °C en charge = surchauffe.",
+      "Ventilations obstruées ? Grilles pleines de poussière = cause n°1, surtout laptops de 3 ans et +.",
+      "Ouvre, dépoussière (souffleur), remplace la pâte thermique (SYY). Nettoie radiateur et pales.",
+      "Toujours chaud → ventilateur usé (bruit métallique, roulement mort) → remplacement (pièce)."
+    ],
+    "verdict": "Nettoyage interne + pâte thermique (70 $). Ventilateur à changer : + pièce au prix coûtant.",
+    "serviceRecommande": "Nettoyage interne + pâte thermique",
+    "prix": "70 $ (+ pièce si ventilateur)"
+  },
+  {
+    "id": "panne-08", "famille": "B", "numero": 8,
+    "titre": "Écrans bleus / plantages aléatoires",
+    "symptome": "BSOD, arrêts inattendus",
+    "etapes": [
+      "Note le code d'erreur du BSOD (MEMORY_MANAGEMENT, WHEA…). Il oriente la recherche.",
+      "Teste la RAM avec MemTest86 — 1 passe complète mini. Une erreur = barrette à changer.",
+      "Teste le disque : CrystalDiskInfo + chkdsk. Secteurs défectueux → fin de vie.",
+      "Matériel OK → pilotes (surtout carte graphique) ou Windows corrompu → sfc /scannow."
+    ],
+    "verdict": "RAM (pièce), disque → migration SSD (100 $), logiciel → optimisation/réinstall (75–85 $).",
+    "serviceRecommande": "RAM / SSD ou optimisation-réinstallation",
+    "prix": "SSD 100 $ / optim.-réinstall 75–85 $"
+  },
+  {
+    "id": "panne-09", "famille": "B", "numero": 9,
+    "titre": "Se fige / ne répond plus",
+    "symptome": "« freeze », curseur bloqué",
+    "etapes": [
+      "Freeze total ou une seule appli ? Ctrl+Maj+Échap : si le Gestionnaire s'ouvre, c'est une appli → ferme la tâche (panne 14).",
+      "Freeze au démarrage / usage disque 100 % → disque mourant : CrystalDiskInfo.",
+      "Surchauffe possible (HWMonitor) ou RAM saturée (trop peu de mémoire pour la charge).",
+      "Vérifie pilotes et Windows Update ; regarde l'Observateur d'événements pour les erreurs récurrentes."
+    ],
+    "verdict": "Disque → SSD (100 $) · RAM → ajout (50 $) · thermique → nettoyage (70 $) · logiciel → optimisation (75 $).",
+    "serviceRecommande": "Selon la cause : SSD / RAM / nettoyage / optimisation",
+    "prix": "SSD 100 $ · RAM 50 $ · nettoyage 70 $ · optim. 75 $"
+  },
+  {
+    "id": "panne-10", "famille": "B", "numero": 10,
+    "titre": "Disque plein / « espace insuffisant »",
+    "symptome": "ne peut plus enregistrer, tout rame",
+    "etapes": [
+      "Analyse l'espace avec WinDirStat : visualise gros fichiers, cache, doublons.",
+      "Nettoyage sûr : Nettoyage de disque, fichiers temporaires, cache navigateur, corbeille, anciens points de restauration.",
+      "Fichiers volumineux du client : propose de déplacer photos/vidéos vers un externe ou le cloud (avec accord).",
+      "Disque trop petit (128 Go) → upgrade SSD plus grand par clonage."
+    ],
+    "verdict": "Nettoyage/optimisation (75 $) ou migration vers SSD plus grand (100 $ + pièce).",
+    "serviceRecommande": "Nettoyage/optimisation ou SSD plus grand",
+    "prix": "75 $ / SSD 100 $ + pièce"
+  },
+  {
+    "id": "panne-11", "famille": "C", "numero": 11,
+    "titre": "Virus, popups, navigateur détourné",
+    "symptome": "pubs, page d'accueil changée",
+    "etapes": [
+      "Mode sans échec avec réseau pour limiter l'activité du malware pendant le nettoyage.",
+      "Scan complet avec Malwarebytes + Windows Defender. Supprime tout ce qui est détecté.",
+      "Nettoie les navigateurs : extensions inconnues, page d'accueil, moteur détourné. Réinitialise si besoin.",
+      "Désinstalle les logiciels inconnus récents ; vérifie tâches planifiées et démarrage."
+    ],
+    "verdict": "Nettoyage virus + optimisation (75 $). Système trop atteint → réinstallation (85 $) après sauvegarde.",
+    "serviceRecommande": "Nettoyage virus + optimisation",
+    "prix": "75 $ (ou réinstallation 85 $)"
+  },
+  {
+    "id": "panne-12", "famille": "C", "numero": 12,
+    "titre": "Windows Update échoue ou reste bloqué",
+    "symptome": "erreur de MAJ, tourne sans fin",
+    "etapes": [
+      "Lance l'outil intégré : Paramètres → Dépannage → Windows Update. Corrige beaucoup de cas seul.",
+      "Espace disque suffisant ? Une MAJ a besoin de plusieurs Go libres (panne 10).",
+      "Réinitialise les composants Update : arrête les services, vide SoftwareDistribution, redémarre les services.",
+      "Fichiers système corrompus → DISM /RestoreHealth puis sfc /scannow."
+    ],
+    "verdict": "Réparation système / optimisation (75 $).",
+    "serviceRecommande": "Réparation système / optimisation",
+    "prix": "75 $"
+  },
+  {
+    "id": "panne-13", "famille": "C", "numero": 13,
+    "titre": "Mot de passe Windows oublié",
+    "symptome": "impossible de se connecter",
+    "etapes": [
+      "Compte Microsoft ou local ? Compte Microsoft → réinitialise en ligne sur un autre appareil (simple, gratuit).",
+      "Compte local → démarre sur Hiren's BootCD PE (clé 1), outil de réinitialisation de compte.",
+      "Vérifie l'identité : assure-toi que le client est bien le propriétaire (ne jamais débloquer une machine douteuse).",
+      "Après accès, propose de configurer un PIN et une méthode de récupération."
+    ],
+    "verdict": "Déblocage / réinitialisation (60 $). Toujours confirmer que le client est le propriétaire légitime.",
+    "serviceRecommande": "Déblocage / réinitialisation de compte",
+    "prix": "60 $"
+  },
+  {
+    "id": "panne-14", "famille": "C", "numero": 14,
+    "titre": "Une appli plante ou refuse de s'installer",
+    "symptome": "« ne répond pas », erreur d'installation",
+    "etapes": [
+      "Redémarre d'abord le PC : règle une bonne partie des cas. Ferme l'appli figée via le Gestionnaire des tâches.",
+      "Mets à jour l'appli et Windows ; vérifie la compatibilité (32/64 bits, prérequis .NET / Visual C++).",
+      "Réinstallation propre : désinstalle complètement, nettoie les restes, réinstalle la dernière version.",
+      "Erreur persistante → conflit ou système corrompu → sfc /scannow, ou nouveau profil utilisateur Windows."
+    ],
+    "verdict": "Installation / configuration logicielle (60 $).",
+    "serviceRecommande": "Installation / configuration logicielle",
+    "prix": "60 $"
+  },
+  {
+    "id": "panne-15", "famille": "C", "numero": 15,
+    "titre": "Fichiers / photos disparus ou supprimés",
+    "symptome": "« j'ai tout perdu ! »",
+    "etapes": [
+      "STOP : n'écris plus rien sur le disque. Chaque écriture réduit les chances de récupération. Éteins si nécessaire.",
+      "Cherche le simple d'abord : Corbeille, recherche Windows, OneDrive/Google Drive, historique des fichiers.",
+      "Récupération logicielle avec Recuva ou PhotoRec (idéalement en lecture depuis un autre système).",
+      "Disque physiquement mort (cliquetis, non détecté) → labo spécialisé, hors scope."
+    ],
+    "verdict": "Récupération de données (à partir de 75 $). Panne physique → labo. Ne jamais promettre 100 %.",
+    "serviceRecommande": "Récupération de données",
+    "prix": "à partir de 75 $"
+  },
+  {
+    "id": "panne-16", "famille": "C", "numero": 16,
+    "titre": "Mise à niveau Windows 10 → 11",
+    "symptome": "« mon PC est-il compatible ? »",
+    "etapes": [
+      "Compatibilité : lance PC Health Check. Vérifie TPM 2.0, Secure Boot, processeur supporté.",
+      "TPM / Secure Boot désactivés dans le BIOS ? Souvent activables → rend le PC éligible sans changer de matériel.",
+      "Sauvegarde complète avant la mise à niveau. Vérifie l'espace disque et branche sur secteur.",
+      "Lance la mise à niveau (conserve fichiers et applis) ; réinstalle les pilotes manquants ensuite."
+    ],
+    "verdict": "Mise à niveau Windows 11 (85 $). Souvent combinée avec migration SSD + RAM pour un PC qui repart à neuf.",
+    "serviceRecommande": "Mise à niveau Windows 11",
+    "prix": "85 $"
+  },
+  {
+    "id": "panne-17", "famille": "D", "numero": 17,
+    "titre": "Pas de Wi-Fi / pas d'internet",
+    "symptome": "ne se connecte pas du tout",
+    "etapes": [
+      "Isole : les autres appareils ont-ils internet ? Non → c'est la box/routeur (redémarre-la), pas le PC.",
+      "Wi-Fi activé ? Interrupteur / touche Fn, mode avion off. La carte apparaît-elle dans le Gestionnaire de périphériques ?",
+      "Pilote réseau : carte avec point d'exclamation → réinstalle. Fréquent après une réinstallation Windows.",
+      "Reset réseau : ipconfig /release + /renew, netsh winsock reset. Carte morte → clé Wi-Fi USB."
+    ],
+    "verdict": "Pilote/config → config réseau (70 $). Carte HS → clé Wi-Fi USB (~15 $) + main-d'œuvre.",
+    "serviceRecommande": "Configuration réseau",
+    "prix": "70 $ (+ clé USB ~15 $ si carte HS)"
+  },
+  {
+    "id": "panne-18", "famille": "D", "numero": 18,
+    "titre": "Wi-Fi lent ou coupures fréquentes",
+    "symptome": "connecté mais instable",
+    "etapes": [
+      "Test de débit près de la box vs dans la pièce du client. Grosse différence → problème de portée/signal.",
+      "Bande 2,4 vs 5 GHz : 5 GHz plus rapide mais courte portée. Ajuste selon la distance à la box.",
+      "Pilote Wi-Fi à jour ; change le canal de la box si voisinage encombré.",
+      "Zone morte persistante → recommande un répéteur / système mesh ou le CPL (courant porteur)."
+    ],
+    "verdict": "Optimisation réseau (70 $) + éventuel conseil/installation de répéteur (pièce fournie par le client).",
+    "serviceRecommande": "Optimisation réseau",
+    "prix": "70 $ (+ répéteur fourni par le client)"
+  },
+  {
+    "id": "panne-19", "famille": "D", "numero": 19,
+    "titre": "Bluetooth ne fonctionne pas",
+    "symptome": "casque/souris non appairés",
+    "etapes": [
+      "Bluetooth activé ? Vérifie l'icône, le mode avion, et que l'accessoire est bien en mode appairage.",
+      "Service Bluetooth actif dans Windows ; carte présente dans le Gestionnaire de périphériques.",
+      "Pilote Bluetooth → réinstalle/mets à jour. Retire puis réappaire l'accessoire.",
+      "Toujours absent → puce désactivée dans le BIOS ou HS → dongle Bluetooth USB (pièce simple)."
+    ],
+    "verdict": "Config / dépannage (60 $). Puce HS → dongle USB (~15 $).",
+    "serviceRecommande": "Configuration / dépannage Bluetooth",
+    "prix": "60 $ (+ dongle ~15 $)"
+  },
+  {
+    "id": "panne-20", "famille": "E", "numero": 20,
+    "titre": "Imprimante : n'imprime pas / « hors ligne »",
+    "symptome": "le grand classique domicile",
+    "etapes": [
+      "Allumée, connectée, pas d'erreur physique ? Papier, encre/toner, bourrage. Câble USB ou même réseau Wi-Fi que le PC ?",
+      "File d'attente : annule les documents bloqués, redémarre le spouleur d'impression.",
+      "Imprimante « hors ligne » : décoche « Utiliser l'imprimante hors ligne », définis-la par défaut.",
+      "Pilote : supprime et réinstalle le bon pilote du fabricant (pas le générique Windows)."
+    ],
+    "verdict": "Installation / config imprimante (60 $).",
+    "serviceRecommande": "Installation / configuration imprimante",
+    "prix": "60 $"
+  },
+  {
+    "id": "panne-21", "famille": "E", "numero": 21,
+    "titre": "Pas de son / micro / webcam",
+    "symptome": "surtout après une visio ratée",
+    "etapes": [
+      "Bon périphérique sélectionné ? Clic sur l'icône son → vérifie la sortie (HP vs casque). Volume et muet.",
+      "Micro/webcam : Paramètres → Confidentialité → autorise l'accès aux applis (blocage très fréquent).",
+      "Pilote audio / caméra → réinstalle. Teste dans une autre appli pour isoler.",
+      "Rien → périphérique désactivé dans le Gestionnaire, ou matériel HS → périphérique USB externe."
+    ],
+    "verdict": "Dépannage périphérique (60 $). Matériel HS → webcam/micro/casque USB (pièce).",
+    "serviceRecommande": "Dépannage périphérique (son / micro / webcam)",
+    "prix": "60 $ (+ pièce USB si HS)"
+  },
+  {
+    "id": "panne-22", "famille": "E", "numero": 22,
+    "titre": "Clavier / pavé tactile / souris HS",
+    "symptome": "touches mortes, curseur figé",
+    "etapes": [
+      "Pavé tactile désactivé ? Touche Fn dédiée (accroc très courant). Souris externe fonctionne-t-elle ?",
+      "Quelques touches mortes → saleté/liquide sous les touches, ou nappe déconnectée.",
+      "Pilote clavier/souris → réinstalle. Teste un clavier USB externe pour isoler matériel vs logiciel.",
+      "Clavier physiquement HS → remplacement du clavier interne (pièce) ou clavier USB externe (solution éco)."
+    ],
+    "verdict": "Réglage/pilote → dépannage (60 $). Clavier HS → remplacement (pièce) + main-d'œuvre.",
+    "serviceRecommande": "Dépannage clavier / souris / pavé",
+    "prix": "60 $ (+ pièce si HS)"
+  },
+  {
+    "id": "panne-23", "famille": "E", "numero": 23,
+    "titre": "Clé USB / disque externe non reconnu",
+    "symptome": "« rien ne se passe quand je branche »",
+    "etapes": [
+      "Teste un autre port et un autre PC. Bruit de détection ? LED du périphérique ?",
+      "Apparaît dans la Gestion des disques mais sans lettre → attribue une lettre de lecteur.",
+      "Détecté mais « à formater » : tente d'abord la récupération de données (panne 15) avant tout formatage.",
+      "Invisible partout → contrôleur HS. Données précieuses → labo ; sinon périphérique à remplacer."
+    ],
+    "verdict": "Réglage → dépannage (60 $). Données à sauver → récupération (dès 75 $).",
+    "serviceRecommande": "Dépannage support / récupération",
+    "prix": "60 $ (récupération dès 75 $)"
+  },
+  {
+    "id": "panne-24", "famille": "E", "numero": 24,
+    "titre": "Écran externe / projecteur non détecté",
+    "symptome": "2e écran noir, télétravail",
+    "etapes": [
+      "Câble et source : teste un autre câble HDMI, la bonne entrée sur l'écran. Écran allumé sur la bonne source ?",
+      "Mode d'affichage : Win+P → « Étendre » / « Dupliquer ». Souvent juste ça.",
+      "Détecter : Paramètres d'affichage → « Détecter ». Ajuste résolution et fréquence.",
+      "Pilote carte graphique → mets à jour. Teste sur un autre port (USB-C/DisplayPort vs HDMI)."
+    ],
+    "verdict": "Configuration affichage (60 $). Câble/adaptateur → pièce simple.",
+    "serviceRecommande": "Configuration affichage",
+    "prix": "60 $ (+ câble/adaptateur)"
+  },
+  {
+    "id": "panne-25", "famille": "F", "numero": 25,
+    "titre": "Sauvegarde & partage de fichiers",
+    "symptome": "« je veux ne rien perdre / partager »",
+    "etapes": [
+      "Comprends le besoin : sauvegarde automatique ? partage entre postes ? accès à distance ? Cadre le périmètre avant de proposer.",
+      "Règle du 3-2-1 : 3 copies, 2 supports, 1 hors site. Explique-la simplement au client.",
+      "Sauvegarde : disque externe + solution cloud (OneDrive/Google Drive), planifiée et vérifiée.",
+      "Partage : dossier partagé réseau ou cloud selon la taille ; documente les accès pour le client."
+    ],
+    "verdict": "Mise en place sauvegarde/partage (à partir de 90 $) selon le nombre de postes. Porte d'entrée vers un contrat de maintenance récurrent.",
+    "serviceRecommande": "Mise en place sauvegarde / partage",
+    "prix": "à partir de 90 $"
+  }
+]

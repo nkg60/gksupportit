@@ -1,0 +1,44 @@
+/**
+ * Design tokens — Identité visuelle GK SupportIT
+ * -------------------------------------------------
+ * Source unique de vérité pour les couleurs, rayons, ombres, espacements et
+ * typographie. On expose tout en variables CSS (:root) pour pouvoir les
+ * réutiliser partout (composants, thèmes) sans dépendance à un framework CSS.
+ */
+
+:root {
+  /* --- Couleurs de marque --- */
+  --gk-navy: #0f2d52; /* Couleur principale (bleu marine) */
+  --gk-navy-700: #143a68; /* Marine légèrement plus clair (survols, bandes) */
+  --gk-navy-900: #0a1f3a; /* Marine très foncé (pied de page, dégradés) */
+  --gk-amber: #f2a900; /* Couleur d'accent (ambre / or) */
+  --gk-amber-600: #d99700; /* Ambre foncé (survol des boutons ambre) */
+  --gk-light: #f6f8fb; /* Fond clair général */
+  --gk-on-navy: #eaf1fb; /* Texte clair sur fond marine */
+
+  /* --- Neutres --- */
+  --gk-white: #ffffff;
+  --gk-ink: #12233b; /* Texte principal sur fond clair */
+  --gk-ink-soft: #4a5b70; /* Texte secondaire / descriptions */
+  --gk-border: #dbe3ee; /* Bordures discrètes */
+  --gk-success: #1f9d5a; /* Confirmations / badges positifs */
+  --gk-danger: #d64545; /* Erreurs de formulaire */
+
+  /* --- Rayons (coins arrondis, cohérents avec les affiches) --- */
+  --gk-radius-sm: 8px;
+  --gk-radius: 14px;
+  --gk-radius-lg: 22px;
+  --gk-radius-pill: 999px;
+
+  /* --- Ombres douces --- */
+  --gk-shadow-sm: 0 1px 3px rgba(15, 45, 82, 0.08);
+  --gk-shadow: 0 6px 20px rgba(15, 45, 82, 0.1);
+  --gk-shadow-lg: 0 18px 40px rgba(15, 45, 82, 0.16);
+
+  /* --- Typographie --- */
+  --gk-font: 'Inter', 'Helvetica Neue', Arial, system-ui, sans-serif;
+
+  /* --- Rythme / conteneur --- */
+  --gk-container: 1120px;
+  --gk-gutter: 1.25rem;
+}

@@ -1,0 +1,211 @@
+:host {
+  display: block;
+}
+.sd-card {
+  max-width: 760px;
+}
+.sd-card h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.3rem;
+}
+.sd-sub {
+  color: var(--gk-ink-soft);
+  margin: 0 0 1.25rem;
+  font-style: italic;
+}
+
+/* Choix du symptôme */
+.sd-search input {
+  width: 100%;
+  max-width: 460px;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--gk-border);
+  border-radius: var(--gk-radius-pill);
+  margin-bottom: 1.25rem;
+}
+.sd-famille {
+  margin-bottom: 1.5rem;
+}
+.sd-famille h3 {
+  font-size: 1rem;
+  color: var(--gk-amber-600);
+  margin: 0 0 0.6rem;
+}
+.sd-pannes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.6rem;
+}
+.sd-panne {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  text-align: left;
+  background: var(--gk-white);
+  border: 1px solid var(--gk-border);
+  border-radius: var(--gk-radius);
+  padding: 0.7rem 0.85rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.sd-panne:hover {
+  border-color: var(--gk-amber);
+  box-shadow: var(--gk-shadow-sm);
+}
+.sd-panne__num {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--gk-navy);
+  color: var(--gk-amber);
+  font-weight: 800;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.sd-panne strong {
+  display: block;
+  color: var(--gk-navy);
+  font-size: 0.95rem;
+}
+.sd-panne__sympt {
+  color: var(--gk-ink-soft);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+/* Arbre de vérification */
+.sd-arbre-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.sd-consigne {
+  background: var(--gk-light);
+  border-radius: var(--gk-radius-sm);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.9rem;
+  color: var(--gk-ink-soft);
+}
+.sd-etapes {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.sd-etape {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.85rem;
+  border: 1px solid var(--gk-border);
+  border-radius: var(--gk-radius);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.sd-etape--done {
+  background: rgba(31, 157, 90, 0.06);
+  border-color: rgba(31, 157, 90, 0.4);
+}
+.sd-etape__check {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+.sd-etape__check input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.sd-etape__lettre {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--gk-amber);
+  color: var(--gk-navy);
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+.sd-etape__corps {
+  flex: 1;
+}
+.sd-etape__texte {
+  margin: 0 0 0.5rem;
+}
+.sd-etape__note {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.65rem;
+  border: 1.5px solid var(--gk-border);
+  border-radius: var(--gk-radius-sm);
+}
+.sd-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* Verdict */
+.sd-verdict__tag {
+  display: inline-block;
+  background: var(--gk-amber);
+  color: var(--gk-navy);
+  font-weight: 800;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--gk-radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.6rem;
+}
+.sd-verdict__texte {
+  font-size: 1.05rem;
+  color: var(--gk-ink);
+}
+.sd-reco {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  background: var(--gk-light);
+  border-radius: var(--gk-radius);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+}
+.sd-reco__label {
+  display: block;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gk-ink-soft);
+  margin-bottom: 0.2rem;
+}
+.sd-reco strong {
+  color: var(--gk-navy);
+  font-size: 1.1rem;
+}
+.sd-recommencer {
+  margin-top: 1rem;
+  background: transparent;
+  border: 0;
+  color: var(--gk-ink-soft);
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+}
+.param-ok {
+  color: var(--gk-success);
+  font-weight: 700;
+}

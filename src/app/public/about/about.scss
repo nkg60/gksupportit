@@ -1,0 +1,56 @@
+:host {
+  display: block;
+}
+
+.page-head {
+  padding-block: clamp(2rem, 5vw, 3rem);
+  text-align: center;
+}
+.page-head h1 {
+  color: var(--gk-white);
+  margin: 0;
+}
+
+.about {
+  max-width: 900px;
+}
+.about__story {
+  font-size: 1.1rem;
+  color: var(--gk-ink);
+  margin-bottom: 2rem;
+}
+.about__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.about__block {
+  padding: 1.5rem;
+}
+.about__block h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.9rem;
+}
+.about__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.about__list li {
+  display: flex;
+  gap: 0.5rem;
+  color: var(--gk-ink-soft);
+}
+.about__list li span {
+  color: var(--gk-amber);
+  font-weight: 900;
+}
+
+@media (max-width: 760px) {
+  .about__cols {
+    grid-template-columns: 1fr;
+  }
+}

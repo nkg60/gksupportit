@@ -1,0 +1,138 @@
+<div class="adm-head">
+  <h1>Interventions</h1>
+  <div class="adm-actions">
+    <button type="button" class="gk-btn gk-btn--navy" (click)="exportXlsx()">⬇ Excel</button>
+    <button type="button" class="gk-btn gk-btn--navy" (click)="exportCsv()">⬇ CSV</button>
+    <button type="button" class="gk-btn gk-btn--primary" (click)="ouvrirNouveau()">+ Intervention</button>
+  </div>
+</div>
+
+<div class="adm-table-wrap">
+  <table class="adm-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Client</th>
+        <th>Appareil</th>
+        <th>Service</th>
+        <th class="num">Pièces</th>
+        <th class="num">Facturé</th>
+        <th class="num">Marge</th>
+        <th>Paiement</th>
+        <th>Statut</th>
+        <th>Avis</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (i of lignes(); track i.id) {
+        <tr>
+          <td>{{ fmtDate(i.date) }}</td>
+          <td>{{ i.client }}</td>
+          <td>{{ i.appareil }}</td>
+          <td>{{ i.service }}</td>
+          <td class="num">{{ fmt(i.coutPieces) }}</td>
+          <td class="num">{{ fmt(i.prixFacture) }}</td>
+          <td class="num" [class.adm-num--pos]="(i.marge ?? 0) > 0">{{ fmt(i.marge ?? 0) }}</td>
+          <td>{{ i.paiement }}</td>
+          <td>
+            <span class="adm-tag" [class.adm-tag--done]="i.statut === 'Terminé'">{{ i.statut }}</span>
+          </td>
+          <td>{{ i.avisDemande ? '✓' : '—' }}</td>
+          <td class="adm-rowactions">
+            <button type="button" class="adm-icobtn" (click)="ouvrirEdition(i)" title="Modifier">✏️</button>
+            <button type="button" class="adm-icobtn adm-icobtn--danger" (click)="supprimer(i)" title="Supprimer">🗑️</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="11" class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucune intervention.' }}</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Modale ajout/édition -->
+@if (editionId() !== null) {
+  <div class="adm-modal-backdrop" (click)="fermer()">
+    <div class="adm-modal" (click)="$event.stopPropagation()">
+      <h2>{{ editionId() ? 'Modifier l’intervention' : 'Nouvelle intervention' }}</h2>
+      <form [formGroup]="form" (ngSubmit)="enregistrer()" novalidate>
+        <div class="adm-grid2">
+          <div class="adm-field">
+            <label for="i-date">Date</label>
+            <input id="i-date" type="date" formControlName="date" />
+          </div>
+          <div class="adm-field">
+            <label for="i-client">Client</label>
+            <input id="i-client" type="text" formControlName="client" />
+          </div>
+          <div class="adm-field">
+            <label for="i-tel">Téléphone</label>
+            <input id="i-tel" type="tel" formControlName="telephone" />
+          </div>
+          <div class="adm-field">
+            <label for="i-appareil">Appareil</label>
+            <input id="i-appareil" type="text" formControlName="appareil" />
+          </div>
+        </div>
+
+        <div class="adm-field">
+          <label for="i-probleme">Problème signalé</label>
+          <input id="i-probleme" type="text" formControlName="probleme" />
+        </div>
+
+        <div class="adm-field">
+          <label for="i-service">Service réalisé</label>
+          <input id="i-service" type="text" formControlName="service" list="liste-services" />
+          <datalist id="liste-services">
+            @for (s of services(); track s.id) { <option [value]="s.nom"></option> }
+          </datalist>
+        </div>
+
+        <div class="adm-grid2">
+          <div class="adm-field">
+            <label for="i-pieces">Coût pièces ($)</label>
+            <input id="i-pieces" type="number" step="0.01" min="0" formControlName="coutPieces" />
+          </div>
+          <div class="adm-field">
+            <label for="i-prix">Prix facturé ($)</label>
+            <input id="i-prix" type="number" step="0.01" min="0" formControlName="prixFacture" />
+          </div>
+          <div class="adm-field">
+            <label for="i-paiement">Paiement</label>
+            <select id="i-paiement" formControlName="paiement">
+              @for (p of paiements; track p) { <option [value]="p">{{ p }}</option> }
+            </select>
+          </div>
+          <div class="adm-field">
+            <label for="i-statut">Statut</label>
+            <select id="i-statut" formControlName="statut">
+              @for (s of statuts; track s) { <option [value]="s">{{ s }}</option> }
+            </select>
+          </div>
+        </div>
+
+        <p class="int-marge">
+          Marge estimée : <strong>{{ fmt(margeApercu()) }}</strong>
+          @if (form.getRawValue().statut === 'Terminé') {
+            <span class="int-marge__auto">— une entrée « Revenu client » sera créée en trésorerie.</span>
+          }
+        </p>
+
+        <div class="adm-field int-check">
+          <label><input type="checkbox" formControlName="avisDemande" /> Évaluation Google demandée</label>
+        </div>
+
+        <div class="adm-field">
+          <label for="i-notes">Notes</label>
+          <textarea id="i-notes" rows="2" formControlName="notes"></textarea>
+        </div>
+
+        <div class="adm-modal__footer">
+          <button type="button" class="gk-btn gk-btn--navy" (click)="fermer()">Annuler</button>
+          <button type="submit" class="gk-btn gk-btn--primary" [disabled]="form.invalid">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

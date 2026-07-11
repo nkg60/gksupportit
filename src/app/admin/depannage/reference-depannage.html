@@ -1,0 +1,35 @@
+<h2 class="ref-h2">Aide-mémoire : outil par symptôme</h2>
+<div class="adm-table-wrap">
+  <table class="adm-table">
+    <thead>
+      <tr><th>Ce que tu veux savoir</th><th>Outil</th><th>Où / comment</th></tr>
+    </thead>
+    <tbody>
+      @for (o of outils; track o.question) {
+        <tr>
+          <td class="ref-q">{{ o.question }}</td>
+          <td><span class="ref-outil">{{ o.outil }}</span></td>
+          <td class="ref-ou">{{ o.ou }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<div class="ref-cols">
+  <section class="ref-panel ref-panel--secu">
+    <h2 class="ref-h2">Réflexes de sécurité <span>(à ne jamais oublier)</span></h2>
+    <ul>
+      @for (s of securite; track s.titre) {
+        <li><strong>{{ s.titre }}</strong> {{ s.detail }}</li>
+      }
+    </ul>
+  </section>
+
+  <section class="ref-panel ref-panel--limites">
+    <h2 class="ref-h2">Ce que je ne fais pas <span>(au départ)</span></h2>
+    <ul>
+      @for (l of limites; track l) { <li>{{ l }}</li> }
+    </ul>
+  </section>
+</div>

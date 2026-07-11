@@ -1,0 +1,26 @@
+[
+  {
+    "id": "seed-capital",
+    "date": "2026-07-10",
+    "type": "Entrée",
+    "montant": 500,
+    "categorie": "Capital",
+    "description": "Apport initial de Ghislain (capital de départ)"
+  },
+  {
+    "id": "seed-kit-outils",
+    "date": "2026-07-10",
+    "type": "Sortie",
+    "montant": 18.07,
+    "categorie": "Matériel",
+    "description": "Kit JOREST 38 outils de précision (15,99 $ + TVH 13 %)"
+  },
+  {
+    "id": "seed-pate-thermique",
+    "date": "2026-07-10",
+    "type": "Sortie",
+    "montant": 9.03,
+    "categorie": "Matériel",
+    "description": "Pâte thermique SYY 4G (7,99 $ + TVH 13 %)"
+  }
+]

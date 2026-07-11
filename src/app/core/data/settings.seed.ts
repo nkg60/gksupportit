@@ -1,0 +1,18 @@
+import { SiteSettings } from '../models/site-settings.model';
+
+/**
+ * Paramètres initiaux du site (fournis par Ghislain).
+ * Serviront à pré-remplir la clé Netlify Blobs « settings » (Phase 2),
+ * puis deviendront éditables depuis l'admin (Phase 4).
+ */
+export const SETTINGS_SEED: SiteSettings = {
+  whatsappNumber: '15149736569',
+  whatsappDisplay: '+1 514 973 6569',
+  email: 'gksupportit@gmail.com',
+  horaires: 'Lun–Ven : 17 h – 20 h 30 · Sam–Dim : 10 h – 18 h',
+  zoneService: 'Tout Ottawa',
+  supplementHorsZone: '+10 $ hors zone',
+  aboutText:
+    "GK SupportIT est un service de réparation informatique à domicile à Ottawa, bilingue (français / anglais). Notre engagement : vos données d'abord, des prix transparents sous le marché, et des pièces facturées au prix coûtant avec reçu. Le déplacement est inclus partout à Ottawa.",
+  capitalDepart: 500,
+};

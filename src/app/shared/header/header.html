@@ -1,0 +1,32 @@
+<header class="header" *transloco="let t">
+  <div class="gk-container header__bar">
+    <!-- Logo cliquable -> accueil -->
+    <a routerLink="/" class="header__brand" (click)="fermerMenu()" aria-label="GK SupportIT — Accueil">
+      <gk-logo variant="dark" />
+    </a>
+
+    <!-- Navigation (bureau) + tiroir (mobile) -->
+    <nav class="header__nav" [class.header__nav--open]="menuOuvert()" aria-label="Navigation principale">
+      <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="fermerMenu()">{{ t('nav.home') }}</a>
+      <a routerLink="/services" routerLinkActive="is-active" (click)="fermerMenu()">{{ t('nav.services') }}</a>
+      <a routerLink="/decrire" routerLinkActive="is-active" (click)="fermerMenu()">{{ t('nav.describe') }}</a>
+      <a routerLink="/a-propos" routerLinkActive="is-active" (click)="fermerMenu()">{{ t('nav.about') }}</a>
+      <a routerLink="/contact" routerLinkActive="is-active" (click)="fermerMenu()">{{ t('nav.contact') }}</a>
+
+      <div class="header__nav-actions">
+        <gk-lang-switcher />
+      </div>
+    </nav>
+
+    <!-- Bouton menu mobile -->
+    <button
+      type="button"
+      class="header__burger"
+      [attr.aria-expanded]="menuOuvert()"
+      [attr.aria-label]="t('nav.menu')"
+      (click)="basculerMenu()"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>

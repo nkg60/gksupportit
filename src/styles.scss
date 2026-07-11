@@ -1,0 +1,212 @@
+/**
+ * Styles globaux GK SupportIT
+ * ---------------------------
+ * Réinitialisation légère, typographie de base, et petites classes utilitaires
+ * réutilisables (conteneur, boutons, badges, sections). Le reste du style vit
+ * dans chaque composant (styles encapsulés Angular).
+ */
+
+@use 'styles/tokens';
+@use 'styles/admin';
+
+/* ------- Réinitialisation légère ------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--gk-font);
+  color: var(--gk-ink);
+  background: var(--gk-light);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--gk-navy);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--gk-navy);
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+  font-weight: 800;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 5vw, 3rem);
+}
+h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+/* ------- Conteneur centré ------- */
+.gk-container {
+  width: 100%;
+  max-width: var(--gk-container);
+  margin-inline: auto;
+  padding-inline: var(--gk-gutter);
+}
+
+/* ------- Sections rythmées ------- */
+.gk-section {
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+}
+.gk-section--navy {
+  background: var(--gk-navy);
+  color: var(--gk-on-navy);
+}
+.gk-section--navy h1,
+.gk-section--navy h2,
+.gk-section--navy h3 {
+  color: var(--gk-white);
+}
+.gk-section__title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* ------- Boutons ------- */
+.gk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--gk-radius-pill);
+  border: 2px solid transparent;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  line-height: 1.1;
+}
+.gk-btn:hover {
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+.gk-btn:active {
+  transform: translateY(0);
+}
+.gk-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Bouton principal (ambre) */
+.gk-btn--primary {
+  background: var(--gk-amber);
+  color: var(--gk-navy);
+  box-shadow: var(--gk-shadow-sm);
+}
+.gk-btn--primary:hover {
+  background: var(--gk-amber-600);
+}
+
+/* Bouton secondaire (contour clair sur fond marine) */
+.gk-btn--ghost {
+  background: transparent;
+  color: var(--gk-on-navy);
+  border-color: rgba(234, 241, 251, 0.55);
+}
+.gk-btn--ghost:hover {
+  border-color: var(--gk-amber);
+  color: var(--gk-white);
+}
+
+/* Bouton marine (sur fond clair) */
+.gk-btn--navy {
+  background: var(--gk-navy);
+  color: var(--gk-white);
+}
+.gk-btn--navy:hover {
+  background: var(--gk-navy-700);
+}
+
+/* Bouton WhatsApp (vert de marque WhatsApp) */
+.gk-btn--whatsapp {
+  background: #25d366;
+  color: #05331a;
+}
+.gk-btn--whatsapp:hover {
+  background: #1fbf5a;
+}
+
+.gk-btn--block {
+  width: 100%;
+}
+
+/* ------- Badges (« ✓ Déplacement inclus ») ------- */
+.gk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--gk-radius-pill);
+  background: rgba(242, 169, 0, 0.15);
+  color: var(--gk-navy);
+  border: 1px solid rgba(242, 169, 0, 0.5);
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.gk-badge--on-navy {
+  background: rgba(242, 169, 0, 0.2);
+  color: var(--gk-on-navy);
+}
+.gk-badge__check {
+  color: var(--gk-amber);
+  font-weight: 900;
+}
+
+/* ------- Cartes ------- */
+.gk-card {
+  background: var(--gk-white);
+  border: 1px solid var(--gk-border);
+  border-radius: var(--gk-radius-lg);
+  box-shadow: var(--gk-shadow-sm);
+  overflow: hidden;
+}
+
+/* ------- Accessibilité ------- */
+:focus-visible {
+  outline: 3px solid var(--gk-amber);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.gk-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

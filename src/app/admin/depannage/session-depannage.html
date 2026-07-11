@@ -1,0 +1,131 @@
+@switch (etape()) {
+  <!-- Étape 1 : client -->
+  @case ('client') {
+    <div class="adm-card sd-card">
+      <h2>Nouvelle session de dépannage</h2>
+      <p class="sd-sub">Pour qui faites-vous ce diagnostic ? (facultatif)</p>
+      <form [formGroup]="clientForm" (ngSubmit)="demarrer()">
+        <div class="adm-grid2">
+          <div class="adm-field">
+            <label for="sd-client">Client</label>
+            <input id="sd-client" type="text" formControlName="client" />
+          </div>
+          <div class="adm-field">
+            <label for="sd-appareil">Appareil</label>
+            <input id="sd-appareil" type="text" formControlName="appareil" placeholder="Ex. : portable HP" />
+          </div>
+        </div>
+        <button type="submit" class="gk-btn gk-btn--primary">Choisir le symptôme →</button>
+      </form>
+    </div>
+  }
+
+  <!-- Étape 2 : choix du symptôme -->
+  @case ('symptome') {
+    <div class="sd-symptome">
+      <div class="sd-search">
+        <input
+          type="search"
+          placeholder="Rechercher un symptôme (ex. : lent, écran noir, Wi-Fi…)"
+          [value]="recherche()"
+          (input)="recherche.set($any($event.target).value)"
+        />
+      </div>
+      @for (g of groupes(); track g.cle) {
+        <section class="sd-famille">
+          <h3>{{ g.label }}</h3>
+          <div class="sd-pannes">
+            @for (p of g.pannes; track p.id) {
+              <button type="button" class="sd-panne" (click)="choisirPanne(p)">
+                <span class="sd-panne__num">{{ p.numero }}</span>
+                <span>
+                  <strong>{{ p.titre }}</strong>
+                  <span class="sd-panne__sympt">{{ p.symptome }}</span>
+                </span>
+              </button>
+            }
+          </div>
+        </section>
+      } @empty {
+        <p class="adm-empty">Aucun symptôme ne correspond.</p>
+      }
+    </div>
+  }
+
+  <!-- Étape 3 : arbre de vérification -->
+  @case ('arbre') {
+    @if (panne(); as p) {
+      <div class="adm-card sd-card">
+        <div class="sd-arbre-head">
+          <div>
+            <h2>{{ p.titre }}</h2>
+            <p class="sd-sub">{{ p.symptome }}</p>
+          </div>
+          <button type="button" class="gk-btn gk-btn--navy" (click)="etape.set('symptome')">← Changer</button>
+        </div>
+
+        <p class="sd-consigne">Suis les étapes dans l'ordre. Coche ce que tu as testé et note le résultat.</p>
+
+        <ol class="sd-etapes">
+          @for (e of etapesCochees(); track $index) {
+            <li class="sd-etape" [class.sd-etape--done]="e.coche">
+              <label class="sd-etape__check">
+                <input type="checkbox" [checked]="e.coche" (change)="basculerEtape($index)" />
+                <span class="sd-etape__lettre">{{ 'ABCD'[$index] }}</span>
+              </label>
+              <div class="sd-etape__corps">
+                <p class="sd-etape__texte">{{ p.etapes[$index] }}</p>
+                <input
+                  type="text"
+                  class="sd-etape__note"
+                  placeholder="Résultat / note (facultatif)"
+                  [value]="e.note"
+                  (input)="noterEtape($index, $any($event.target).value)"
+                />
+              </div>
+            </li>
+          }
+        </ol>
+
+        <div class="sd-actions">
+          <button type="button" class="gk-btn gk-btn--primary" (click)="voirVerdict()">Voir le verdict →</button>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- Étape 4 : verdict -->
+  @case ('verdict') {
+    @if (panne(); as p) {
+      <div class="adm-card sd-card sd-verdict">
+        <span class="sd-verdict__tag">Verdict</span>
+        <h2>{{ p.titre }}</h2>
+        <p class="sd-verdict__texte">{{ p.verdict }}</p>
+
+        <div class="sd-reco">
+          <div>
+            <span class="sd-reco__label">Service recommandé</span>
+            <strong>{{ p.serviceRecommande }}</strong>
+          </div>
+          <div>
+            <span class="sd-reco__label">Prix</span>
+            <strong>{{ p.prix }}</strong>
+          </div>
+        </div>
+
+        @if (enregistre()) { <p class="param-ok">✓ Session enregistrée.</p> }
+
+        <div class="sd-actions">
+          <button type="button" class="gk-btn gk-btn--navy" (click)="retourArbre()">← Revenir</button>
+          <button type="button" class="gk-btn gk-btn--navy" (click)="enregistrerSession()" [disabled]="enregistre()">
+            Enregistrer la session
+          </button>
+          <button type="button" class="gk-btn gk-btn--primary" (click)="convertirEnIntervention()">
+            Convertir en intervention →
+          </button>
+        </div>
+        <button type="button" class="sd-recommencer" (click)="recommencer()">Nouvelle session</button>
+      </div>
+    }
+  }
+}

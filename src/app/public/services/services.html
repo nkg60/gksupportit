@@ -1,0 +1,22 @@
+<ng-container *transloco="let t">
+  <section class="gk-section--navy page-head">
+    <div class="gk-container">
+      <h1>{{ t('services.title') }}</h1>
+      <p>{{ t('services.subtitle') }}</p>
+    </div>
+  </section>
+
+  <section class="gk-section">
+    <div class="gk-container">
+      @if (services().length) {
+        <div class="services-grid">
+          @for (s of services(); track s.id) {
+            <gk-service-card [service]="s" [whatsappNumber]="settings()?.whatsappNumber ?? ''" />
+          }
+        </div>
+      } @else {
+        <p class="services-empty">{{ t('services.empty') }}</p>
+      }
+    </div>
+  </section>
+</ng-container>

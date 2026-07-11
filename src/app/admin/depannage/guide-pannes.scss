@@ -1,0 +1,43 @@
+:host {
+  display: block;
+}
+.gp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.gp-count {
+  margin: 0;
+  color: var(--gk-ink-soft);
+  font-weight: 600;
+}
+.gp-fam {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--gk-navy);
+  color: var(--gk-amber);
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+.gp-titre {
+  white-space: normal;
+  min-width: 240px;
+}
+.gp-titre strong {
+  display: block;
+}
+.gp-sympt {
+  color: var(--gk-ink-soft);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.gp-serv {
+  white-space: normal;
+  min-width: 200px;
+  color: var(--gk-ink-soft);
+}

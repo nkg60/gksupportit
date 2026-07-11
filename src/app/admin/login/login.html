@@ -1,0 +1,26 @@
+<div class="login">
+  <div class="login__card gk-card">
+    <div class="login__brand">
+      <gk-logo variant="light" />
+    </div>
+    <h1>Connexion administrateur</h1>
+    <p class="login__sub">Accès réservé à la gestion de GK SupportIT.</p>
+
+    <form [formGroup]="form" (ngSubmit)="connexion()" novalidate>
+      <div class="adm-field">
+        <label for="pw">Mot de passe</label>
+        <input id="pw" type="password" formControlName="password" autocomplete="current-password" autofocus />
+      </div>
+
+      @if (erreur()) {
+        <p class="login__err">Mot de passe incorrect. Réessayez.</p>
+      }
+
+      <button type="submit" class="gk-btn gk-btn--primary gk-btn--block" [disabled]="enCours()">
+        {{ enCours() ? 'Connexion…' : 'Se connecter' }}
+      </button>
+    </form>
+
+    <a routerLink="/" class="login__back">← Retour au site</a>
+  </div>
+</div>

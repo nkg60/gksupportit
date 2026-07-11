@@ -1,0 +1,48 @@
+<div class="carte-page">
+  @if (carte(); as c) {
+    <article class="carte">
+      <div class="carte__top">
+        <gk-logo variant="dark" />
+      </div>
+
+      <div class="carte__body">
+        <h1 class="carte__nom">{{ c.nom }}</h1>
+        <p class="carte__role">{{ c.role }}</p>
+
+        <div class="carte__coord">
+          <a class="carte__ligne" [href]="'tel:' + (c.telephone || '+' + c.whatsapp)">
+            <span aria-hidden="true">📞</span> {{ c.telephone || ('+' + c.whatsapp) }}
+          </a>
+          <a class="carte__ligne" [href]="lienWa(c)" target="_blank" rel="noopener">
+            <span aria-hidden="true">💬</span> WhatsApp
+          </a>
+          <a class="carte__ligne" [href]="'mailto:' + c.email">
+            <span aria-hidden="true">✉️</span> {{ c.email }}
+          </a>
+          <a class="carte__ligne" [href]="urlSite" target="_blank" rel="noopener">
+            <span aria-hidden="true">🌐</span> Notre site
+          </a>
+        </div>
+
+        <button type="button" class="gk-btn gk-btn--primary gk-btn--block" (click)="ajouterContact()">
+          + Ajouter à mes contacts
+        </button>
+
+        @if (qr(); as q) {
+          <div class="carte__qr">
+            <img [src]="q" alt="QR code de la carte" width="150" height="150" />
+            <p>Scannez pour partager cette carte</p>
+          </div>
+        }
+      </div>
+
+      <div class="carte__footer">GK SupportIT — Réparation informatique à domicile · Ottawa</div>
+    </article>
+  } @else if (introuvable()) {
+    <div class="carte carte--vide">
+      <gk-logo variant="light" />
+      <p>Cette carte de visite n'existe pas ou n'est plus active.</p>
+      <a class="gk-btn gk-btn--primary" [href]="urlSite">Aller au site</a>
+    </div>
+  }
+</div>

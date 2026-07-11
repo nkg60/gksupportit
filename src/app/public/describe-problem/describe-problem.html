@@ -1,0 +1,72 @@
+<ng-container *transloco="let t">
+  <section class="gk-section--navy page-head">
+    <div class="gk-container">
+      <h1>{{ t('form.title') }}</h1>
+      <p>{{ t('form.subtitle') }}</p>
+    </div>
+  </section>
+
+  <section class="gk-section">
+    <div class="gk-container form-wrap">
+      @if (!succes()) {
+        <!-- ===== Formulaire ===== -->
+        <form class="gk-card form" [formGroup]="form" (ngSubmit)="soumettre()" novalidate>
+          <div class="form__row">
+            <label for="nom">{{ t('form.name') }} *</label>
+            <input id="nom" type="text" formControlName="nom" autocomplete="name" />
+            @if (enErreur('nom')) { <span class="form__err">{{ t('form.errors.required') }}</span> }
+          </div>
+
+          <div class="form__row">
+            <label for="contact">{{ t('form.contact') }} *</label>
+            <input id="contact" type="tel" formControlName="contact" autocomplete="tel" />
+            @if (enErreur('contact')) { <span class="form__err">{{ t('form.errors.contact') }}</span> }
+          </div>
+
+          <div class="form__row">
+            <label for="appareil">{{ t('form.device') }} *</label>
+            <input id="appareil" type="text" formControlName="appareil" [placeholder]="t('form.devicePlaceholder')" />
+            @if (enErreur('appareil')) { <span class="form__err">{{ t('form.errors.required') }}</span> }
+          </div>
+
+          <div class="form__row">
+            <label for="description">{{ t('form.description') }} *</label>
+            <textarea id="description" rows="4" formControlName="description" [placeholder]="t('form.descriptionPlaceholder')"></textarea>
+            @if (enErreur('description')) { <span class="form__err">{{ t('form.errors.minLength') }}</span> }
+          </div>
+
+          <div class="form__row">
+            <label for="service">{{ t('form.service') }}</label>
+            <select id="service" formControlName="service">
+              <option value="">{{ t('form.servicePlaceholder') }}</option>
+              @for (s of services(); track s.id) {
+                <option [value]="s.nom">{{ s.nom }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form__row">
+            <label for="secteur">{{ t('form.sector') }} *</label>
+            <input id="secteur" type="text" formControlName="secteur" [placeholder]="t('form.sectorPlaceholder')" />
+            @if (enErreur('secteur')) { <span class="form__err">{{ t('form.errors.required') }}</span> }
+          </div>
+
+          <button type="submit" class="gk-btn gk-btn--primary gk-btn--block" [disabled]="envoi()">
+            {{ envoi() ? t('form.sending') : t('form.submit') }}
+          </button>
+        </form>
+      } @else {
+        <!-- ===== Confirmation ===== -->
+        <div class="gk-card confirm">
+          <span class="confirm__icon">✓</span>
+          <h2>{{ t('form.successTitle') }}</h2>
+          <p>{{ t('form.successText') }}</p>
+          <a class="gk-btn gk-btn--whatsapp" [href]="lienSuivi()" target="_blank" rel="noopener">
+            {{ t('common.continueWhatsapp') }}
+          </a>
+          <button type="button" class="gk-btn gk-btn--navy" (click)="nouvelle()">{{ t('form.newRequest') }}</button>
+        </div>
+      }
+    </div>
+  </section>
+</ng-container>

@@ -1,0 +1,39 @@
+<footer class="footer" *transloco="let t">
+  <div class="gk-container footer__grid">
+    <!-- Marque + slogan -->
+    <div class="footer__brand">
+      <gk-logo variant="dark" />
+      <p class="footer__tag">{{ t('footer.tagline') }}</p>
+      <span class="gk-badge gk-badge--on-navy"><span class="gk-badge__check">✓</span> {{ t('hero.badge') }}</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="footer__col" aria-label="Navigation pied de page">
+      <h3>{{ t('footer.navTitle') }}</h3>
+      <a routerLink="/">{{ t('nav.home') }}</a>
+      <a routerLink="/services">{{ t('nav.services') }}</a>
+      <a routerLink="/decrire">{{ t('nav.describe') }}</a>
+      <a routerLink="/a-propos">{{ t('nav.about') }}</a>
+      <a routerLink="/contact">{{ t('nav.contact') }}</a>
+    </nav>
+
+    <!-- Contact -->
+    <div class="footer__col">
+      <h3>{{ t('footer.contactTitle') }}</h3>
+      @if (settings(); as s) {
+        <a [href]="'https://wa.me/' + s.whatsappNumber" target="_blank" rel="noopener">WhatsApp : {{ s.whatsappDisplay }}</a>
+        <a [href]="'mailto:' + s.email">{{ s.email }}</a>
+        <p class="footer__hours">{{ s.horaires }}</p>
+      }
+      <p class="footer__bilingual">{{ t('footer.bilingualNote') }}</p>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="gk-container footer__bottom-row">
+      <span>© {{ annee }} GK SupportIT — {{ t('footer.rights') }}</span>
+      <!-- Lien discret vers l'espace admin -->
+      <a routerLink="/admin" class="footer__admin">{{ t('footer.admin') }}</a>
+    </div>
+  </div>
+</footer>

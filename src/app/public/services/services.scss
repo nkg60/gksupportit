@@ -1,0 +1,37 @@
+:host {
+  display: block;
+}
+
+.page-head {
+  padding-block: clamp(2rem, 5vw, 3rem);
+  text-align: center;
+}
+.page-head h1 {
+  color: var(--gk-white);
+  margin-bottom: 0.5rem;
+}
+.page-head p {
+  color: rgba(234, 241, 251, 0.85);
+  margin: 0;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.services-empty {
+  text-align: center;
+  color: var(--gk-ink-soft);
+}
+
+@media (max-width: 960px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 620px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+}

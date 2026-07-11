@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+.ref-h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.9rem;
+}
+.ref-h2 span {
+  color: var(--gk-ink-soft);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.ref-q {
+  white-space: normal;
+  font-weight: 600;
+}
+.ref-outil {
+  color: var(--gk-amber-600);
+  font-weight: 700;
+}
+.ref-ou {
+  white-space: normal;
+  color: var(--gk-ink-soft);
+}
+.ref-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+.ref-panel {
+  border-radius: var(--gk-radius);
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--gk-border);
+}
+.ref-panel--secu {
+  background: rgba(242, 169, 0, 0.08);
+  border-color: rgba(242, 169, 0, 0.4);
+}
+.ref-panel--limites {
+  background: rgba(214, 69, 69, 0.06);
+  border-color: rgba(214, 69, 69, 0.35);
+}
+.ref-panel ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.ref-panel li {
+  color: var(--gk-ink);
+  font-size: 0.93rem;
+}
+@media (max-width: 820px) {
+  .ref-cols {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,100 @@
+<div class="adm-head">
+  <h1>Trésorerie</h1>
+  <div class="adm-actions">
+    <button type="button" class="gk-btn gk-btn--navy" (click)="exportXlsx()">⬇ Excel</button>
+    <button type="button" class="gk-btn gk-btn--navy" (click)="exportCsv()">⬇ CSV</button>
+    <button type="button" class="gk-btn gk-btn--primary" (click)="ouvrirNouveau()">+ Mouvement</button>
+  </div>
+</div>
+
+<div class="tres-solde adm-kpi">
+  <p class="adm-kpi__label">Solde actuel</p>
+  <p class="adm-kpi__value">{{ fmt(soldeFinal()) }}</p>
+</div>
+
+<div class="adm-table-wrap">
+  <table class="adm-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th class="num">Montant</th>
+        <th>Catégorie</th>
+        <th>Description</th>
+        <th class="num">Solde</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (m of lignes(); track m.id) {
+        <tr>
+          <td>{{ fmtDate(m.date) }}</td>
+          <td>
+            <span class="adm-tag" [class.adm-tag--in]="m.type === 'Entrée'" [class.adm-tag--out]="m.type === 'Sortie'">
+              {{ m.type }}
+            </span>
+          </td>
+          <td class="num" [class.adm-num--pos]="m.type === 'Entrée'" [class.adm-num--neg]="m.type === 'Sortie'">
+            {{ m.type === 'Entrée' ? '+' : '−' }}{{ fmt(m.montant) }}
+          </td>
+          <td>{{ m.categorie }}</td>
+          <td>
+            {{ m.description }}
+            @if (m.auto) { <span class="adm-tag adm-tag--auto">auto</span> }
+          </td>
+          <td class="num">{{ fmt(m.solde) }}</td>
+          <td>
+            @if (!m.auto) {
+              <button type="button" class="adm-icobtn" (click)="ouvrirEdition(m)" title="Modifier">✏️</button>
+              <button type="button" class="adm-icobtn adm-icobtn--danger" (click)="supprimer(m)" title="Supprimer">🗑️</button>
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="7" class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucun mouvement.' }}</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Modale ajout/édition -->
+@if (editionId() !== null) {
+  <div class="adm-modal-backdrop" (click)="fermer()">
+    <div class="adm-modal" (click)="$event.stopPropagation()">
+      <h2>{{ editionId() ? 'Modifier le mouvement' : 'Nouveau mouvement' }}</h2>
+      <form [formGroup]="form" (ngSubmit)="enregistrer()" novalidate>
+        <div class="adm-grid2">
+          <div class="adm-field">
+            <label for="date">Date</label>
+            <input id="date" type="date" formControlName="date" />
+          </div>
+          <div class="adm-field">
+            <label for="type">Type</label>
+            <select id="type" formControlName="type">
+              <option value="Entrée">Entrée</option>
+              <option value="Sortie">Sortie</option>
+            </select>
+          </div>
+          <div class="adm-field">
+            <label for="montant">Montant ($)</label>
+            <input id="montant" type="number" step="0.01" min="0" formControlName="montant" />
+          </div>
+          <div class="adm-field">
+            <label for="categorie">Catégorie</label>
+            <select id="categorie" formControlName="categorie">
+              @for (c of categories; track c) { <option [value]="c">{{ c }}</option> }
+            </select>
+          </div>
+        </div>
+        <div class="adm-field">
+          <label for="desc">Description</label>
+          <input id="desc" type="text" formControlName="description" />
+        </div>
+        <div class="adm-modal__footer">
+          <button type="button" class="gk-btn gk-btn--navy" (click)="fermer()">Annuler</button>
+          <button type="submit" class="gk-btn gk-btn--primary" [disabled]="form.invalid">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

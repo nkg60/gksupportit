@@ -1,0 +1,108 @@
+<div class="adm-head">
+  <h1>Cartes de visite</h1>
+  <div class="adm-actions">
+    <button type="button" class="gk-btn gk-btn--primary" (click)="ouvrirNouveau()">+ Carte</button>
+  </div>
+</div>
+
+<div class="adm-table-wrap">
+  <table class="adm-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Rôle</th>
+        <th>URL publique</th>
+        <th>Actif</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (c of liste(); track c.id) {
+        <tr [class.off-inactif]="!c.actif">
+          <td class="ca-nom">{{ c.nom }}</td>
+          <td>{{ c.role }}</td>
+          <td>
+            <a [href]="urlCarte(c.slug)" target="_blank" rel="noopener">/carte/{{ c.slug }}</a>
+          </td>
+          <td>
+            <button type="button" class="adm-tag" [class.adm-tag--done]="c.actif" (click)="basculerActif(c)">
+              {{ c.actif ? 'Actif' : 'Inactif' }}
+            </button>
+          </td>
+          <td class="adm-rowactions">
+            <button type="button" class="adm-icobtn" (click)="ouvrirQr(c)" title="QR code">🔳</button>
+            <button type="button" class="adm-icobtn" (click)="ouvrirEdition(c)" title="Modifier">✏️</button>
+            <button type="button" class="adm-icobtn adm-icobtn--danger" (click)="supprimer(c)" title="Supprimer">🗑️</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="5" class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucune carte.' }}</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Modale ajout/édition -->
+@if (editionId() !== null) {
+  <div class="adm-modal-backdrop" (click)="fermer()">
+    <div class="adm-modal" (click)="$event.stopPropagation()">
+      <h2>{{ editionId() ? 'Modifier la carte' : 'Nouvelle carte' }}</h2>
+      <form [formGroup]="form" (ngSubmit)="enregistrer()" novalidate>
+        <div class="adm-grid2">
+          <div class="adm-field">
+            <label for="c-nom">Nom</label>
+            <input id="c-nom" type="text" formControlName="nom" />
+          </div>
+          <div class="adm-field">
+            <label for="c-slug">Slug (URL : /carte/…)</label>
+            <input id="c-slug" type="text" formControlName="slug" placeholder="ghislain" />
+          </div>
+          <div class="adm-field">
+            <label for="c-role">Rôle</label>
+            <input id="c-role" type="text" formControlName="role" placeholder="Technicien" />
+          </div>
+          <div class="adm-field">
+            <label for="c-tel">Téléphone (affiché)</label>
+            <input id="c-tel" type="text" formControlName="telephone" placeholder="+1 514 973 6569" />
+          </div>
+          <div class="adm-field">
+            <label for="c-wa">WhatsApp (chiffres)</label>
+            <input id="c-wa" type="text" formControlName="whatsapp" placeholder="15149736569" />
+          </div>
+          <div class="adm-field">
+            <label for="c-email">Courriel</label>
+            <input id="c-email" type="email" formControlName="email" />
+          </div>
+        </div>
+        <div class="adm-field off-actif">
+          <label><input type="checkbox" formControlName="actif" /> Carte active (accessible publiquement)</label>
+        </div>
+        <div class="adm-modal__footer">
+          <button type="button" class="gk-btn gk-btn--navy" (click)="fermer()">Annuler</button>
+          <button type="submit" class="gk-btn gk-btn--primary" [disabled]="form.invalid">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- Modale QR -->
+@if (qrCarte(); as c) {
+  <div class="adm-modal-backdrop" (click)="fermerQr()">
+    <div class="adm-modal ca-qrmodal" (click)="$event.stopPropagation()">
+      <h2>QR code — {{ c.nom }}</h2>
+      <p class="ca-qrurl">{{ urlCarte(c.slug) }}</p>
+      @if (qrData(); as q) {
+        <img class="ca-qrimg" [src]="q" alt="QR code" />
+      } @else {
+        <p>Génération…</p>
+      }
+      <div class="adm-modal__footer">
+        <a class="gk-btn gk-btn--navy" [href]="urlCarte(c.slug)" target="_blank" rel="noopener">Ouvrir la carte ↗</a>
+        <button type="button" class="gk-btn gk-btn--primary" (click)="telechargerQr()" [disabled]="!qrData()">
+          Télécharger le QR (PNG)
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+.off-thumb {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: var(--gk-radius-sm);
+  border: 1px solid var(--gk-border);
+}
+.off-nom {
+  white-space: normal;
+  min-width: 200px;
+  font-weight: 600;
+}
+.off-ordre {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.off-ordre .adm-icobtn {
+  padding: 0.1rem 0.4rem;
+  line-height: 1;
+}
+.off-inactif {
+  opacity: 0.55;
+}
+
+/* Upload d'affiche dans la modale */
+.off-upload {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.off-upload__preview {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: var(--gk-radius-sm);
+  border: 1px solid var(--gk-border);
+  background: var(--gk-light);
+  flex: 0 0 auto;
+}
+.off-upload__state {
+  color: var(--gk-amber);
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+}
+.off-upload__hint {
+  color: var(--gk-ink-soft);
+  font-size: 0.82rem;
+  margin: 0.35rem 0 0;
+}
+.off-actif label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-top: 1.9rem;
+}
