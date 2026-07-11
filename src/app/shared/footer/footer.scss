@@ -35,6 +35,11 @@
   color: var(--gk-amber);
   text-decoration: none;
 }
+.footer__insta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
 .footer__hours {
   color: rgba(234, 241, 251, 0.7);
   margin: 0.5rem 0 0.75rem;

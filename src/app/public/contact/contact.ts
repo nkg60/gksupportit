@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { TranslocoDirective } from '@jsverse/transloco';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ContentService } from '../../core/services/content.service';
+import { RevealDirective } from '../../shared/reveal/reveal.directive';
 import { lienWhatsApp } from '../../core/utils/whatsapp.util';
 
 /**
@@ -11,7 +12,7 @@ import { lienWhatsApp } from '../../core/utils/whatsapp.util';
   selector: 'gk-contact',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslocoDirective],
+  imports: [TranslocoDirective, RevealDirective],
   templateUrl: './contact.html',
   styleUrl: './contact.scss',
 })

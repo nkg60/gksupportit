@@ -4,6 +4,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ContentService } from '../../core/services/content.service';
 import { ServiceCardComponent } from '../../shared/service-card/service-card';
+import { RevealDirective } from '../../shared/reveal/reveal.directive';
 import { lienWhatsApp } from '../../core/utils/whatsapp.util';
 
 /**
@@ -14,7 +15,7 @@ import { lienWhatsApp } from '../../core/utils/whatsapp.util';
   selector: 'gk-home',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, TranslocoDirective, ServiceCardComponent],
+  imports: [RouterLink, TranslocoDirective, ServiceCardComponent, RevealDirective],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

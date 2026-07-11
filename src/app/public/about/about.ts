@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ContentService } from '../../core/services/content.service';
+import { RevealDirective } from '../../shared/reveal/reveal.directive';
 
 /**
  * Page « À propos » : histoire de GK SupportIT, engagement de confiance,
@@ -11,7 +12,7 @@ import { ContentService } from '../../core/services/content.service';
   selector: 'gk-about',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslocoDirective],
+  imports: [TranslocoDirective, RevealDirective],
   templateUrl: './about.html',
   styleUrl: './about.scss',
 })

@@ -3,6 +3,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ContentService } from '../../core/services/content.service';
 import { ServiceCardComponent } from '../../shared/service-card/service-card';
+import { RevealDirective } from '../../shared/reveal/reveal.directive';
 
 /**
  * Page Services : grille de toutes les offres actives.
@@ -11,7 +12,7 @@ import { ServiceCardComponent } from '../../shared/service-card/service-card';
   selector: 'gk-services',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslocoDirective, ServiceCardComponent],
+  imports: [TranslocoDirective, ServiceCardComponent, RevealDirective],
   templateUrl: './services.html',
   styleUrl: './services.scss',
 })

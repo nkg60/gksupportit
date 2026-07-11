@@ -22,6 +22,11 @@
           <a class="carte__ligne" [href]="urlSite" target="_blank" rel="noopener">
             <span aria-hidden="true">🌐</span> Notre site
           </a>
+          @if (instagram(); as ig) {
+            <a class="carte__ligne" [href]="ig" target="_blank" rel="noopener">
+              <span aria-hidden="true">📸</span> Instagram
+            </a>
+          }
         </div>
 
         <button type="button" class="gk-btn gk-btn--primary gk-btn--block" (click)="ajouterContact()">

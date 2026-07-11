@@ -10,29 +10,37 @@
     <div class="gk-container contact">
       @if (settings(); as s) {
         <div class="contact__grid">
-          <a class="contact__card gk-card" [href]="lienContact()" target="_blank" rel="noopener">
+          <a class="contact__card gk-card" [gkReveal]="0" [href]="lienContact()" target="_blank" rel="noopener">
             <span class="contact__ico">💬</span>
             <h3>{{ t('contact.whatsapp') }}</h3>
             <p>{{ s.whatsappDisplay }}</p>
           </a>
 
-          <a class="contact__card gk-card" [href]="'mailto:' + s.email">
+          <a class="contact__card gk-card" [gkReveal]="1" [href]="'mailto:' + s.email">
             <span class="contact__ico">✉️</span>
             <h3>{{ t('contact.email') }}</h3>
             <p>{{ s.email }}</p>
           </a>
 
-          <div class="contact__card gk-card">
+          <div class="contact__card gk-card" [gkReveal]="2">
             <span class="contact__ico">🕑</span>
             <h3>{{ t('contact.hours') }}</h3>
             <p>{{ s.horaires }}</p>
           </div>
 
-          <div class="contact__card gk-card">
+          <div class="contact__card gk-card" [gkReveal]="3">
             <span class="contact__ico">📍</span>
             <h3>{{ t('contact.zone') }}</h3>
             <p>{{ s.zoneService }} · {{ s.supplementHorsZone }}</p>
           </div>
+
+          @if (s.instagram) {
+            <a class="contact__card gk-card" [gkReveal]="4" [href]="s.instagram" target="_blank" rel="noopener">
+              <span class="contact__ico">📸</span>
+              <h3>Instagram</h3>
+              <p>&#64;gksupportit</p>
+            </a>
+          }
         </div>
 
         <div class="contact__cta">

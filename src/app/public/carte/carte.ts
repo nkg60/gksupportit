@@ -27,6 +27,8 @@ export class CarteComponent {
   readonly carte = signal<Carte | null>(null);
   readonly introuvable = signal(false);
   readonly qr = signal<string>('');
+  /** Lien Instagram de l'entreprise (paramètres du site). */
+  readonly instagram = signal<string>('');
 
   /** URL du site (page d'accueil) et de la carte courante. */
   readonly urlSite = typeof window !== 'undefined' ? window.location.origin : '';
@@ -41,6 +43,8 @@ export class CarteComponent {
       },
       error: () => this.introuvable.set(true),
     });
+    // Lien Instagram de l'entreprise (facultatif).
+    this.content.getSettings().subscribe((s) => this.instagram.set(s.instagram ?? ''));
   }
 
   private async genererQr(): Promise<void> {

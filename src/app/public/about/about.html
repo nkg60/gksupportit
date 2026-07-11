@@ -11,7 +11,7 @@
         <p class="about__story">{{ s.aboutText }}</p>
 
         <div class="about__cols">
-          <div class="about__block gk-card">
+          <div class="about__block gk-card" gkReveal>
             <h2>{{ t('about.engagementTitle') }}</h2>
             <ul class="about__list">
               <li><span aria-hidden="true">✓</span> {{ t('about.engagement.data') }}</li>
@@ -20,7 +20,7 @@
             </ul>
           </div>
 
-          <div class="about__block gk-card">
+          <div class="about__block gk-card" [gkReveal]="1">
             <h2>{{ t('about.zoneTitle') }}</h2>
             <p>{{ t('about.zoneText', { zone: s.zoneService, supplement: s.supplementHorsZone }) }}</p>
             <span class="gk-badge"><span class="gk-badge__check">✓</span> {{ t('hero.badge') }}</span>

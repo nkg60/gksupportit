@@ -22,8 +22,8 @@
     <div class="gk-container">
       <h2 class="gk-section__title">{{ t('home.args.title') }}</h2>
       <div class="args__grid">
-        @for (a of ['deplacement', 'bilingue', 'prix', 'diagnostic']; track a) {
-          <div class="args__item gk-card">
+        @for (a of ['deplacement', 'bilingue', 'prix', 'diagnostic']; track a; let i = $index) {
+          <div class="args__item gk-card" [gkReveal]="i">
             <span class="args__icon">✓</span>
             <h3>{{ t('home.args.' + a + '.t') }}</h3>
             <p>{{ t('home.args.' + a + '.d') }}</p>
@@ -38,8 +38,8 @@
     <div class="gk-container">
       <h2 class="gk-section__title">{{ t('home.featured.title') }}</h2>
       <div class="services-featured__grid">
-        @for (s of servicesPhares(); track s.id) {
-          <gk-service-card [service]="s" [whatsappNumber]="settings()?.whatsappNumber ?? ''" />
+        @for (s of servicesPhares(); track s.id; let i = $index) {
+          <gk-service-card [gkReveal]="i" [service]="s" [whatsappNumber]="settings()?.whatsappNumber ?? ''" />
         }
       </div>
       <div class="services-featured__more">
@@ -53,8 +53,8 @@
     <div class="gk-container">
       <h2 class="gk-section__title">{{ t('home.how.title') }}</h2>
       <div class="how__grid">
-        @for (n of [1, 2, 3]; track n) {
-          <div class="how__step">
+        @for (n of [1, 2, 3]; track n; let i = $index) {
+          <div class="how__step" [gkReveal]="i">
             <span class="how__num">{{ n }}</span>
             <h3>{{ t('home.how.step' + n + '.t') }}</h3>
             <p>{{ t('home.how.step' + n + '.d') }}</p>
@@ -69,8 +69,8 @@
     <div class="gk-container">
       <h2 class="gk-section__title">{{ t('home.trust.title') }}</h2>
       <div class="trust__grid">
-        @for (k of ['data', 'prices', 'parts']; track k) {
-          <div class="trust__item">
+        @for (k of ['data', 'prices', 'parts']; track k; let i = $index) {
+          <div class="trust__item" [gkReveal]="i">
             <span class="trust__icon" aria-hidden="true">★</span>
             <h3>{{ t('home.trust.' + k + '.t') }}</h3>
             <p>{{ t('home.trust.' + k + '.d') }}</p>

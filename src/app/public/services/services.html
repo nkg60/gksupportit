@@ -10,8 +10,8 @@
     <div class="gk-container">
       @if (services().length) {
         <div class="services-grid">
-          @for (s of services(); track s.id) {
-            <gk-service-card [service]="s" [whatsappNumber]="settings()?.whatsappNumber ?? ''" />
+          @for (s of services(); track s.id; let i = $index) {
+            <gk-service-card [gkReveal]="i % 3" [service]="s" [whatsappNumber]="settings()?.whatsappNumber ?? ''" />
           }
         </div>
       } @else {

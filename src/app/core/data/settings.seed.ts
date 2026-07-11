@@ -9,6 +9,7 @@ export const SETTINGS_SEED: SiteSettings = {
   whatsappNumber: '15149736569',
   whatsappDisplay: '+1 514 973 6569',
   email: 'gksupportit@gmail.com',
+  instagram: 'https://www.instagram.com/gksupportit/',
   horaires: 'Lun–Ven : 17 h – 20 h 30 · Sam–Dim : 10 h – 18 h',
   zoneService: 'Tout Ottawa',
   supplementHorsZone: '+10 $ hors zone',

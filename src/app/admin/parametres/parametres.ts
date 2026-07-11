@@ -28,6 +28,7 @@ export class ParametresComponent {
     whatsappNumber: ['', [Validators.required]],
     whatsappDisplay: [''],
     email: ['', [Validators.email]],
+    instagram: [''],
     horaires: [''],
     zoneService: [''],
     supplementHorsZone: [''],

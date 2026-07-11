@@ -11,6 +11,8 @@ export interface SiteSettings {
   whatsappDisplay: string;
   /** Courriel de contact. */
   email: string;
+  /** Lien vers le compte Instagram de l'entreprise (optionnel). */
+  instagram?: string;
   /** Horaires d'ouverture (texte libre). */
   horaires: string;
   /** Zone de service couverte. */
