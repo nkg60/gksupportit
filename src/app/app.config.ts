@@ -1,12 +1,14 @@
 import {
   ApplicationConfig,
+  inject,
   isDevMode,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { provideTransloco } from '@jsverse/transloco';
+import { provideTransloco, TranslocoService } from '@jsverse/transloco';
 
 import { routes } from './app.routes';
 import { TranslocoHttpLoader } from './core/i18n/transloco-loader';
@@ -32,6 +34,20 @@ export const appConfig: ApplicationConfig = {
         prodMode: !isDevMode(),
       },
       loader: TranslocoHttpLoader,
+    }),
+    // Restaure une seule fois, au démarrage, la langue mémorisée dans localStorage.
+    // Fait ici (hors composant) : à l'init aucune vue n'est encore rendue, donc
+    // reRenderOnLangChange ne peut pas déclencher de boucle de re-création.
+    provideAppInitializer(() => {
+      const transloco = inject(TranslocoService);
+      const saved = localStorage.getItem('gk-lang');
+      if (
+        saved &&
+        transloco.getAvailableLangs().some((l) => (typeof l === 'string' ? l : l.id) === saved) &&
+        transloco.getActiveLang() !== saved
+      ) {
+        transloco.setActiveLang(saved);
+      }
     }),
   ],
 };

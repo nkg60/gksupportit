@@ -60,15 +60,14 @@ export class LangSwitcherComponent {
     initialValue: this.transloco.getActiveLang(),
   });
 
-  constructor() {
-    // Restaure la préférence de langue si présente.
-    const saved = localStorage.getItem('gk-lang');
-    if (saved && this.langs.includes(saved as (typeof this.langs)[number])) {
-      this.transloco.setActiveLang(saved);
-    }
-  }
+  // La restauration de la langue mémorisée se fait au démarrage de l'application
+  // (provideAppInitializer dans app.config.ts), pas dans ce constructeur : appeler
+  // setActiveLang à l'instanciation du composant provoquait une boucle infinie
+  // (émission de langue → reRenderOnLangChange → re-création du composant → …).
 
   set(lang: string): void {
+    // Garde : ne rien émettre si la langue est déjà active (évite un re-render inutile).
+    if (this.transloco.getActiveLang() === lang) return;
     this.transloco.setActiveLang(lang);
     localStorage.setItem('gk-lang', lang);
   }
