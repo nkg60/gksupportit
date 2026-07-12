@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { SessionDepannageComponent } from './session-depannage';
 import { GuidePannesComponent } from './guide-pannes';
 import { ReferenceDepannageComponent } from './reference-depannage';
+import { DiagnosticEditorComponent } from './diagnostic-editor';
 
 /**
  * Espace « Dépannage » : session guidée, gestion du guide des pannes (CRUD),
@@ -11,7 +12,12 @@ import { ReferenceDepannageComponent } from './reference-depannage';
   selector: 'gk-admin-depannage',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [SessionDepannageComponent, GuidePannesComponent, ReferenceDepannageComponent],
+  imports: [
+    SessionDepannageComponent,
+    GuidePannesComponent,
+    ReferenceDepannageComponent,
+    DiagnosticEditorComponent,
+  ],
   template: `
     <div class="adm-head">
       <h1>Dépannage guidé</h1>
@@ -27,12 +33,16 @@ import { ReferenceDepannageComponent } from './reference-depannage';
       <button type="button" [class.is-active]="onglet() === 'reference'" (click)="onglet.set('reference')">
         Aide-mémoire
       </button>
+      <button type="button" [class.is-active]="onglet() === 'diagnostic'" (click)="onglet.set('diagnostic')">
+        Diagnostic client
+      </button>
     </div>
 
     @switch (onglet()) {
       @case ('session') { <gk-session-depannage /> }
       @case ('guide') { <gk-guide-pannes /> }
       @case ('reference') { <gk-reference-depannage /> }
+      @case ('diagnostic') { <gk-diagnostic-editor /> }
     }
   `,
   styles: [
@@ -63,5 +73,5 @@ import { ReferenceDepannageComponent } from './reference-depannage';
   ],
 })
 export class DepannageComponent {
-  readonly onglet = signal<'session' | 'guide' | 'reference'>('session');
+  readonly onglet = signal<'session' | 'guide' | 'reference' | 'diagnostic'>('session');
 }

@@ -21,6 +21,21 @@
   </a>
 }
 
+<!-- Cohérence pannes ↔ diagnostic client -->
+@if (pannesSansDiag() > 0 || diagOrphelins() > 0) {
+  <a routerLink="/admin/depannage" class="dash-coherence">
+    🩺
+    @if (pannesSansDiag() > 0) {
+      <span><strong>{{ pannesSansDiag() }}</strong> panne(s) sans équivalent dans le diagnostic client</span>
+    }
+    @if (pannesSansDiag() > 0 && diagOrphelins() > 0) { <span class="dash-coherence__sep">·</span> }
+    @if (diagOrphelins() > 0) {
+      <span><strong>{{ diagOrphelins() }}</strong> entrée(s) publique(s) orpheline(s)</span>
+    }
+    — gérer →
+  </a>
+}
+
 <!-- Indicateurs -->
 <div class="adm-kpis">
   <div class="adm-kpi">

@@ -41,3 +41,65 @@
   min-width: 200px;
   color: var(--gk-ink-soft);
 }
+
+/* Message de retour (création de brouillon…) */
+.gp-msg {
+  background: rgba(242, 169, 0, 0.14);
+  border: 1.5px solid rgba(242, 169, 0, 0.5);
+  border-radius: var(--gk-radius);
+  padding: 0.7rem 1rem;
+  margin: 0 0 1rem;
+  color: #8a5a00;
+  font-weight: 600;
+}
+
+/* Badges de statut « diagnostic client » */
+.gp-badge {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--gk-radius-pill);
+  border: 1.5px solid var(--gk-border);
+}
+.gp-badge--on {
+  color: var(--gk-success);
+  border-color: rgba(31, 157, 90, 0.4);
+  background: rgba(31, 157, 90, 0.1);
+}
+.gp-badge--draft {
+  color: #8a5a00;
+  border-color: rgba(242, 169, 0, 0.5);
+  background: rgba(242, 169, 0, 0.12);
+}
+.gp-badge--off {
+  color: var(--gk-ink-soft);
+}
+
+/* Interrupteur « Détectable par le diagnostic client » */
+.gp-detect {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  background: var(--gk-light);
+  border: 1.5px solid var(--gk-border);
+  border-radius: var(--gk-radius);
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 0 0.25rem;
+  cursor: pointer;
+}
+.gp-detect input {
+  margin-top: 0.2rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  accent-color: var(--gk-navy);
+}
+.gp-detect small {
+  display: block;
+  color: var(--gk-ink-soft);
+  font-weight: 500;
+  font-size: 0.82rem;
+  margin-top: 0.2rem;
+}

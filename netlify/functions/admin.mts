@@ -6,6 +6,7 @@ import settingsSeed from './_data/settings.json';
 import tresorerieSeed from './_data/tresorerie.json';
 import pannesSeed from './_data/pannes.json';
 import cartesSeed from './_data/cartes.json';
+import diagnosticPublicSeed from './_data/diagnostic-public.json';
 
 /** Données initiales par clé (amorçage Blobs au premier accès). */
 const SEEDS: Record<string, unknown> = {
@@ -14,6 +15,7 @@ const SEEDS: Record<string, unknown> = {
   tresorerie: tresorerieSeed,
   pannes: pannesSeed,
   cartes: cartesSeed,
+  'diagnostic-public': diagnosticPublicSeed,
 };
 
 /** Lit une clé en l'amorçant depuis son seed si elle est absente. */
@@ -51,7 +53,7 @@ const STORES_TABLEAU = [
   'cartes',
 ];
 /** Clés stockées sous forme d'objet unique. */
-const STORES_OBJET = ['settings'];
+const STORES_OBJET = ['settings', 'diagnostic-public'];
 
 export default async (req: Request, context: Context): Promise<Response> => {
   // 1) Authentification obligatoire.

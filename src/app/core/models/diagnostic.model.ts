@@ -54,6 +54,8 @@ export interface SymptomeDiagnostic {
   groupe: string;
   /** Symptôme « Autre » : champ libre au lieu de questions à choix. */
   champLibre?: boolean;
+  /** Brouillon : visible dans l'admin, MASQUÉ côté client jusqu'à publication. */
+  brouillon?: boolean;
   questions: QuestionDiagnostic[];
   regles: RegleDiagnostic[];
   resultatParDefaut: ResultatRegle;

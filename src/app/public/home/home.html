@@ -6,12 +6,19 @@
         <span class="gk-badge gk-badge--on-navy hero__badge">
           <span class="gk-badge__check">✓</span> {{ t('hero.badge') }}
         </span>
-        <h1 class="hero__title">{{ t('brand.slogan') }}</h1>
+        <div class="hero__titles" aria-live="polite">
+          @for (i of titres; track i) {
+            <h1 class="hero__title" [class.is-active]="titreActif() === i" [attr.aria-hidden]="titreActif() !== i">
+              {{ t('hero.title' + (i + 1)) }}
+            </h1>
+          }
+        </div>
         <div class="hero__cta">
           <a class="gk-btn gk-btn--whatsapp" [href]="lienContact()" target="_blank" rel="noopener">
             {{ t('common.contactWhatsapp') }}
           </a>
           <a class="gk-btn gk-btn--ghost" routerLink="/decrire">{{ t('hero.ctaSecondary') }}</a>
+          <a class="gk-btn gk-btn--primary" routerLink="/diagnostic">{{ t('nav.diagnostic') }}</a>
         </div>
       </div>
     </div>

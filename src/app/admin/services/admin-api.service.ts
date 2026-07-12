@@ -32,6 +32,16 @@ export class AdminApiService {
     return this.http.delete<{ ok: boolean }>(`${this.base}/${store}/${id}`);
   }
 
+  /** Lit un store « objet unique » (ex. settings, diagnostic-public). */
+  getObject<T>(store: string): Observable<T> {
+    return this.http.get<T>(`${this.base}/${store}`);
+  }
+
+  /** Remplace un store « objet unique ». */
+  putObject<T>(store: string, value: T): Observable<{ ok: boolean; item: T }> {
+    return this.http.put<{ ok: boolean; item: T }>(`${this.base}/${store}`, value);
+  }
+
   /** Lit les paramètres complets du site (inclut capitalDepart). */
   getSettings(): Observable<SiteSettings> {
     return this.http.get<SiteSettings>(`${this.base}/settings`);

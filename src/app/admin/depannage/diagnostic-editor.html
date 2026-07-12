@@ -1,0 +1,180 @@
+<div class="de">
+  <!-- Colonne gauche : liste des symptômes -->
+  <aside class="de__liste">
+    <div class="de__liste-head">
+      <h2>Symptômes ({{ arbre().symptomes.length }})</h2>
+      <button type="button" class="de__btn de__btn--primary" (click)="nouveauSymptome()">+ Nouveau</button>
+    </div>
+    @if (chargement()) {
+      <p class="de__muted">Chargement…</p>
+    } @else {
+      <ul>
+        @for (item of liste(); track item.s.id) {
+          <li>
+            <button type="button" class="de__sympt" [class.is-active]="selection() === item.i" (click)="editer(item.i)">
+              <span>{{ item.s.icone }}</span> {{ item.s.libellePublic }}
+              @if (item.s.brouillon) { <span class="de__tag-draft">brouillon</span> }
+              <small>{{ item.s.groupe }}</small>
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </aside>
+
+  <!-- Colonne droite : édition -->
+  <section class="de__edit">
+    @if (!form) {
+      <p class="de__muted de__vide">Sélectionnez un symptôme à gauche, ou créez-en un nouveau.</p>
+    }
+    @if (form; as f) {
+      <form [formGroup]="f" (ngSubmit)="enregistrer()">
+        <!-- Métadonnées -->
+        <div class="de__row">
+          <label class="de__field de__field--sm">
+            <span>Icône</span>
+            <input type="text" formControlName="icone" maxlength="4" />
+          </label>
+          <label class="de__field">
+            <span>Libellé public *</span>
+            <input type="text" formControlName="libellePublic" />
+          </label>
+        </div>
+        <div class="de__row">
+          <label class="de__field">
+            <span>Groupe *</span>
+            <input type="text" formControlName="groupe" />
+          </label>
+          <label class="de__field de__field--sm">
+            <span>Identifiant</span>
+            <input type="text" formControlName="id" />
+          </label>
+          <label class="de__check">
+            <input type="checkbox" formControlName="champLibre" /> Champ libre
+          </label>
+          <label class="de__check de__check--draft">
+            <input type="checkbox" formControlName="brouillon" /> Brouillon (masqué côté client)
+          </label>
+        </div>
+
+        <!-- Questions -->
+        <h3 class="de__h">Questions</h3>
+        <div formArrayName="questions">
+          @for (q of questions.controls; track $index; let qi = $index) {
+            <fieldset class="de__bloc" [formGroupName]="qi">
+              <div class="de__row">
+                <label class="de__field de__field--sm">
+                  <span>id</span>
+                  <input type="text" formControlName="id" (blur)="rafraichirIds()" />
+                </label>
+                <label class="de__field">
+                  <span>Question</span>
+                  <input type="text" formControlName="libelle" />
+                </label>
+                <button type="button" class="de__del" (click)="retirerQuestion(qi)" title="Retirer la question">✕</button>
+              </div>
+              <div class="de__options" formArrayName="options">
+                @for (o of optionsDe(qi).controls; track $index; let oi = $index) {
+                  <div class="de__opt" [formGroupName]="oi">
+                    <input type="text" formControlName="label" placeholder="Libellé (ex. Oui)" />
+                    <input type="text" formControlName="valeur" placeholder="valeur (ex. oui)" />
+                    <button type="button" class="de__del" (click)="retirerOption(qi, oi)">✕</button>
+                  </div>
+                }
+                <button type="button" class="de__add" (click)="ajouterOption(qi)">+ option</button>
+              </div>
+            </fieldset>
+          }
+        </div>
+        <button type="button" class="de__add" (click)="ajouterQuestion()">+ ajouter une question</button>
+
+        <!-- Règles -->
+        <h3 class="de__h">Règles <small>(la 1ʳᵉ dont toutes les conditions sont vraies gagne)</small></h3>
+        <div formArrayName="regles">
+          @for (r of regles.controls; track $index; let ri = $index) {
+            <fieldset class="de__bloc de__regle" [formGroupName]="ri">
+              <div class="de__regle-head">
+                <strong>Règle {{ ri + 1 }}</strong>
+                <button type="button" class="de__del" (click)="retirerRegle(ri)">✕ règle</button>
+              </div>
+              <div class="de__conditions" formArrayName="conditions">
+                <span class="de__si">SI</span>
+                @for (c of conditionsDe(ri).controls; track $index; let ci = $index) {
+                  <div class="de__cond" [formGroupName]="ci">
+                    <input type="text" formControlName="questionId" placeholder="id question" list="de-qids" />
+                    <span>=</span>
+                    <input type="text" formControlName="valeur" placeholder="valeur" />
+                    <button type="button" class="de__del" (click)="retirerCondition(ri, ci)">✕</button>
+                  </div>
+                }
+                <button type="button" class="de__add" (click)="ajouterCondition(ri)">+ condition</button>
+              </div>
+              <div class="de__alors" formGroupName="alors">
+                <span class="de__si">ALORS</span>
+                <ng-container [ngTemplateOutlet]="resultatTpl" [ngTemplateOutletContext]="{ $implicit: r.get('alors') }"></ng-container>
+              </div>
+            </fieldset>
+          }
+        </div>
+        <button type="button" class="de__add" (click)="ajouterRegle()">+ ajouter une règle</button>
+
+        <!-- Résultat par défaut -->
+        <h3 class="de__h">Résultat par défaut <small>(si aucune règle ne correspond)</small></h3>
+        <fieldset class="de__bloc" formGroupName="resultatParDefaut">
+          <ng-container [ngTemplateOutlet]="resultatTpl" [ngTemplateOutletContext]="{ $implicit: f.get('resultatParDefaut') }"></ng-container>
+        </fieldset>
+
+        <!-- Barre d'action -->
+        <div class="de__actions">
+          <button type="submit" class="de__btn de__btn--primary" [disabled]="enregistrement()">
+            {{ enregistrement() ? 'Enregistrement…' : '💾 Enregistrer' }}
+          </button>
+          <button type="button" class="de__btn" (click)="fermer()">Fermer</button>
+          <button type="button" class="de__btn de__btn--danger" (click)="supprimerSymptome(selection())">🗑️ Supprimer</button>
+          @if (message()) { <span class="de__msg">{{ message() }}</span> }
+        </div>
+      </form>
+    }
+  </section>
+</div>
+
+<!-- Datalist des ids de questions (suggestions pour les conditions) -->
+<datalist id="de-qids">
+  @for (id of idsQuestions(); track id) { <option [value]="id"></option> }
+</datalist>
+
+<!-- Gabarit réutilisable : champs d'un résultat (règle ou défaut) -->
+<ng-template #resultatTpl let-grp>
+  <div [formGroup]="grp" class="de__resultat">
+    <div class="de__row">
+      <label class="de__field de__field--sm">
+        <span>Gravité</span>
+        <select formControlName="gravite">
+          @for (g of gravites; track g) { <option [value]="g">{{ g }}</option> }
+        </select>
+      </label>
+      <label class="de__field">
+        <span>Service recommandé</span>
+        <select formControlName="serviceId">
+          @for (s of services(); track s.id) { <option [value]="s.id">{{ s.nom }}</option> }
+        </select>
+      </label>
+      <label class="de__field de__field--sm">
+        <span>Panne liée</span>
+        <input type="text" formControlName="panneId" placeholder="panne-06" />
+      </label>
+    </div>
+    <label class="de__field">
+      <span>Estimation de prix</span>
+      <input type="text" formControlName="prixEstime" />
+    </label>
+    <label class="de__field">
+      <span>Explication (langage simple)</span>
+      <textarea formControlName="explication" rows="2"></textarea>
+    </label>
+    <label class="de__field">
+      <span>Alerte de prudence (optionnelle)</span>
+      <input type="text" formControlName="alerte" />
+    </label>
+  </div>
+</ng-template>

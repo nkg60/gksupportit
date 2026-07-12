@@ -3,6 +3,8 @@
   <button type="button" class="gk-btn gk-btn--primary" (click)="ouvrirNouveau()">+ Panne</button>
 </div>
 
+@if (messageDiag()) { <p class="gp-msg">{{ messageDiag() }}</p> }
+
 <div class="adm-table-wrap">
   <table class="adm-table">
     <thead>
@@ -12,6 +14,7 @@
         <th>Panne</th>
         <th>Service recommandé</th>
         <th>Prix</th>
+        <th>Diagnostic client</th>
         <th></th>
       </tr>
     </thead>
@@ -26,13 +29,20 @@
           </td>
           <td class="gp-serv">{{ p.serviceRecommande }}</td>
           <td>{{ p.prix }}</td>
+          <td>
+            @switch (statut(p)) {
+              @case ('visible') { <span class="gp-badge gp-badge--on">✅ Visible côté client</span> }
+              @case ('brouillon') { <span class="gp-badge gp-badge--draft">📝 Brouillon</span> }
+              @default { <span class="gp-badge gp-badge--off">⬜ Admin seulement</span> }
+            }
+          </td>
           <td class="adm-rowactions">
             <button type="button" class="adm-icobtn" (click)="ouvrirEdition(p)" title="Modifier">✏️</button>
             <button type="button" class="adm-icobtn adm-icobtn--danger" (click)="supprimer(p)" title="Supprimer">🗑️</button>
           </td>
         </tr>
       } @empty {
-        <tr><td colspan="6" class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucune panne.' }}</td></tr>
+        <tr><td colspan="7" class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucune panne.' }}</td></tr>
       }
     </tbody>
   </table>
@@ -81,6 +91,19 @@
             <input id="g-prix" type="text" formControlName="prix" />
           </div>
         </div>
+
+        <!-- Liaison diagnostic client -->
+        <label class="gp-detect">
+          <input type="checkbox" formControlName="detectable" />
+          <span>
+            <strong>Détectable par le diagnostic client</strong>
+            <small>
+              Active la génération d’un <em>brouillon</em> d’entrée publique (titre + questions
+              à partir des étapes A→D). Rien n’est publié tant que vous ne le validez pas dans
+              l’onglet « Diagnostic client ».
+            </small>
+          </span>
+        </label>
 
         <div class="adm-modal__footer">
           <button type="button" class="gk-btn gk-btn--navy" (click)="fermer()">Annuler</button>

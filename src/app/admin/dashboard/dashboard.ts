@@ -6,6 +6,9 @@ import { DemandesBadgeService } from '../services/demandes-badge.service';
 import { Mouvement } from '../../core/models/mouvement.model';
 import { Intervention } from '../../core/models/intervention.model';
 import { Demande } from '../../core/models/demande.model';
+import { Panne } from '../../core/models/panne.model';
+import { ArbreDiagnostic } from '../../core/models/diagnostic.model';
+import { entreesOrphelines, pannesSansEquivalent } from '../../core/utils/diagnostic-link.util';
 import { formatMontant } from '../../core/utils/format.util';
 
 /**
@@ -37,6 +40,15 @@ export class DashboardComponent {
     initialValue: [],
   });
   readonly demandes = toSignal(this.api.list<Demande>('demandes'), { initialValue: [] });
+  readonly pannes = toSignal(this.api.list<Panne>('pannes'), { initialValue: [] });
+  readonly arbre = toSignal(this.api.getObject<ArbreDiagnostic>('diagnostic-public'), {
+    initialValue: { version: 1, symptomes: [] } as ArbreDiagnostic,
+  });
+
+  /** Pannes sans équivalent dans le diagnostic client. */
+  readonly pannesSansDiag = computed(() => pannesSansEquivalent(this.pannes(), this.arbre()).length);
+  /** Entrées publiques orphelines (panne référencée supprimée). */
+  readonly diagOrphelins = computed(() => entreesOrphelines(this.arbre(), this.pannes()).length);
 
   /** Diagnostics en ligne enregistrés (avec coordonnées + consentement). */
   readonly diagnosticsEffectues = computed(

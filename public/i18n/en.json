@@ -24,7 +24,10 @@
   },
   "hero": {
     "ctaSecondary": "Describe my problem",
-    "badge": "Travel included"
+    "badge": "Travel included",
+    "title1": "In-home computer repair in Ottawa",
+    "title2": "Free diagnostic, no commitment",
+    "title3": "Travel included everywhere in Ottawa"
   },
   "home": {
     "args": {
