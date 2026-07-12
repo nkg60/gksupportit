@@ -1,46 +1,275 @@
 :host {
   display: block;
 }
+
 .dem-count {
-  margin: 0;
   color: var(--gk-ink-soft);
   font-weight: 600;
 }
-.dem-nom {
-  font-weight: 600;
+
+/* ---- Alerte relance ---- */
+.dem-relance-alert {
+  background: rgba(242, 169, 0, 0.14);
+  border: 1.5px solid rgba(242, 169, 0, 0.5);
+  border-radius: var(--gk-radius);
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.25rem;
+  color: #8a5a00;
 }
-.dem-probleme {
-  white-space: normal;
-  min-width: 240px;
-  max-width: 360px;
+
+/* ---- Filtres (puces) ---- */
+.dem-filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
-.dem-service {
-  display: block;
-  color: var(--gk-ink-soft);
-  font-size: 0.82rem;
-  font-style: italic;
-  margin-top: 0.2rem;
-}
-.dem-statut {
+.dem-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border: 1.5px solid var(--gk-border);
+  border-radius: var(--gk-radius-pill);
+  background: var(--gk-white);
   font-family: inherit;
-  padding: 0.35rem 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gk-ink-soft);
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.dem-chip span {
+  background: var(--gk-light);
+  border-radius: var(--gk-radius-pill);
+  padding: 0 0.45rem;
+  font-size: 0.78rem;
+  min-width: 1.4rem;
+  text-align: center;
+}
+.dem-chip:hover {
+  border-color: var(--gk-navy);
+}
+.dem-chip.is-active {
+  background: var(--gk-navy);
+  border-color: var(--gk-navy);
+  color: var(--gk-white);
+}
+.dem-chip.is-active span {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--gk-white);
+}
+
+/* ---- Liste de cartes ---- */
+.dem-liste {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.dem-carte {
+  background: var(--gk-white);
+  border: 1.5px solid var(--gk-border);
+  border-radius: var(--gk-radius);
+  box-shadow: var(--gk-shadow-sm);
+  padding: 1.1rem 1.2rem;
+}
+.dem-carte--chaud {
+  border-left: 4px solid var(--gk-amber);
+}
+.dem-carte__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+.dem-carte__nom {
+  font-size: 1.15rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.dem-carte__meta {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+  color: var(--gk-ink-soft);
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.dem-source {
+  font-weight: 600;
+}
+.dem-source--diag {
+  color: var(--gk-navy);
+}
+.dem-flag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--gk-radius-pill);
+  background: rgba(242, 169, 0, 0.16);
+  color: #8a5a00;
+  text-transform: none;
+}
+.dem-flag--dormant {
+  background: rgba(214, 69, 69, 0.12);
+  color: var(--gk-danger);
+}
+
+/* Étiquette de statut */
+.dem-statut-tag {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--gk-radius-pill);
+  text-transform: capitalize;
+  background: var(--gk-light);
+  color: var(--gk-ink-soft);
+  border: 1.5px solid var(--gk-border);
+}
+.dem-statut-tag--nouvelle-demande {
+  background: rgba(242, 169, 0, 0.16);
+  color: #8a5a00;
+  border-color: rgba(242, 169, 0, 0.5);
+}
+.dem-statut-tag--prospect {
+  background: rgba(15, 45, 82, 0.08);
+  color: var(--gk-navy);
+  border-color: rgba(15, 45, 82, 0.2);
+}
+.dem-statut-tag--converti {
+  background: rgba(31, 157, 90, 0.12);
+  color: var(--gk-success);
+  border-color: rgba(31, 157, 90, 0.4);
+}
+.dem-statut-tag--perdu {
+  color: var(--gk-ink-soft);
+  text-decoration: line-through;
+}
+
+/* Corps */
+.dem-carte__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 640px) {
+  .dem-carte__grid {
+    grid-template-columns: 1fr 1.3fr;
+  }
+}
+.dem-bloc h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gk-ink-soft);
+  margin: 0 0 0.4rem;
+}
+.dem-bloc p {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+}
+.dem-muted {
+  color: var(--gk-ink-soft);
+  font-size: 0.85rem !important;
+}
+.dem-sympt {
+  font-style: italic;
+  color: var(--gk-navy);
+}
+.dem-diag {
+  line-height: 1.45;
+}
+
+/* Réponses */
+.dem-reponses {
+  margin-top: 0.9rem;
+  background: var(--gk-light);
+  border-radius: var(--gk-radius-sm);
+  padding: 0.7rem 0.9rem;
+}
+.dem-reponses h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gk-ink-soft);
+  margin: 0 0 0.4rem;
+}
+.dem-reponses ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+.dem-reponses li {
+  font-size: 0.88rem;
+  margin-bottom: 0.2rem;
+}
+.dem-reponses li span {
+  color: var(--gk-ink-soft);
+}
+
+/* Note */
+.dem-note {
+  margin-top: 0.9rem;
+}
+
+/* Actions */
+.dem-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--gk-border);
+}
+.dem-statut-select {
+  padding: 0.45rem 0.6rem;
+  border: 1.5px solid var(--gk-border);
+  border-radius: var(--gk-radius-sm);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gk-ink);
+  text-transform: capitalize;
+}
+.dem-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.8rem;
   border: 1.5px solid var(--gk-border);
   border-radius: var(--gk-radius-sm);
   background: var(--gk-white);
-}
-/* Ligne « nouveau » mise en avant (barre ambre à gauche). */
-.dem-nouveau td:first-child {
-  box-shadow: inset 3px 0 0 var(--gk-amber);
-}
-.dem-nouveau .dem-nom::after {
-  content: 'nouveau';
-  display: inline-block;
-  margin-left: 0.5rem;
-  padding: 0.05rem 0.45rem;
-  border-radius: var(--gk-radius-pill);
-  background: rgba(242, 169, 0, 0.18);
-  color: #b26a00;
-  font-size: 0.7rem;
+  font-family: inherit;
+  font-size: 0.85rem;
   font-weight: 700;
-  vertical-align: middle;
+  color: var(--gk-ink);
+  cursor: pointer;
+  text-decoration: none;
+}
+.dem-btn:hover {
+  border-color: var(--gk-navy);
+  text-decoration: none;
+}
+.dem-btn--wa {
+  color: #128c3e;
+  border-color: rgba(18, 140, 62, 0.4);
+}
+.dem-btn--primary {
+  background: var(--gk-navy);
+  color: var(--gk-white);
+  border-color: var(--gk-navy);
+}
+.dem-btn--primary:hover {
+  background: var(--gk-navy-700);
+}
+.dem-btn--danger {
+  color: var(--gk-danger);
+  border-color: rgba(214, 69, 69, 0.4);
+  margin-left: auto;
 }

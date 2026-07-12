@@ -25,6 +25,12 @@ export const routes: Routes = [
         title: 'Services — GK SupportIT',
       },
       {
+        path: 'diagnostic',
+        loadComponent: () =>
+          import('./public/diagnostic/diagnostic').then((m) => m.DiagnosticComponent),
+        title: 'Diagnostic gratuit — GK SupportIT',
+      },
+      {
         path: 'decrire',
         loadComponent: () =>
           import('./public/describe-problem/describe-problem').then(
@@ -36,6 +42,12 @@ export const routes: Routes = [
         path: 'a-propos',
         loadComponent: () => import('./public/about/about').then((m) => m.AboutComponent),
         title: 'À propos — GK SupportIT',
+      },
+      {
+        path: 'confidentialite',
+        loadComponent: () =>
+          import('./public/confidentialite/confidentialite').then((m) => m.ConfidentialiteComponent),
+        title: 'Politique de confidentialité — GK SupportIT',
       },
       {
         path: 'contact',

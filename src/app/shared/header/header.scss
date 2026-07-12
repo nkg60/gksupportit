@@ -46,6 +46,22 @@
   color: var(--gk-amber);
   border-bottom-color: var(--gk-amber);
 }
+/* Lien « Diagnostic gratuit » mis en avant (meilleur appel à l'action). */
+.header__nav a.header__cta {
+  color: var(--gk-navy);
+  background: var(--gk-amber);
+  border-radius: var(--gk-radius-pill);
+  padding: 0.35rem 0.9rem;
+  font-weight: 800;
+}
+.header__nav a.header__cta:hover {
+  background: var(--gk-amber-600);
+  color: var(--gk-navy);
+}
+.header__nav a.header__cta.is-active {
+  border-bottom-color: transparent;
+  color: var(--gk-navy);
+}
 .header__nav-actions {
   display: flex;
   align-items: center;

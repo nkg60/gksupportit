@@ -9,6 +9,7 @@
     <nav class="header__nav" [class.header__nav--open]="menuOuvert()" aria-label="Navigation principale">
       <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="fermerMenu()">{{ t('nav.home') }}</a>
       <a routerLink="/services" routerLinkActive="is-active" (click)="fermerMenu()">{{ t('nav.services') }}</a>
+      <a routerLink="/diagnostic" routerLinkActive="is-active" class="header__cta" (click)="fermerMenu()">{{ t('nav.diagnostic') }}</a>
       <a routerLink="/decrire" routerLinkActive="is-active" (click)="fermerMenu()">{{ t('nav.describe') }}</a>
       <a routerLink="/a-propos" routerLinkActive="is-active" (click)="fermerMenu()">{{ t('nav.about') }}</a>
       <a routerLink="/contact" routerLinkActive="is-active" (click)="fermerMenu()">{{ t('nav.contact') }}</a>

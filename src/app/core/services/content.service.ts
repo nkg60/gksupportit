@@ -4,6 +4,7 @@ import { catchError, Observable, of } from 'rxjs';
 import { Service } from '../models/service.model';
 import { SiteSettings } from '../models/site-settings.model';
 import { Demande } from '../models/demande.model';
+import { DiagnosticSubmission } from '../models/diagnostic.model';
 import { Carte } from '../models/carte.model';
 import { SERVICES_SEED } from '../data/services.seed';
 import { SETTINGS_SEED } from '../data/settings.seed';
@@ -48,6 +49,26 @@ export class ContentService {
         return of({ ok: true });
       }),
     );
+  }
+
+  /**
+   * Enregistre un diagnostic complété (avec consentement) dans « demandes ».
+   * En cas d'échec réseau on renvoie { ok: false } (l'UI proposera WhatsApp).
+   */
+  submitDiagnostic(payload: DiagnosticSubmission): Observable<{ ok: boolean; id?: string }> {
+    return this.http
+      .post<{ ok: boolean; id?: string }>('/api/submit-diagnostic', payload)
+      .pipe(catchError(() => of({ ok: false })));
+  }
+
+  /**
+   * Promeut un diagnostic « prospect » en « nouvelle-demande » quand le visiteur
+   * clique « Demander une intervention ». Best-effort (non bloquant).
+   */
+  demanderIntervention(id: string): Observable<{ ok: boolean }> {
+    return this.http
+      .post<{ ok: boolean }>('/api/demande-intervention', { id })
+      .pipe(catchError(() => of({ ok: false })));
   }
 
   /** Lit une carte de visite publique par son slug. */

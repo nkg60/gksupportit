@@ -1,0 +1,1095 @@
+{
+  "version": 1,
+  "symptomes": [
+    {
+      "id": "ne-sallume-pas",
+      "libellePublic": "Mon ordinateur ne s'allume pas",
+      "icone": "🔌",
+      "groupe": "Démarrage & alimentation",
+      "questions": [
+        {
+          "id": "lumiere",
+          "libelle": "Quand vous branchez le chargeur, voyez-vous une petite lumière s'allumer (sur l'ordinateur ou sur le chargeur) ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non, aucune lumière", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "prise",
+          "libelle": "Avez-vous essayé une autre prise électrique qui fonctionne ?",
+          "options": [
+            { "label": "Oui, et rien ne change", "valeur": "oui-rien" },
+            { "label": "Non, pas encore", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "signe",
+          "libelle": "Entendez-vous un bruit de ventilateur ou voyez-vous un signe de vie, même faible ?",
+          "options": [
+            { "label": "Oui, un peu", "valeur": "oui" },
+            { "label": "Non, rien du tout", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "prise": "non" },
+          "alors": {
+            "panneId": "panne-01",
+            "gravite": "benin",
+            "serviceId": "diagnostic",
+            "prixEstime": "souvent une simple pièce — diagnostic 25 $ si non réparé",
+            "explication": "Avant tout, essayez une autre prise électrique et, si possible, un autre chargeur : très souvent, le problème vient simplement du chargeur, du câble ou de la prise. Si rien ne change, nous identifions la cause sur place.",
+            "alerte": null
+          }
+        },
+        {
+          "si": { "lumiere": "non" },
+          "alors": {
+            "panneId": "panne-01",
+            "gravite": "surveiller",
+            "serviceId": "diagnostic",
+            "prixEstime": "diagnostic 25 $ si non réparé (pièce en sus si besoin)",
+            "explication": "L'absence de toute lumière de charge oriente le plus souvent vers le chargeur, la batterie ou le circuit d'alimentation. La cause exacte se confirme par une vérification sur place, sans engagement.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-01",
+        "gravite": "surveiller",
+        "serviceId": "diagnostic",
+        "prixEstime": "diagnostic 25 $ si non réparé (+ pièce éventuelle)",
+        "explication": "Un ordinateur qui ne montre aucun signe de vie a probablement un souci d'alimentation (chargeur ou batterie) ou, plus rarement, de carte interne. Une vérification sur place permet de dire précisément d'où vient le problème.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "ecran-noir",
+      "libellePublic": "Il s'allume mais l'écran reste noir",
+      "icone": "🖥️",
+      "groupe": "Démarrage & alimentation",
+      "questions": [
+        {
+          "id": "vie",
+          "libelle": "Entendez-vous le ventilateur tourner ou des voyants s'allumer quand vous appuyez sur le bouton ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "faible",
+          "libelle": "En éclairant l'écran de biais avec une lampe, voyez-vous une image très faible ?",
+          "options": [
+            { "label": "Oui, une image faible", "valeur": "oui" },
+            { "label": "Non, totalement noir", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "faible": "oui" },
+          "alors": {
+            "panneId": "panne-02",
+            "gravite": "surveiller",
+            "serviceId": "diagnostic",
+            "prixEstime": "diagnostic 25 $ + pièce si l'écran est à changer",
+            "explication": "Une image faible visible signifie que l'ordinateur fonctionne, mais que l'éclairage de l'écran est probablement défaillant. C'est une réparation d'écran ciblée, à confirmer sur place.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-02",
+        "gravite": "surveiller",
+        "serviceId": "diagnostic",
+        "prixEstime": "diagnostic 25 $ (+ pièce éventuelle)",
+        "explication": "Un ordinateur qui s'allume mais reste noir a le plus souvent un souci d'écran (dalle ou nappe) ou de mémoire interne. Un test rapide sur place, notamment avec un écran externe, permet de trancher.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "systeme-demarre-pas",
+      "libellePublic": "Le système ne démarre plus",
+      "icone": "⚠️",
+      "groupe": "Démarrage & alimentation",
+      "questions": [
+        {
+          "id": "message",
+          "libelle": "Qu'affiche l'écran au démarrage ?",
+          "options": [
+            { "label": "« No boot device » / disque non trouvé", "valeur": "no-boot" },
+            { "label": "Réparation ou logo qui tourne en boucle", "valeur": "boucle" },
+            { "label": "Un autre message", "valeur": "autre" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "bruit",
+          "libelle": "Le disque fait-il un bruit inhabituel (cliquetis, claquements) ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "bruit": "oui" },
+          "alors": {
+            "panneId": "panne-03",
+            "gravite": "urgent",
+            "serviceId": "recuperation-donnees",
+            "prixEstime": "récupération dès 75 $, puis réinstallation 85 $ ou disque SSD 100 $ + pièce",
+            "explication": "Un disque qui fait du bruit est souvent en train de lâcher. La priorité absolue est de sauvegarder vos fichiers avant toute autre chose, puis de remplacer le disque.",
+            "alerte": "Important : éteignez l'ordinateur et évitez de le rallumer. Un disque qui fait du bruit peut cesser de fonctionner à tout moment — chaque démarrage réduit les chances de sauver vos fichiers."
+          }
+        },
+        {
+          "si": { "message": "no-boot" },
+          "alors": {
+            "panneId": "panne-03",
+            "gravite": "urgent",
+            "serviceId": "migration-ssd",
+            "prixEstime": "réinstallation 85 $ ou disque SSD 100 $ + pièce (sauvegarde comprise)",
+            "explication": "« Disque non trouvé » signifie que l'ordinateur ne voit plus son disque : celui-ci est probablement en fin de vie. Nous sauvegardons d'abord vos fichiers, puis nous installons un disque neuf.",
+            "alerte": "Nous mettons toujours vos fichiers en sécurité avant toute réparation."
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-03",
+        "gravite": "urgent",
+        "serviceId": "reinstallation-systeme",
+        "prixEstime": "réinstallation 85 $ (sauvegarde de vos fichiers comprise)",
+        "explication": "Quand le système ne démarre plus, c'est le plus souvent un disque en fin de vie ou un système endommagé. Dans les deux cas, nous sauvegardons d'abord vos fichiers, puis nous remettons l'ordinateur en état.",
+        "alerte": "Nous mettons toujours vos fichiers en sécurité avant toute réparation."
+      }
+    },
+    {
+      "id": "eteint-seul",
+      "libellePublic": "Il s'éteint ou redémarre tout seul",
+      "icone": "🔁",
+      "groupe": "Démarrage & alimentation",
+      "questions": [
+        {
+          "id": "chaud",
+          "libelle": "L'ordinateur est-il chaud ou bruyant juste avant de s'éteindre ?",
+          "options": [
+            { "label": "Oui, chaud et/ou bruyant", "valeur": "oui" },
+            { "label": "Non", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "bleu",
+          "libelle": "Voyez-vous parfois un écran bleu avec un message avant qu'il redémarre ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "chaud": "oui" },
+          "alors": {
+            "panneId": "panne-07",
+            "gravite": "surveiller",
+            "serviceId": "nettoyage-interne",
+            "prixEstime": "environ 70 $ (+ pièce si le ventilateur est à changer)",
+            "explication": "Un ordinateur qui chauffe puis s'éteint se protège de la surchauffe. La cause la plus fréquente est un intérieur encrassé par la poussière. Un nettoyage interne et un changement de pâte thermique règlent généralement le problème.",
+            "alerte": null
+          }
+        },
+        {
+          "si": { "bleu": "oui" },
+          "alors": {
+            "panneId": "panne-08",
+            "gravite": "surveiller",
+            "serviceId": "diagnostic",
+            "prixEstime": "optimisation ou réinstallation 75–85 $, ou disque SSD 100 $ selon la cause",
+            "explication": "Des écrans bleus répétés viennent souvent de la mémoire, du disque ou d'un logiciel défaillant. Un test sur place identifie précisément lequel.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-04",
+        "gravite": "surveiller",
+        "serviceId": "diagnostic",
+        "prixEstime": "environ 70 $ (nettoyage) ou 75 $ (logiciel) selon la cause",
+        "explication": "Des coupures soudaines viennent le plus souvent de la surchauffe, plus rarement d'un souci d'alimentation ou de logiciel. Une vérification sur place permet de trouver la bonne cause.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "batterie",
+      "libellePublic": "La batterie ne tient plus",
+      "icone": "🔋",
+      "groupe": "Démarrage & alimentation",
+      "questions": [
+        {
+          "id": "comportement",
+          "libelle": "Que se passe-t-il exactement ?",
+          "options": [
+            { "label": "Elle se décharge très vite", "valeur": "decharge" },
+            { "label": "« Branché, mais ne charge pas »", "valeur": "pas-charge" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "age",
+          "libelle": "Quel âge a environ l'ordinateur (ou la batterie) ?",
+          "options": [
+            { "label": "Moins de 2 ans", "valeur": "recent" },
+            { "label": "Plus de 2 ans", "valeur": "vieux" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "comportement": "pas-charge" },
+          "alors": {
+            "panneId": "panne-05",
+            "gravite": "surveiller",
+            "serviceId": "diagnostic",
+            "prixEstime": "pièce + main-d'œuvre (diagnostic 25 $ si non réparé)",
+            "explication": "« Branché sans charger » vient souvent du chargeur ou du port de charge, parfois de la batterie elle-même. Essayez d'abord un autre chargeur ; si le souci persiste, nous identifions la pièce concernée sur place.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-05",
+        "gravite": "surveiller",
+        "serviceId": "diagnostic",
+        "prixEstime": "pièce + main-d'œuvre (diagnostic 25 $ si non réparé)",
+        "explication": "Une batterie qui se décharge vite est probablement usée : c'est normal après quelques années. Le remplacement redonne de l'autonomie. Nous confirmons l'usure réelle par un test rapide sur place.",
+        "alerte": null
+      }
+    },
+
+    {
+      "id": "lent",
+      "libellePublic": "Il est très lent",
+      "icone": "🐌",
+      "groupe": "Performance & stabilité",
+      "questions": [
+        {
+          "id": "age",
+          "libelle": "Quel âge a environ votre ordinateur ?",
+          "options": [
+            { "label": "Moins de 2 ans", "valeur": "recent" },
+            { "label": "2 à 5 ans", "valeur": "moyen" },
+            { "label": "Plus de 5 ans", "valeur": "vieux" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "demarrage",
+          "libelle": "Met-il plus d'une minute à démarrer ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "pubs",
+          "libelle": "Voyez-vous des publicités s'ouvrir seules, ou la lenteur est-elle apparue soudainement ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non, lent depuis longtemps", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "pubs": "oui" },
+          "alors": {
+            "panneId": "panne-11",
+            "gravite": "surveiller",
+            "serviceId": "nettoyage-virus",
+            "prixEstime": "environ 75 $",
+            "explication": "Une lenteur soudaine, surtout avec des publicités, est le plus souvent le signe d'un logiciel indésirable ou d'un virus. Un nettoyage complet rend l'ordinateur à nouveau rapide, propre et sûr.",
+            "alerte": null
+          }
+        },
+        {
+          "si": { "age": "vieux", "demarrage": "oui" },
+          "alors": {
+            "panneId": "panne-06",
+            "gravite": "surveiller",
+            "serviceId": "migration-ssd",
+            "prixEstime": "environ 100 $ + pièce (souvent avec ajout de mémoire)",
+            "explication": "Votre disque dur est probablement trop lent ou en fin de vie. C'est la cause la plus fréquente d'un ordinateur qui met plusieurs minutes à démarrer. Le remplacer par un disque SSD moderne transforme complètement la machine.",
+            "alerte": null
+          }
+        },
+        {
+          "si": { "age": "moyen", "demarrage": "oui" },
+          "alors": {
+            "panneId": "panne-06",
+            "gravite": "surveiller",
+            "serviceId": "migration-ssd",
+            "prixEstime": "environ 100 $ + pièce, ou optimisation 75 $ selon l'état",
+            "explication": "Un démarrage très long vient le plus souvent du disque ou d'un manque de mémoire. Le passage à un disque SSD et/ou un ajout de mémoire accélèrent nettement l'ordinateur.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-06",
+        "gravite": "benin",
+        "serviceId": "nettoyage-virus",
+        "prixEstime": "environ 75 $ (optimisation) — à confirmer sur place",
+        "explication": "Plusieurs causes peuvent ralentir un ordinateur (disque, mémoire, logiciels au démarrage). Une optimisation règle souvent les cas simples ; un diagnostic sur place identifie s'il faut aller plus loin.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "chauffe-bruit",
+      "libellePublic": "Il chauffe et fait du bruit",
+      "icone": "🔥",
+      "groupe": "Performance & stabilité",
+      "questions": [
+        {
+          "id": "age",
+          "libelle": "Depuis combien de temps n'a-t-il pas été nettoyé à l'intérieur ?",
+          "options": [
+            { "label": "Jamais / je ne sais pas", "valeur": "jamais" },
+            { "label": "Depuis plus de 2 ans", "valeur": "vieux" },
+            { "label": "Récemment", "valeur": "recent" }
+          ]
+        },
+        {
+          "id": "bruit",
+          "libelle": "Quel genre de bruit fait-il ?",
+          "options": [
+            { "label": "Soufflerie forte (ventilateur qui s'emballe)", "valeur": "soufflerie" },
+            { "label": "Bruit métallique / grincement", "valeur": "metallique" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "bruit": "metallique" },
+          "alors": {
+            "panneId": "panne-07",
+            "gravite": "surveiller",
+            "serviceId": "nettoyage-interne",
+            "prixEstime": "environ 70 $ + pièce (ventilateur probablement à remplacer)",
+            "explication": "Un bruit métallique ou de grincement indique souvent un ventilateur usé, en plus de la poussière accumulée. Un nettoyage interne et, si besoin, le remplacement du ventilateur rendent l'ordinateur silencieux et frais.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-07",
+        "gravite": "surveiller",
+        "serviceId": "nettoyage-interne",
+        "prixEstime": "environ 70 $ (+ pièce si le ventilateur est usé)",
+        "explication": "La chaleur et le bruit viennent presque toujours d'un intérieur encrassé par la poussière, surtout après quelques années. Un nettoyage interne avec changement de pâte thermique règle le plus souvent le problème.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "plante-fige",
+      "libellePublic": "Il se bloque ou plante",
+      "icone": "🧊",
+      "groupe": "Performance & stabilité",
+      "questions": [
+        {
+          "id": "type",
+          "libelle": "Comment cela se manifeste-t-il ?",
+          "options": [
+            { "label": "Écran bleu avec un message", "valeur": "bleu" },
+            { "label": "Tout se fige, curseur bloqué", "valeur": "fige" },
+            { "label": "Une seule application plante", "valeur": "appli" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "age",
+          "libelle": "Quel âge a environ l'ordinateur ?",
+          "options": [
+            { "label": "Moins de 2 ans", "valeur": "recent" },
+            { "label": "Plus de 2 ans", "valeur": "vieux" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "type": "appli" },
+          "alors": {
+            "panneId": "panne-14",
+            "gravite": "benin",
+            "serviceId": "diagnostic",
+            "prixEstime": "environ 60 $",
+            "explication": "Si une seule application plante, redémarrez d'abord l'ordinateur : cela suffit souvent. Si le souci revient, une réinstallation propre de ce logiciel règle généralement le problème.",
+            "alerte": null
+          }
+        },
+        {
+          "si": { "type": "bleu" },
+          "alors": {
+            "panneId": "panne-08",
+            "gravite": "surveiller",
+            "serviceId": "diagnostic",
+            "prixEstime": "disque SSD 100 $ ou optimisation/réinstallation 75–85 $ selon la cause",
+            "explication": "Des écrans bleus répétés viennent le plus souvent de la mémoire, du disque ou d'un logiciel. Un test sur place identifie précisément la cause à corriger.",
+            "alerte": null
+          }
+        },
+        {
+          "si": { "type": "fige", "age": "vieux" },
+          "alors": {
+            "panneId": "panne-09",
+            "gravite": "surveiller",
+            "serviceId": "migration-ssd",
+            "prixEstime": "disque SSD 100 $ ou ajout de mémoire 50 $ selon la cause",
+            "explication": "Un ordinateur qui se fige, surtout après quelques années, manque souvent de mémoire ou a un disque fatigué. Un disque SSD et/ou un ajout de mémoire le rendent à nouveau fluide.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-09",
+        "gravite": "surveiller",
+        "serviceId": "diagnostic",
+        "prixEstime": "de 70 $ à 100 $ selon la cause — à confirmer sur place",
+        "explication": "Les blocages peuvent venir du disque, de la mémoire, de la chaleur ou d'un logiciel. Un diagnostic sur place permet d'identifier la bonne cause avant toute réparation.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "espace-insuffisant",
+      "libellePublic": "Message d'espace insuffisant",
+      "icone": "💾",
+      "groupe": "Performance & stabilité",
+      "questions": [
+        {
+          "id": "contenu",
+          "libelle": "Avez-vous beaucoup de photos, vidéos ou gros fichiers sur l'ordinateur ?",
+          "options": [
+            { "label": "Oui, beaucoup", "valeur": "beaucoup" },
+            { "label": "Non, pas vraiment", "valeur": "peu" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "taille",
+          "libelle": "Connaissez-vous la taille du disque ?",
+          "options": [
+            { "label": "Petit (128 Go ou moins)", "valeur": "petit" },
+            { "label": "Plus grand", "valeur": "grand" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "taille": "petit" },
+          "alors": {
+            "panneId": "panne-10",
+            "gravite": "surveiller",
+            "serviceId": "migration-ssd",
+            "prixEstime": "disque SSD plus grand 100 $ + pièce, ou nettoyage 75 $",
+            "explication": "Un petit disque se remplit vite. Un nettoyage libère de la place à court terme ; pour une solution durable, un disque plus grand est souvent le meilleur choix.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-10",
+        "gravite": "benin",
+        "serviceId": "nettoyage-virus",
+        "prixEstime": "environ 75 $ (nettoyage/optimisation)",
+        "explication": "Un disque plein se règle souvent en supprimant des fichiers inutiles et en déplaçant photos et vidéos vers un disque externe ou le cloud. Nous faisons le tri en toute sécurité et libérons de l'espace.",
+        "alerte": null
+      }
+    },
+
+    {
+      "id": "virus-pubs",
+      "libellePublic": "Des publicités s'ouvrent seules / je crains un virus",
+      "icone": "🛡️",
+      "groupe": "Logiciel, système & sécurité",
+      "questions": [
+        {
+          "id": "pubs",
+          "libelle": "Des fenêtres de publicité s'ouvrent-elles toutes seules ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "navigateur",
+          "libelle": "Votre page d'accueil ou moteur de recherche a-t-il changé sans votre accord ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [],
+      "resultatParDefaut": {
+        "panneId": "panne-11",
+        "gravite": "surveiller",
+        "serviceId": "nettoyage-virus",
+        "prixEstime": "environ 75 $ (ou réinstallation 85 $ si le système est très atteint)",
+        "explication": "Publicités intempestives et navigateur détourné sont des signes classiques de logiciel indésirable ou de virus. Un nettoyage complet supprime les menaces et remet l'ordinateur propre, rapide et sûr.",
+        "alerte": "Par prudence, évitez de saisir vos mots de passe bancaires sur cet ordinateur tant qu'il n'a pas été nettoyé."
+      }
+    },
+    {
+      "id": "windows-update",
+      "libellePublic": "Les mises à jour Windows échouent ou restent bloquées",
+      "icone": "🔄",
+      "groupe": "Logiciel, système & sécurité",
+      "questions": [
+        {
+          "id": "comportement",
+          "libelle": "Que se passe-t-il ?",
+          "options": [
+            { "label": "Message d'erreur de mise à jour", "valeur": "erreur" },
+            { "label": "Elle tourne sans fin", "valeur": "bloquee" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [],
+      "resultatParDefaut": {
+        "panneId": "panne-12",
+        "gravite": "benin",
+        "serviceId": "reinstallation-systeme",
+        "prixEstime": "environ 75 $ (réparation système / optimisation)",
+        "explication": "Les mises à jour qui échouent viennent souvent d'un manque d'espace disque ou de fichiers système abîmés. Une réparation du système règle généralement le problème sans tout réinstaller.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "mot-de-passe",
+      "libellePublic": "J'ai oublié mon mot de passe Windows",
+      "icone": "🔑",
+      "groupe": "Logiciel, système & sécurité",
+      "questions": [
+        {
+          "id": "type-compte",
+          "libelle": "Votre session utilise-t-elle une adresse e-mail Microsoft (Outlook/Hotmail) pour se connecter ?",
+          "options": [
+            { "label": "Oui, une adresse e-mail", "valeur": "microsoft" },
+            { "label": "Non, juste un mot de passe local", "valeur": "local" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "type-compte": "microsoft" },
+          "alors": {
+            "panneId": "panne-13",
+            "gravite": "benin",
+            "serviceId": "diagnostic",
+            "prixEstime": "souvent gratuit à faire soi-même — sinon déblocage 60 $",
+            "explication": "Si vous vous connectez avec une adresse e-mail Microsoft, vous pouvez réinitialiser votre mot de passe gratuitement depuis un autre appareil, sur le site de Microsoft. Si vous préférez, nous pouvons vous accompagner.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-13",
+        "gravite": "benin",
+        "serviceId": "diagnostic",
+        "prixEstime": "environ 60 $ (déblocage / réinitialisation)",
+        "explication": "Un mot de passe local oublié peut être réinitialisé sur place, après vérification que vous êtes bien le propriétaire de l'ordinateur. Vous récupérez l'accès à vos fichiers.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "appli-plante",
+      "libellePublic": "Une application plante ou refuse de s'installer",
+      "icone": "🧩",
+      "groupe": "Logiciel, système & sécurité",
+      "questions": [
+        {
+          "id": "quand",
+          "libelle": "Le problème concerne-t-il surtout…",
+          "options": [
+            { "label": "Une application qui « ne répond pas »", "valeur": "plante" },
+            { "label": "Une installation qui échoue", "valeur": "installation" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "redemarre",
+          "libelle": "Avez-vous déjà essayé de redémarrer l'ordinateur ?",
+          "options": [
+            { "label": "Oui, sans effet", "valeur": "oui" },
+            { "label": "Non, pas encore", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "redemarre": "non" },
+          "alors": {
+            "panneId": "panne-14",
+            "gravite": "benin",
+            "serviceId": "diagnostic",
+            "prixEstime": "souvent gratuit — sinon installation/configuration 60 $",
+            "explication": "Commencez par redémarrer l'ordinateur : cela règle une bonne partie de ces cas, gratuitement. Si le problème revient après redémarrage, nous réinstallons proprement l'application concernée.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-14",
+        "gravite": "benin",
+        "serviceId": "diagnostic",
+        "prixEstime": "environ 60 $ (installation / configuration logicielle)",
+        "explication": "Une application qui plante ou refuse de s'installer vient souvent d'une version incompatible ou de fichiers manquants. Une réinstallation propre règle généralement le problème.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "fichiers-perdus",
+      "libellePublic": "J'ai perdu des fichiers ou des photos",
+      "icone": "🗂️",
+      "groupe": "Logiciel, système & sécurité",
+      "questions": [
+        {
+          "id": "cause",
+          "libelle": "Que s'est-il passé ?",
+          "options": [
+            { "label": "Supprimés par erreur", "valeur": "supprimes" },
+            { "label": "Le disque ou la clé USB ne s'ouvre plus", "valeur": "illisible" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "sauvegarde",
+          "libelle": "Avez-vous une sauvegarde (disque externe, OneDrive, Google Drive) ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "cause": "supprimes", "sauvegarde": "oui" },
+          "alors": {
+            "panneId": "panne-15",
+            "gravite": "surveiller",
+            "serviceId": "diagnostic",
+            "prixEstime": "peut-être gratuit — vérifiez d'abord votre sauvegarde",
+            "explication": "Bonne nouvelle : si vous avez une sauvegarde, vos fichiers y sont probablement. Vérifiez votre corbeille, OneDrive ou Google Drive. Si vous ne les retrouvez pas, nous pouvons tenter une récupération.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-15",
+        "gravite": "urgent",
+        "serviceId": "recuperation-donnees",
+        "prixEstime": "à partir de 75 $ (jamais garanti à 100 %)",
+        "explication": "Des fichiers supprimés ou un support illisible peuvent souvent être récupérés, si l'on agit vite. Nous vous dirons honnêtement ce qui est récupérable avant d'aller plus loin.",
+        "alerte": "Important : n'utilisez plus cet ordinateur (ou cette clé USB) pour l'instant. Chaque utilisation réduit les chances de récupérer vos fichiers."
+      }
+    },
+    {
+      "id": "mise-a-niveau",
+      "libellePublic": "Je veux passer à Windows 11 / moderniser mon PC",
+      "icone": "⬆️",
+      "groupe": "Logiciel, système & sécurité",
+      "questions": [
+        {
+          "id": "age",
+          "libelle": "Quel âge a environ l'ordinateur ?",
+          "options": [
+            { "label": "Moins de 5 ans", "valeur": "recent" },
+            { "label": "Plus de 5 ans", "valeur": "vieux" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [],
+      "resultatParDefaut": {
+        "panneId": "panne-16",
+        "gravite": "benin",
+        "serviceId": "mise-a-niveau-systeme",
+        "prixEstime": "environ 85 $ (souvent combiné avec disque SSD + mémoire)",
+        "explication": "Nous vérifions d'abord si votre ordinateur est compatible avec Windows 11, puis nous préparons tout (avec sauvegarde) avant l'installation. C'est souvent l'occasion idéale pour un disque SSD et un ajout de mémoire : votre PC repart comme neuf.",
+        "alerte": null
+      }
+    },
+
+    {
+      "id": "pas-wifi",
+      "libellePublic": "Pas de Wi-Fi / pas d'internet",
+      "icone": "📶",
+      "groupe": "Réseau & connexions",
+      "questions": [
+        {
+          "id": "autres",
+          "libelle": "Vos autres appareils (téléphone, tablette) ont-ils internet en même temps ?",
+          "options": [
+            { "label": "Oui, eux fonctionnent", "valeur": "oui" },
+            { "label": "Non, rien ne fonctionne", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "gravite-cnx",
+          "libelle": "La connexion est-elle absente ou juste lente/instable ?",
+          "options": [
+            { "label": "Absente", "valeur": "absente" },
+            { "label": "Lente ou coupures fréquentes", "valeur": "lente" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "autres": "non" },
+          "alors": {
+            "panneId": "panne-17",
+            "gravite": "benin",
+            "serviceId": "diagnostic",
+            "prixEstime": "souvent gratuit — le souci vient probablement de la box",
+            "explication": "Si aucun appareil n'a internet, le problème vient très probablement de votre box ou de votre fournisseur, pas de votre ordinateur. Essayez d'éteindre puis rallumer la box (attendez 30 secondes). Si ça ne suffit pas, contactez votre fournisseur d'accès.",
+            "alerte": null
+          }
+        },
+        {
+          "si": { "gravite-cnx": "lente" },
+          "alors": {
+            "panneId": "panne-18",
+            "gravite": "benin",
+            "serviceId": "reseau-wifi",
+            "prixEstime": "environ 70 $ (+ répéteur éventuel fourni par vos soins)",
+            "explication": "Un Wi-Fi lent ou instable vient souvent de la distance à la box ou d'un voisinage encombré. Nous optimisons la connexion et, si besoin, conseillons un répéteur pour couvrir toute la maison.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-17",
+        "gravite": "surveiller",
+        "serviceId": "reseau-wifi",
+        "prixEstime": "environ 70 $ (+ clé Wi-Fi ~15 $ si la carte est HS)",
+        "explication": "Si seuls votre ordinateur est privé de Wi-Fi, c'est souvent un pilote ou un réglage réseau, parfois la carte Wi-Fi. Nous rétablissons une connexion stable, avec une petite clé Wi-Fi USB en dernier recours.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "bluetooth",
+      "libellePublic": "Mon casque / ma souris Bluetooth ne se connecte pas",
+      "icone": "🎧",
+      "groupe": "Réseau & connexions",
+      "questions": [
+        {
+          "id": "active",
+          "libelle": "Le Bluetooth est-il bien activé (icône présente, mode avion désactivé) ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non / je ne trouve pas l'option", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [],
+      "resultatParDefaut": {
+        "panneId": "panne-19",
+        "gravite": "benin",
+        "serviceId": "diagnostic",
+        "prixEstime": "environ 60 $ (+ petit adaptateur ~15 $ si nécessaire)",
+        "explication": "Un Bluetooth qui ne fonctionne pas vient souvent d'un réglage, d'un pilote à réinstaller ou d'un accessoire à ré-appairer. Si la puce interne est hors service, un petit adaptateur USB résout le problème à moindre coût.",
+        "alerte": null
+      }
+    },
+
+    {
+      "id": "imprimante",
+      "libellePublic": "Mon imprimante ne fonctionne pas",
+      "icone": "🖨️",
+      "groupe": "Périphériques",
+      "questions": [
+        {
+          "id": "hors-ligne",
+          "libelle": "L'imprimante affiche-t-elle « hors ligne » sur l'ordinateur ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non / je ne sais pas", "valeur": "non" }
+          ]
+        },
+        {
+          "id": "redemarre",
+          "libelle": "Avez-vous déjà éteint puis rallumé l'imprimante ET l'ordinateur ?",
+          "options": [
+            { "label": "Oui, sans effet", "valeur": "oui" },
+            { "label": "Non, pas encore", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "redemarre": "non" },
+          "alors": {
+            "panneId": "panne-20",
+            "gravite": "benin",
+            "serviceId": "installation-imprimante",
+            "prixEstime": "souvent gratuit à régler — sinon installation 60 $",
+            "explication": "Avant tout, éteignez puis rallumez l'imprimante et l'ordinateur, et vérifiez le papier et l'encre : cela résout très souvent le problème, gratuitement. Si ça persiste, nous l'installons correctement.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-20",
+        "gravite": "benin",
+        "serviceId": "installation-imprimante",
+        "prixEstime": "environ 60 $ (installation / configuration)",
+        "explication": "Une imprimante « hors ligne » ou qui refuse d'imprimer se règle le plus souvent en réinitialisant la file d'attente et en réinstallant le bon pilote du fabricant. Nous faisons en sorte que ça marche du premier coup.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "son-micro-webcam",
+      "libellePublic": "Pas de son / micro / webcam",
+      "icone": "🔊",
+      "groupe": "Périphériques",
+      "questions": [
+        {
+          "id": "lequel",
+          "libelle": "Qu'est-ce qui ne fonctionne pas ?",
+          "options": [
+            { "label": "Le son", "valeur": "son" },
+            { "label": "Le micro", "valeur": "micro" },
+            { "label": "La webcam", "valeur": "webcam" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "quand",
+          "libelle": "Le problème est-il apparu après une visioconférence ou une mise à jour ?",
+          "options": [
+            { "label": "Oui", "valeur": "oui" },
+            { "label": "Non", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "quand": "oui" },
+          "alors": {
+            "panneId": "panne-21",
+            "gravite": "benin",
+            "serviceId": "diagnostic",
+            "prixEstime": "environ 60 $ (souvent un simple réglage à rétablir)",
+            "explication": "Après une visio ou une mise à jour, le micro ou la webcam sont souvent simplement bloqués par un réglage de confidentialité ou un mauvais périphérique sélectionné. Un réglage suffit généralement à tout rétablir.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-21",
+        "gravite": "benin",
+        "serviceId": "diagnostic",
+        "prixEstime": "environ 60 $ (+ périphérique USB si le matériel est HS)",
+        "explication": "Un souci de son, micro ou webcam vient le plus souvent d'un mauvais périphérique sélectionné, d'un réglage ou d'un pilote. Si le matériel interne est hors service, un accessoire USB peu coûteux le remplace.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "clavier-souris",
+      "libellePublic": "Mon clavier, ma souris ou le pavé tactile ne répond plus",
+      "icone": "⌨️",
+      "groupe": "Périphériques",
+      "questions": [
+        {
+          "id": "quoi",
+          "libelle": "Qu'est-ce qui pose problème ?",
+          "options": [
+            { "label": "Le pavé tactile ne réagit plus", "valeur": "pave" },
+            { "label": "Quelques touches sont mortes", "valeur": "touches" },
+            { "label": "La souris est figée", "valeur": "souris" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "quoi": "pave" },
+          "alors": {
+            "panneId": "panne-22",
+            "gravite": "benin",
+            "serviceId": "diagnostic",
+            "prixEstime": "souvent gratuit à réactiver — sinon dépannage 60 $",
+            "explication": "Le pavé tactile se désactive souvent par une touche « Fn » appuyée par mégarde. Cherchez la touche du pavé tactile en haut du clavier. Si ça ne suffit pas, nous vérifions le réglage ou le pilote.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-22",
+        "gravite": "benin",
+        "serviceId": "diagnostic",
+        "prixEstime": "environ 60 $ (+ pièce si le clavier est à remplacer)",
+        "explication": "Des touches mortes ou un clavier qui ne répond plus viennent d'un réglage, d'un pilote, ou d'un clavier abîmé. Nous identifions la cause ; au besoin, un clavier USB externe est une solution économique.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "usb-non-reconnu",
+      "libellePublic": "Ma clé USB ou mon disque externe n'est pas reconnu",
+      "icone": "🔌",
+      "groupe": "Périphériques",
+      "questions": [
+        {
+          "id": "autre-port",
+          "libelle": "Avez-vous essayé un autre port USB ou un autre ordinateur ?",
+          "options": [
+            { "label": "Oui, toujours rien", "valeur": "oui-rien" },
+            { "label": "Non, pas encore", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        },
+        {
+          "id": "donnees",
+          "libelle": "Y a-t-il des fichiers importants dessus que vous n'avez pas ailleurs ?",
+          "options": [
+            { "label": "Oui, précieux", "valeur": "oui" },
+            { "label": "Non", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "donnees": "oui" },
+          "alors": {
+            "panneId": "panne-23",
+            "gravite": "urgent",
+            "serviceId": "recuperation-donnees",
+            "prixEstime": "dépannage dès 60 $, récupération de données dès 75 $",
+            "explication": "Si le support contient des fichiers précieux, il ne faut surtout pas le formater. Nous tentons d'abord de récupérer vos données avant toute autre manipulation.",
+            "alerte": "Important : si un message propose de « formater » le support, refusez. Un formatage effacerait vos fichiers."
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-23",
+        "gravite": "surveiller",
+        "serviceId": "diagnostic",
+        "prixEstime": "environ 60 $ (récupération de données dès 75 $ si besoin)",
+        "explication": "Une clé ou un disque non reconnu vient parfois d'un simple réglage (lettre de lecteur à attribuer), parfois d'un contrôleur défaillant. Nous vérifions sur place, en préservant vos fichiers.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "ecran-externe",
+      "libellePublic": "Mon écran externe ou projecteur n'est pas détecté",
+      "icone": "🖵",
+      "groupe": "Périphériques",
+      "questions": [
+        {
+          "id": "essaye",
+          "libelle": "Avez-vous essayé le raccourci Windows + P pour choisir « Étendre » ou « Dupliquer » ?",
+          "options": [
+            { "label": "Oui, sans effet", "valeur": "oui" },
+            { "label": "Non / je ne connais pas", "valeur": "non" },
+            { "label": "Je ne sais pas", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [
+        {
+          "si": { "essaye": "non" },
+          "alors": {
+            "panneId": "panne-24",
+            "gravite": "benin",
+            "serviceId": "diagnostic",
+            "prixEstime": "souvent gratuit à régler — sinon configuration 60 $",
+            "explication": "Essayez d'abord le raccourci « Windows + P » puis « Étendre » ou « Dupliquer », et vérifiez que l'écran est sur la bonne entrée (HDMI). Cela suffit très souvent. Si l'écran reste noir, nous réglons l'affichage.",
+            "alerte": null
+          }
+        }
+      ],
+      "resultatParDefaut": {
+        "panneId": "panne-24",
+        "gravite": "benin",
+        "serviceId": "diagnostic",
+        "prixEstime": "environ 60 $ (+ câble/adaptateur éventuel)",
+        "explication": "Un deuxième écran non détecté vient souvent du câble, de l'entrée sélectionnée ou du mode d'affichage. Nous configurons tout pour que votre second écran fonctionne, câble ou adaptateur à l'appui si nécessaire.",
+        "alerte": null
+      }
+    },
+
+    {
+      "id": "sauvegarde",
+      "libellePublic": "Je veux sauvegarder mes données / ne rien perdre",
+      "icone": "🗄️",
+      "groupe": "Sauvegarde & données",
+      "questions": [
+        {
+          "id": "besoin",
+          "libelle": "Quel est votre besoin principal ?",
+          "options": [
+            { "label": "Sauvegarder automatiquement mes fichiers", "valeur": "sauvegarde" },
+            { "label": "Partager des fichiers entre plusieurs ordinateurs", "valeur": "partage" },
+            { "label": "Je ne sais pas encore", "valeur": "inconnu" }
+          ]
+        }
+      ],
+      "regles": [],
+      "resultatParDefaut": {
+        "panneId": "panne-25",
+        "gravite": "benin",
+        "serviceId": "sauvegarde-entreprises",
+        "prixEstime": "à partir de 90 $ (selon le nombre de postes)",
+        "explication": "Mettre en place une sauvegarde fiable (disque externe + cloud) évite de perdre vos documents et photos, définitivement. Nous configurons une solution automatique et vérifiée, adaptée à votre situation.",
+        "alerte": null
+      }
+    },
+    {
+      "id": "autre",
+      "libellePublic": "Autre problème",
+      "icone": "❓",
+      "groupe": "Autre",
+      "champLibre": true,
+      "questions": [],
+      "regles": [],
+      "resultatParDefaut": {
+        "panneId": null,
+        "gravite": "surveiller",
+        "serviceId": "diagnostic",
+        "prixEstime": "diagnostic gratuit si réparation (sinon 25 $)",
+        "explication": "Plusieurs causes sont possibles pour votre situation. Le plus fiable est un diagnostic sur place : nous identifions précisément le problème et vous annonçons le prix avant toute réparation, sans engagement.",
+        "alerte": null
+      }
+    }
+  ]
+}

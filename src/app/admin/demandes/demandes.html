@@ -1,54 +1,144 @@
 <div class="adm-head">
   <h1>Demandes</h1>
-  <p class="dem-count">{{ liste().length }} demande(s)</p>
+  <p class="dem-count">{{ compteurs()['tous'] }} demande(s)</p>
 </div>
 
-<div class="adm-table-wrap">
-  <table class="adm-table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Client</th>
-        <th>Contact</th>
-        <th>Appareil</th>
-        <th>Problème</th>
-        <th>Secteur</th>
-        <th>Statut</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (d of liste(); track d.id) {
-        <tr [class.dem-nouveau]="(d.statut ?? 'nouveau') === 'nouveau'">
-          <td>{{ fmtDate(d.date ?? '') }}</td>
-          <td class="dem-nom">{{ d.nom }}</td>
-          <td>{{ d.contact }}</td>
-          <td>{{ d.appareil }}</td>
-          <td class="dem-probleme">
-            {{ d.description }}
-            @if (d.service) { <span class="dem-service">Service souhaité : {{ d.service }}</span> }
-          </td>
-          <td>{{ d.secteur }}</td>
-          <td>
-            <select
-              class="dem-statut"
-              [value]="d.statut ?? 'nouveau'"
-              (change)="changerStatut(d, $any($event.target).value)"
-            >
-              @for (s of statuts; track s) { <option [value]="s">{{ s }}</option> }
-            </select>
-          </td>
-          <td class="adm-rowactions">
-            @if (lienWa(d); as wa) {
-              <a class="adm-icobtn" [href]="wa" target="_blank" rel="noopener" title="Contacter sur WhatsApp">💬</a>
+<!-- Alerte réserve commerciale : prospects dormants -->
+@if (prospectsDormants() > 0) {
+  <div class="dem-relance-alert">
+    ⏰ <strong>{{ prospectsDormants() }}</strong> prospect(s) de plus de 7 jours sans contact —
+    votre réserve commerciale à relancer.
+  </div>
+}
+
+<!-- Filtres par statut -->
+<div class="dem-filtres">
+  <button
+    type="button"
+    class="dem-chip"
+    [class.is-active]="filtre() === 'tous'"
+    (click)="setFiltre('tous')"
+  >
+    Tous <span>{{ compteurs()['tous'] }}</span>
+  </button>
+  @for (s of statuts; track s) {
+    <button
+      type="button"
+      [class]="'dem-chip dem-chip--' + s + (filtre() === s ? ' is-active' : '')"
+      (click)="setFiltre(s)"
+    >
+      {{ s }} <span>{{ compteurs()[s] }}</span>
+    </button>
+  }
+</div>
+
+<!-- Liste des demandes -->
+<div class="dem-liste">
+  @for (d of liste(); track d.id) {
+    <article class="dem-carte" [class.dem-carte--chaud]="(d.statut ?? '') === 'nouvelle-demande'">
+      <header class="dem-carte__head">
+        <div>
+          <h2 class="dem-carte__nom">
+            {{ d.nom }}
+            @if (d.aRelancer) { <span class="dem-flag">⏰ à relancer</span> }
+            @if (estDormant(d)) { <span class="dem-flag dem-flag--dormant">dormant</span> }
+          </h2>
+          <p class="dem-carte__meta">
+            {{ fmtDate(d.date ?? '') }}
+            @if (d.source === 'diagnostic-en-ligne') {
+              <span class="dem-source dem-source--diag">🩺 Diagnostic en ligne</span>
+            } @else {
+              <span class="dem-source">✍️ Formulaire</span>
             }
-            <button type="button" class="adm-icobtn" (click)="convertir(d)" title="Convertir en intervention">➡️</button>
-            <button type="button" class="adm-icobtn adm-icobtn--danger" (click)="supprimer(d)" title="Supprimer">🗑️</button>
-          </td>
-        </tr>
-      } @empty {
-        <tr><td colspan="8" class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucune demande pour le moment.' }}</td></tr>
+          </p>
+        </div>
+        <span class="dem-statut-tag" [class]="'dem-statut-tag--' + (d.statut ?? '')">
+          {{ d.statut ?? 'nouvelle-demande' }}
+        </span>
+      </header>
+
+      <div class="dem-carte__grid">
+        <!-- Contact -->
+        <div class="dem-bloc">
+          <h3>Contact</h3>
+          @if (d.telephone) { <p>📞 {{ d.telephone }}</p> }
+          @if (d.email) { <p>✉️ {{ d.email }}</p> }
+          @if (!d.telephone && !d.email && d.contact) { <p>{{ d.contact }}</p> }
+          <p class="dem-muted">
+            {{ d.typeMachine || d.appareil || 'Appareil non précisé' }}
+            @if (d.secteur) { · {{ d.secteur }} }
+          </p>
+        </div>
+
+        <!-- Diagnostic -->
+        <div class="dem-bloc">
+          <h3>Problème & diagnostic</h3>
+          @if (d.symptomeChoisi) { <p class="dem-sympt">« {{ d.symptomeChoisi }} »</p> }
+          <p class="dem-diag">{{ d.description }}</p>
+          @if (d.serviceRecommande) {
+            <p class="dem-muted">
+              Service : {{ d.serviceRecommande }}
+              @if (d.prixEstime) { · {{ d.prixEstime }} }
+              @if (d.gravite) { · gravité : {{ d.gravite }} }
+            </p>
+          }
+        </div>
+      </div>
+
+      <!-- Réponses au diagnostic -->
+      @if (d.reponses?.length) {
+        <div class="dem-reponses">
+          <h3>Réponses</h3>
+          <ul>
+            @for (r of d.reponses; track r.question) {
+              <li><span>{{ r.question }}</span> → <strong>{{ r.reponse }}</strong></li>
+            }
+          </ul>
+        </div>
       }
-    </tbody>
-  </table>
+
+      <!-- Note interne -->
+      <div class="adm-field dem-note">
+        <label>Note interne</label>
+        <textarea
+          rows="2"
+          placeholder="Ajouter une note (enregistrée automatiquement)…"
+          [value]="d.notesAdmin ?? ''"
+          (blur)="enregistrerNote(d, $any($event.target).value)"
+        ></textarea>
+      </div>
+
+      <!-- Actions -->
+      <footer class="dem-actions">
+        <select
+          class="dem-statut-select"
+          [value]="d.statut ?? 'nouvelle-demande'"
+          (change)="changerStatut(d, $any($event.target).value)"
+          aria-label="Changer le statut"
+        >
+          @for (s of statuts; track s) {
+            <option [value]="s" [selected]="s === (d.statut ?? 'nouvelle-demande')">{{ s }}</option>
+          }
+        </select>
+
+        @if (lienTel(d); as tel) {
+          <a class="dem-btn" [href]="tel" title="Appeler">📞 Appeler</a>
+        }
+        @if (lienWa(d); as wa) {
+          <a class="dem-btn dem-btn--wa" [href]="wa" target="_blank" rel="noopener" title="WhatsApp">💬 WhatsApp</a>
+        }
+        <button type="button" class="dem-btn" (click)="basculerRelance(d)">
+          {{ d.aRelancer ? '✓ Relance' : '⏰ À relancer' }}
+        </button>
+        <button type="button" class="dem-btn dem-btn--primary" (click)="convertir(d)">
+          ➡️ Convertir en intervention
+        </button>
+        <button type="button" class="dem-btn dem-btn--danger" (click)="supprimer(d)" title="Supprimer">
+          🗑️
+        </button>
+      </footer>
+    </article>
+  } @empty {
+    <p class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucune demande pour ce filtre.' }}</p>
+  }
 </div>

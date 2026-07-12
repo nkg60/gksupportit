@@ -52,7 +52,8 @@ export default async (req: Request): Promise<Response> => {
     description: String(body.description).trim(),
     service: body.service ? String(body.service).trim() : '',
     secteur: String(body.secteur).trim(),
-    statut: 'nouveau',
+    source: 'formulaire-libre',
+    statut: 'nouvelle-demande',
   };
 
   const demandes = await readJson<unknown[]>('demandes', []);

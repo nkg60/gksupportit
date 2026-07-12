@@ -1,0 +1,56 @@
+<section class="conf gk-section">
+  <div class="gk-container conf__wrap">
+    <h1>Politique de confidentialité</h1>
+    <p class="conf__intro">
+      GK SupportIT respecte votre vie privée. Cette page explique simplement quelles données
+      nous collectons, pourquoi, et comment vous pouvez les faire supprimer.
+    </p>
+
+    <h2>Quelles données collectons-nous&nbsp;?</h2>
+    <p>
+      Uniquement ce que vous nous fournissez volontairement lorsque vous demandez à être
+      recontacté (via le diagnostic gratuit ou le formulaire «&nbsp;Décrire mon problème&nbsp;»)&nbsp;:
+    </p>
+    <ul>
+      <li>votre nom&nbsp;;</li>
+      <li>votre téléphone / WhatsApp et/ou votre e-mail&nbsp;;</li>
+      <li>le type de machine et le secteur d'Ottawa (facultatifs)&nbsp;;</li>
+      <li>le problème décrit et les réponses au diagnostic.</li>
+    </ul>
+    <p>
+      Si vous consultez votre résultat de diagnostic <strong>sans laisser vos coordonnées</strong>,
+      <strong>aucune donnée personnelle n'est enregistrée</strong>.
+    </p>
+
+    <h2>Pourquoi&nbsp;?</h2>
+    <p>
+      Pour une seule raison&nbsp;: <strong>vous recontacter au sujet de votre problème</strong> et
+      organiser une éventuelle intervention. Rien d'autre.
+    </p>
+
+    <h2>Vos données ne sont ni vendues ni partagées</h2>
+    <p>
+      Nous ne vendons, ne louons et ne partageons jamais vos coordonnées avec des tiers à des fins
+      commerciales. Elles servent uniquement à notre échange avec vous.
+    </p>
+
+    <h2>Combien de temps&nbsp;?</h2>
+    <p>
+      Nous conservons vos coordonnées le temps nécessaire au suivi de votre demande. Vous pouvez
+      en demander la suppression à tout moment.
+    </p>
+
+    <h2>Comment faire supprimer vos données&nbsp;?</h2>
+    <p>
+      Écrivez-nous, et nous supprimons vos informations rapidement&nbsp;:
+    </p>
+    <ul>
+      @if (settings(); as s) {
+        <li>WhatsApp&nbsp;: <a [href]="'https://wa.me/' + s.whatsappNumber" target="_blank" rel="noopener">{{ s.whatsappDisplay }}</a></li>
+        <li>E-mail&nbsp;: <a [href]="'mailto:' + s.email">{{ s.email }}</a></li>
+      }
+    </ul>
+
+    <p class="conf__retour"><a routerLink="/diagnostic">← Retour au diagnostic gratuit</a></p>
+  </div>
+</section>

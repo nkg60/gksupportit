@@ -1,0 +1,240 @@
+<section class="diag gk-section">
+  <div class="gk-container diag__wrap">
+
+    <!-- Barre de progression (masquée sur l'accueil) -->
+    @if (etape() !== 'accueil') {
+      <div class="diag__progress" aria-hidden="true">
+        <div class="diag__progress-bar" [style.width.%]="(numeroEtape() / 4) * 100"></div>
+      </div>
+      <ol class="diag__steps">
+        <li [class.is-active]="numeroEtape() >= 1">1&nbsp;· Problème</li>
+        <li [class.is-active]="numeroEtape() >= 2">2&nbsp;· Précisions</li>
+        <li [class.is-active]="numeroEtape() >= 3">3&nbsp;· Coordonnées</li>
+        <li [class.is-active]="numeroEtape() >= 4">4&nbsp;· Résultat</li>
+      </ol>
+    }
+
+    <!-- ============ ÉTAPE : ACCUEIL ============ -->
+    @if (etape() === 'accueil') {
+      <div class="diag__intro">
+        <span class="diag__pill">Gratuit · sans engagement</span>
+        <h1>Diagnostic gratuit en 2 minutes</h1>
+        <p class="diag__lead">
+          Répondez à quelques questions simples, nous identifions le problème de votre
+          ordinateur. Gratuit, sans engagement.
+        </p>
+        <button type="button" class="gk-btn gk-btn--primary diag__cta" (click)="commencer()">
+          Commencer mon diagnostic →
+        </button>
+        <p class="diag__note">
+          Aucune connaissance technique requise. Vous n'aurez qu'à décrire ce que vous observez.
+        </p>
+      </div>
+    }
+
+    <!-- ============ ÉTAPE : CHOIX DU SYMPTÔME ============ -->
+    @if (etape() === 'symptome') {
+      <button type="button" class="diag__back" (click)="retour()">← Retour</button>
+      <h1 class="diag__h">Que se passe-t-il avec votre ordinateur&nbsp;?</h1>
+      <p class="diag__lead">Choisissez ce qui ressemble le plus à votre situation.</p>
+
+      @for (groupe of groupes(); track groupe.nom) {
+        <div class="diag__groupe">
+          <h2 class="diag__groupe-titre">{{ groupe.nom }}</h2>
+          <div class="diag__cartes">
+            @for (s of groupe.symptomes; track s.id) {
+              <button type="button" class="diag__carte" (click)="choisirSymptome(s)">
+                <span class="diag__carte-ico" aria-hidden="true">{{ s.icone }}</span>
+                <span class="diag__carte-lib">{{ s.libellePublic }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      } @empty {
+        <p class="diag__vide">Le diagnostic est momentanément indisponible. Réessayez plus tard.</p>
+      }
+    }
+
+    <!-- ============ ÉTAPE : QUESTIONS DE PRÉCISION ============ -->
+    @if (etape() === 'questions' && symptomeChoisi(); as s) {
+      <button type="button" class="diag__back" (click)="retour()">← Retour</button>
+      <div class="diag__sujet">
+        <span class="diag__sujet-ico" aria-hidden="true">{{ s.icone }}</span>
+        <h1 class="diag__h">{{ s.libellePublic }}</h1>
+      </div>
+
+      @if (s.champLibre) {
+        <p class="diag__lead">Décrivez votre problème en quelques mots (facultatif).</p>
+        <textarea
+          class="diag__textarea"
+          rows="4"
+          placeholder="Ex. : mon ordinateur émet un bip au démarrage et ne va pas plus loin…"
+          [ngModel]="champLibre()"
+          (ngModelChange)="champLibre.set($event)"
+        ></textarea>
+      } @else {
+        <p class="diag__lead">Quelques précisions pour affiner. « Je ne sais pas » est toujours accepté.</p>
+        @for (q of s.questions; track q.id) {
+          <fieldset class="diag__question">
+            <legend>{{ q.libelle }}</legend>
+            <div class="diag__options">
+              @for (opt of q.options; track opt.valeur) {
+                <button
+                  type="button"
+                  class="diag__option"
+                  [class.is-selected]="reponses()[q.id] === opt.valeur"
+                  [attr.aria-pressed]="reponses()[q.id] === opt.valeur"
+                  (click)="repondre(q.id, opt.valeur)"
+                >
+                  {{ opt.label }}
+                </button>
+              }
+            </div>
+          </fieldset>
+        }
+      }
+
+      <button
+        type="button"
+        class="gk-btn gk-btn--primary diag__cta"
+        [disabled]="!peutContinuer()"
+        (click)="continuer()"
+      >
+        Continuer →
+      </button>
+    }
+
+    <!-- ============ ÉTAPE : COORDONNÉES + CONSENTEMENT ============ -->
+    @if (etape() === 'contact') {
+      <button type="button" class="diag__back" (click)="retour()">← Retour</button>
+      <h1 class="diag__h">✓ Votre diagnostic est prêt</h1>
+      <p class="diag__lead">
+        Où souhaitez-vous le recevoir&nbsp;? Laissez-nous un moyen de vous joindre pour votre
+        problème.
+      </p>
+
+      <form class="diag__form" [formGroup]="form" (ngSubmit)="soumettreContact()" novalidate>
+        <label class="diag__champ">
+          <span>Nom <em>*</em></span>
+          <input type="text" formControlName="nom" autocomplete="name" [class.is-err]="enErreur('nom')" />
+        </label>
+
+        <div class="diag__duo">
+          <label class="diag__champ">
+            <span>Téléphone / WhatsApp</span>
+            <input type="tel" formControlName="telephone" autocomplete="tel" inputmode="tel" />
+          </label>
+          <label class="diag__champ">
+            <span>E-mail</span>
+            <input type="email" formControlName="email" autocomplete="email" [class.is-err]="enErreur('email')" />
+          </label>
+        </div>
+        @if (form.hasError('contactManquant') && (form.get('telephone')?.touched || form.get('email')?.touched)) {
+          <p class="diag__err-msg">Indiquez au moins un téléphone ou un e-mail.</p>
+        }
+
+        <label class="diag__champ">
+          <span>Type de machine <small>(facultatif)</small></span>
+          <input type="text" formControlName="typeMachine" placeholder="Portable / fixe, marque et modèle si connu" />
+        </label>
+
+        <label class="diag__champ">
+          <span>Secteur d'Ottawa <small>(facultatif)</small></span>
+          <input type="text" formControlName="secteur" placeholder="Ex. : Orléans, Barrhaven…" />
+        </label>
+
+        <!-- Honeypot anti-robot : invisible, ne pas remplir. -->
+        <input type="text" formControlName="website" class="diag__hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <label class="diag__consent" [class.is-err]="enErreur('consentement')">
+          <input type="checkbox" formControlName="consentement" />
+          <span>
+            J'accepte que GK SupportIT conserve mes coordonnées et me recontacte au sujet de mon
+            problème.
+            <a routerLink="/confidentialite" target="_blank" rel="noopener">Politique de confidentialité</a>.
+          </span>
+        </label>
+
+        <button type="submit" class="gk-btn gk-btn--primary diag__cta" [disabled]="envoi()">
+          {{ envoi() ? 'Envoi…' : 'Voir mon diagnostic →' }}
+        </button>
+      </form>
+
+      <button type="button" class="diag__skip" (click)="voirSansCoordonnees()">
+        Voir mon résultat sans laisser mes coordonnées
+      </button>
+    }
+
+    <!-- ============ ÉTAPE : RÉSULTAT ============ -->
+    @if (etape() === 'resultat' && resultat(); as r) {
+      <button type="button" class="diag__back" (click)="retour()">← Retour</button>
+
+      <div class="diag__resultat">
+        <span class="diag__grav" [class]="'diag__grav--' + r.gravite">
+          {{ gravites[r.gravite].icone }} {{ gravites[r.gravite].label }}
+        </span>
+        <h1 class="diag__h">Voici ce que nous pensons</h1>
+        <p class="diag__explication">{{ r.explication }}</p>
+
+        @if (r.alerte) {
+          <div class="diag__alerte" role="alert">
+            <span aria-hidden="true">⚠️</span>
+            <p>{{ r.alerte }}</p>
+          </div>
+        }
+
+        <div class="diag__estim">
+          <span class="diag__estim-label">Estimation</span>
+          <strong>{{ r.prixEstime }}</strong>
+          <span class="diag__estim-note">
+            Le prix final est confirmé après vérification sur place.
+          </span>
+        </div>
+
+        @if (serviceRecommande(); as service) {
+          <h2 class="diag__sous-titre">Service recommandé</h2>
+          <div class="diag__service">
+            <gk-service-card [service]="service" [whatsappNumber]="settings()?.whatsappNumber ?? ''" />
+          </div>
+        }
+
+        @if (interventionConfirmee()) {
+          <div class="diag__confirme" role="status">
+            ✓ Votre demande est enregistrée. Nous vous recontactons rapidement.
+          </div>
+        }
+
+        <div class="diag__actions">
+          <button
+            type="button"
+            class="gk-btn gk-btn--primary"
+            [disabled]="envoi() || interventionConfirmee()"
+            (click)="demanderIntervention()"
+          >
+            Demander une intervention
+          </button>
+          <a
+            class="gk-btn gk-btn--whatsapp"
+            [href]="lienWhatsApp()"
+            target="_blank"
+            rel="noopener"
+            (click)="promouvoirSiBesoin()"
+          >
+            En parler sur WhatsApp
+          </a>
+        </div>
+
+        <p class="diag__disclaimer">
+          Ce diagnostic est une estimation basée sur vos réponses. Seule une vérification sur
+          place permet de confirmer la cause exacte. Nous utilisons un langage prudent
+          (« probablement », « à confirmer ») car aucun problème ne peut être garanti à distance.
+        </p>
+
+        <button type="button" class="diag__refaire" (click)="recommencer()">
+          ↺ Refaire un diagnostic
+        </button>
+      </div>
+    }
+
+  </div>
+</section>

@@ -5,6 +5,7 @@ import { AdminApiService } from '../services/admin-api.service';
 import { DemandesBadgeService } from '../services/demandes-badge.service';
 import { Mouvement } from '../../core/models/mouvement.model';
 import { Intervention } from '../../core/models/intervention.model';
+import { Demande } from '../../core/models/demande.model';
 import { formatMontant } from '../../core/utils/format.util';
 
 /**
@@ -34,6 +35,19 @@ export class DashboardComponent {
   readonly mouvements = toSignal(this.api.list<Mouvement>('tresorerie'), { initialValue: [] });
   readonly interventions = toSignal(this.api.list<Intervention>('interventions'), {
     initialValue: [],
+  });
+  readonly demandes = toSignal(this.api.list<Demande>('demandes'), { initialValue: [] });
+
+  /** Diagnostics en ligne enregistrés (avec coordonnées + consentement). */
+  readonly diagnosticsEffectues = computed(
+    () => this.demandes().filter((d) => d.source === 'diagnostic-en-ligne').length,
+  );
+  /** Taux de conversion des diagnostics en interventions (statut « converti »). */
+  readonly tauxConversion = computed(() => {
+    const diag = this.demandes().filter((d) => d.source === 'diagnostic-en-ligne');
+    if (diag.length === 0) return 0;
+    const convertis = diag.filter((d) => d.statut === 'converti').length;
+    return Math.round((convertis / diag.length) * 100);
   });
 
   private somme(filtre: (m: Mouvement) => boolean): number {
