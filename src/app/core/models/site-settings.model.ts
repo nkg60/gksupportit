@@ -23,4 +23,6 @@ export interface SiteSettings {
   aboutText: string;
   /** Capital de départ, pour le tableau de bord admin. */
   capitalDepart: number;
+  /** Slug de la carte de visite numérique principale (ex. « ghislain »). */
+  carteSlug?: string;
 }

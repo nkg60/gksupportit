@@ -57,7 +57,9 @@
   "services": {
     "title": "Our services",
     "subtitle": "Clear prices, below the Ottawa market. Travel included.",
-    "empty": "No services to display at the moment."
+    "empty": "No services to display at the moment.",
+    "notSure": "Not sure which service you need?",
+    "doDiagnostic": "Take the free diagnostic"
   },
   "form": {
     "title": "Describe my problem",

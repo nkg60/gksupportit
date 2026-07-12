@@ -224,6 +224,12 @@
           </a>
         </div>
 
+        @if (settings()?.carteSlug; as slug) {
+          <a class="diag__carte-lien" [routerLink]="['/carte', slug]">
+            📇 Enregistrer notre contact (carte de visite numérique)
+          </a>
+        }
+
         <p class="diag__disclaimer">
           Ce diagnostic est une estimation basée sur vos réponses. Seule une vérification sur
           place permet de confirmer la cause exacte. Nous utilisons un langage prudent

@@ -405,6 +405,16 @@
   gap: 0.75rem;
   margin: 2rem 0 1.25rem;
 }
+.diag__carte-lien {
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  font-weight: 700;
+  color: var(--gk-navy);
+  text-decoration: none;
+}
+.diag__carte-lien:hover {
+  text-decoration: underline;
+}
 .diag__disclaimer {
   font-size: 0.85rem;
   color: var(--gk-ink-soft);

@@ -57,7 +57,9 @@
   "services": {
     "title": "Nos services",
     "subtitle": "Des prix clairs, sous le marché d'Ottawa. Déplacement inclus.",
-    "empty": "Aucun service à afficher pour le moment."
+    "empty": "Aucun service à afficher pour le moment.",
+    "notSure": "Vous ne savez pas quel service il vous faut ?",
+    "doDiagnostic": "Faites le diagnostic gratuit"
   },
   "form": {
     "title": "Décrire mon problème",

@@ -16,4 +16,5 @@ export const SETTINGS_SEED: SiteSettings = {
   aboutText:
     "GK SupportIT est un service de réparation informatique à domicile à Ottawa, bilingue (français / anglais). Notre engagement : vos données d'abord, des prix transparents sous le marché, et des pièces facturées au prix coûtant avec reçu. Le déplacement est inclus partout à Ottawa.",
   capitalDepart: 500,
+  carteSlug: 'ghislain',
 };

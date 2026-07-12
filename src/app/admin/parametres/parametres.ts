@@ -34,6 +34,7 @@ export class ParametresComponent {
     supplementHorsZone: [''],
     aboutText: [''],
     capitalDepart: [0],
+    carteSlug: [''],
   });
 
   constructor() {

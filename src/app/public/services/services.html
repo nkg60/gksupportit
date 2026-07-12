@@ -8,6 +8,11 @@
 
   <section class="gk-section">
     <div class="gk-container">
+      <div class="services-cta">
+        <p>{{ t('services.notSure') }}</p>
+        <a class="gk-btn gk-btn--primary" routerLink="/diagnostic">{{ t('services.doDiagnostic') }}</a>
+      </div>
+
       @if (services().length) {
         <div class="services-grid">
           @for (s of services(); track s.id; let i = $index) {
