@@ -77,8 +77,40 @@
   background: var(--gk-danger);
   color: #fff;
 }
-.admin__logout {
+.admin__notif {
   margin-top: 1rem;
+  background: transparent;
+  border: 1px solid rgba(234, 241, 251, 0.3);
+  color: var(--gk-on-navy);
+  padding: 0.6rem;
+  border-radius: var(--gk-radius-sm);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  width: 100%;
+}
+.admin__notif:hover:not(:disabled) {
+  border-color: var(--gk-amber);
+  color: var(--gk-white);
+}
+.admin__notif:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.admin__notif--on {
+  border-color: var(--gk-amber);
+  background: rgba(242, 169, 0, 0.14);
+  color: var(--gk-white);
+}
+.admin__notif-msg {
+  margin: 0.4rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--gk-on-navy);
+  opacity: 0.85;
+}
+.admin__logout {
+  margin-top: 0.6rem;
   background: transparent;
   border: 1px solid rgba(234, 241, 251, 0.3);
   color: var(--gk-on-navy);

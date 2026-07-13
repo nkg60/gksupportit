@@ -1,5 +1,6 @@
 import type { Config } from '@netlify/functions';
 import { readJson, writeJson } from './_lib/blobs.mjs';
+import { notifierAdmin } from './_lib/push.mjs';
 
 /**
  * POST /api/demande
@@ -59,6 +60,12 @@ export default async (req: Request): Promise<Response> => {
   const demandes = await readJson<unknown[]>('demandes', []);
   demandes.push(demande);
   await writeJson('demandes', demandes);
+
+  await notifierAdmin({
+    title: '📨 Nouvelle demande',
+    body: `${demande.nom} — ${demande.appareil} · ${demande.secteur}`,
+    url: '/admin/demandes',
+  });
 
   return Response.json({ ok: true, id: demande.id });
 };

@@ -17,6 +17,20 @@
         </a>
       }
     </nav>
+    @if (push.supporte) {
+      <button
+        type="button"
+        class="admin__notif"
+        [class.admin__notif--on]="push.active()"
+        [disabled]="push.occupe()"
+        (click)="push.basculer()"
+      >
+        {{ push.active() ? '🔔 Notifications activées' : '🔕 Activer les notifications' }}
+      </button>
+      @if (push.message()) {
+        <p class="admin__notif-msg">{{ push.message() }}</p>
+      }
+    }
     <button type="button" class="admin__logout" (click)="deconnexion()">↩ Déconnexion</button>
   </aside>
 

@@ -1,5 +1,6 @@
 import type { Config, Context } from '@netlify/functions';
 import { readJson, writeJson } from './_lib/blobs.mjs';
+import { notifierAdmin } from './_lib/push.mjs';
 import { ipCliente, limiteDepassee } from './_lib/antispam.mjs';
 
 /**
@@ -48,6 +49,11 @@ export default async (req: Request, context: Context): Promise<Response> => {
   if (cible.statut === 'prospect') {
     cible.statut = 'nouvelle-demande';
     await writeJson('demandes', demandes);
+    await notifierAdmin({
+      title: '🔥 Demande d’intervention',
+      body: `${cible.nom ?? 'Un visiteur'} souhaite une intervention`,
+      url: '/admin/demandes',
+    });
   }
 
   return Response.json({ ok: true });

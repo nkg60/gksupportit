@@ -1,6 +1,7 @@
 import type { Config, Context } from '@netlify/functions';
 import { getStore } from '@netlify/blobs';
 import { readJson, writeJson } from './_lib/blobs.mjs';
+import { notifierAdmin } from './_lib/push.mjs';
 import { estRobot, ipCliente, limiteDepassee } from './_lib/antispam.mjs';
 
 /**
@@ -175,6 +176,14 @@ export default async (req: Request, context: Context): Promise<Response> => {
   const demandes = await readJson<unknown[]>('demandes', []);
   demandes.push(demande);
   await writeJson('demandes', demandes);
+
+  // Notification adaptée au type : cas inconnu (prioritaire) / intervention / prospect.
+  const notif = casInconnu
+    ? { title: '❓ Cas non répertorié', body: `${nom} — à rappeler en priorité`, url: '/admin/cas-inconnus' }
+    : statut === 'nouvelle-demande'
+      ? { title: '🔥 Demande d’intervention', body: `${nom} — ${symptome || 'diagnostic en ligne'}`, url: '/admin/demandes' }
+      : { title: '🧭 Nouveau diagnostic', body: `${nom} — ${symptome || 'diagnostic en ligne'}`, url: '/admin/demandes' };
+  await notifierAdmin(notif);
 
   return Response.json({ ok: true, id: demande.id });
 };

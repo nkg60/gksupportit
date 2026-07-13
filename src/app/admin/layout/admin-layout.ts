@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { DemandesBadgeService } from '../services/demandes-badge.service';
+import { PushNotificationsService } from '../services/push-notifications.service';
 import { LogoComponent } from '../../shared/logo/logo';
 
 /**
@@ -19,6 +20,7 @@ import { LogoComponent } from '../../shared/logo/logo';
 export class AdminLayoutComponent {
   private auth = inject(AuthService);
   private badge = inject(DemandesBadgeService);
+  readonly push = inject(PushNotificationsService);
 
   /** Compteur de nouvelles demandes (badge de navigation). */
   readonly nouvellesDemandes = this.badge.nouvelles;
