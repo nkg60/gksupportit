@@ -80,13 +80,8 @@ export class PushNotificationsService {
       }
 
       // Étape 3 — abonnement push auprès du navigateur.
-      let sub: PushSubscription;
-      try {
-        sub = await this.swPush.requestSubscription({ serverPublicKey: key });
-      } catch {
-        this.message.set("Le navigateur n'a pas pu créer l'abonnement push (réessayez, ou vérifiez que l'app est installée sur iPhone).");
-        return;
-      }
+      const sub = await this.creerAbonnement(key);
+      if (!sub) return; // message déjà positionné par creerAbonnement()
 
       // Étape 4 — enregistrement de l'abonnement côté serveur.
       try {
@@ -100,6 +95,32 @@ export class PushNotificationsService {
       this.message.set('Notifications activées sur cet appareil.');
     } finally {
       this.occupe.set(false);
+    }
+  }
+
+  /**
+   * Crée l'abonnement push du navigateur, ou null (avec message) en cas d'échec.
+   * Gère le cas fréquent d'un abonnement résiduel créé avec une AUTRE clé VAPID
+   * (ancienne tentative / clé régénérée) : on le retire puis on réessaie.
+   */
+  private async creerAbonnement(key: string): Promise<PushSubscription | null> {
+    try {
+      return await this.swPush.requestSubscription({ serverPublicKey: key });
+    } catch (e) {
+      if (e instanceof Error && e.name === 'InvalidStateError') {
+        try {
+          await this.swPush.unsubscribe();
+          return await this.swPush.requestSubscription({ serverPublicKey: key });
+        } catch {
+          /* échec persistant → message générique ci-dessous */
+        }
+      }
+      const nom = e instanceof Error ? e.name : 'inconnu';
+      this.message.set(
+        `Le navigateur n'a pas pu créer l'abonnement push (${nom}). ` +
+          "Sur iPhone, l'app doit d'abord être installée sur l'écran d'accueil (iOS 16.4+) et ouverte depuis son icône.",
+      );
+      return null;
     }
   }
 
