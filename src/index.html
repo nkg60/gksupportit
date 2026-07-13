@@ -4,15 +4,23 @@
     <meta charset="utf-8" />
     <title>GK SupportIT — Réparation informatique à domicile à Ottawa</title>
     <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta
       name="description"
       content="Réparation informatique à domicile à Ottawa, bilingue FR/EN. Déplacement inclus, prix sous le marché, diagnostic gratuit si réparation."
     />
     <meta name="theme-color" content="#0f2d52" />
     <link rel="icon" type="image/png" href="/assets/brand/favicon-64.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+
+    <!-- Installation sur écran d'accueil iOS (Safari ne lit pas le manifest) -->
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="GK Support" />
   </head>
   <body>
     <app-root></app-root>
+    <noscript>Please enable JavaScript to continue using this application.</noscript>
   </body>
 </html>

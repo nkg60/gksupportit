@@ -25,6 +25,21 @@
   targetPort = 4200
   framework = "#custom"
 
+# --- En-têtes PWA / service worker ---
+# Le worker et son manifeste ne doivent JAMAIS être mis en cache par le
+# navigateur/CDN, sinon les mises à jour de l'app ne sont pas détectées.
+[[headers]]
+  for = "/ngsw-worker.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+    # Autorise le worker à contrôler toute l'origine (portée racine).
+    Service-Worker-Allowed = "/"
+
+[[headers]]
+  for = "/ngsw.json"
+  [headers.values]
+    Cache-Control = "no-cache"
+
 # --- Redirections ---
 # Les fonctions déclarent elles-mêmes leur route via `config.path` (/api/...),
 # et ces routes de fonction sont évaluées AVANT la redirection SPA ci-dessous.

@@ -13,6 +13,7 @@ import { provideTransloco, TranslocoService } from '@jsverse/transloco';
 import { routes } from './app.routes';
 import { TranslocoHttpLoader } from './core/i18n/transloco-loader';
 import { adminAuthInterceptor } from './admin/auth/auth.interceptor';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -48,6 +49,10 @@ export const appConfig: ApplicationConfig = {
       ) {
         transloco.setActiveLang(saved);
       }
+    }),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
 };
