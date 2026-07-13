@@ -13,6 +13,7 @@ import {
 } from '../../core/models/diagnostic.model';
 import { ServiceCardComponent } from '../../shared/service-card/service-card';
 import { lienWhatsApp } from '../../core/utils/whatsapp.util';
+import { redimensionnerImage } from '../../core/utils/image.util';
 
 /** Étapes du parcours de diagnostic. */
 type EtapeDiagnostic = 'accueil' | 'symptome' | 'questions' | 'contact' | 'resultat';
@@ -59,6 +60,9 @@ export class DiagnosticComponent {
   readonly symptomeChoisi = signal<SymptomeDiagnostic | null>(null);
   readonly reponses = signal<Record<string, string>>({});
   readonly champLibre = signal('');
+  /** Photo facultative (Cas 2) : contenu prêt à l'envoi + aperçu local. */
+  readonly photo = signal<{ dataBase64: string; contentType: string; apercu: string } | null>(null);
+  readonly photoErreur = signal('');
 
   /** État de l'enregistrement. */
   readonly demandeId = signal<string | null>(null);
@@ -137,15 +141,63 @@ export class DiagnosticComponent {
     const s = this.settings();
     if (!r || !s) return '#';
     const service = this.serviceRecommande();
+    const desc = this.champLibre().trim();
     const resume =
       `Bonjour GK SupportIT, j'ai fait le diagnostic gratuit en ligne :\n` +
       `• Problème : ${r.symptomeLibelle}\n` +
+      (r.champLibre && desc ? `• Description : ${desc}\n` : '') +
       `• Diagnostic : ${r.explication}\n` +
       (service ? `• Service conseillé : ${service.nom}\n` : '') +
       `• Estimation : ${r.prixEstime}\n\n` +
       `J'aimerais en parler.`;
     return lienWhatsApp(s.whatsappNumber, resume);
   });
+
+  /**
+   * Lien WhatsApp « je préfère en parler directement », disponible à chaque
+   * étape avec le contexte déjà saisi (Cas 3 : ne jamais laisser sans issue).
+   */
+  readonly lienParlerDirect = computed(() => {
+    const s = this.settings();
+    if (!s) return '#';
+    const sym = this.symptomeChoisi();
+    const lignes = [
+      'Bonjour GK SupportIT, je fais le diagnostic en ligne et je préfère en parler directement.',
+    ];
+    if (sym) lignes.push(`• Problème : ${sym.libellePublic}`);
+    const desc = this.champLibre().trim();
+    if (desc) lignes.push(`• Description : ${desc}`);
+    for (const r of this.reponsesLisibles(sym)) lignes.push(`• ${r.question} → ${r.reponse}`);
+    return lienWhatsApp(s.whatsappNumber, lignes.join('\n'));
+  });
+
+  /** Nom d'un service à partir de son id (pour les causes possibles). */
+  nomService(id: string): string {
+    return this.services().find((s) => s.id === id)?.nom ?? '';
+  }
+
+  /** Photo facultative (Cas 2) : redimensionnée dans le navigateur avant envoi. */
+  choisirPhoto(event: Event): void {
+    const fichier = (event.target as HTMLInputElement).files?.[0];
+    if (!fichier) return;
+    this.photoErreur.set('');
+    redimensionnerImage(fichier, 1200)
+      .then(({ dataBase64, contentType }) =>
+        this.photo.set({
+          dataBase64,
+          contentType,
+          apercu: `data:${contentType};base64,${dataBase64}`,
+        }),
+      )
+      .catch(() => this.photoErreur.set("Impossible de lire cette image. Essayez-en une autre."));
+    // Permet de re-choisir le même fichier après un retrait.
+    (event.target as HTMLInputElement).value = '';
+  }
+
+  retirerPhoto(): void {
+    this.photo.set(null);
+    this.photoErreur.set('');
+  }
 
   // --- Navigation ---
 
@@ -157,6 +209,7 @@ export class DiagnosticComponent {
     this.symptomeChoisi.set(s);
     this.reponses.set({});
     this.champLibre.set('');
+    this.retirerPhoto();
     this.etape.set(s.questions.length || s.champLibre ? 'questions' : 'contact');
   }
 
@@ -204,6 +257,10 @@ export class DiagnosticComponent {
       explication: r.explication,
       consentement: v.consentement,
       statut,
+      casInconnu: r.inconclusif || r.champLibre,
+      descriptionLibre: this.champLibre().trim(),
+      photoBase64: this.photo()?.dataBase64 ?? '',
+      photoType: this.photo()?.contentType ?? '',
       website: v.website,
     };
 
@@ -265,6 +322,7 @@ export class DiagnosticComponent {
     this.symptomeChoisi.set(null);
     this.reponses.set({});
     this.champLibre.set('');
+    this.retirerPhoto();
     this.demandeId.set(null);
     this.intentionIntervention.set(false);
     this.interventionConfirmee.set(false);

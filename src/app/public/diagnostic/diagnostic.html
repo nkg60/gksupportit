@@ -53,6 +53,9 @@
       } @empty {
         <p class="diag__vide">Le diagnostic est momentanément indisponible. Réessayez plus tard.</p>
       }
+      <a class="diag__parler" [href]="lienParlerDirect()" target="_blank" rel="noopener">
+        💬 Je préfère en parler directement
+      </a>
     }
 
     <!-- ============ ÉTAPE : QUESTIONS DE PRÉCISION ============ -->
@@ -64,7 +67,7 @@
       </div>
 
       @if (s.champLibre) {
-        <p class="diag__lead">Décrivez votre problème en quelques mots (facultatif).</p>
+        <p class="diag__lead">Décrivez ce qui se passe, avec vos mots à vous.</p>
         <textarea
           class="diag__textarea"
           rows="4"
@@ -72,6 +75,24 @@
           [ngModel]="champLibre()"
           (ngModelChange)="champLibre.set($event)"
         ></textarea>
+
+        <!-- Photo facultative — souvent plus parlante qu'une description. -->
+        <div class="diag__photo">
+          @if (photo(); as p) {
+            <img class="diag__photo-apercu" [src]="p.apercu" alt="Photo jointe" />
+            <button type="button" class="diag__photo-retirer" (click)="retirerPhoto()">
+              ✕ Retirer la photo
+            </button>
+          } @else {
+            <label class="diag__photo-btn">
+              📷 Ajouter une photo <small>(facultatif — souvent plus parlant que des mots)</small>
+              <input type="file" accept="image/*" (change)="choisirPhoto($event)" hidden />
+            </label>
+          }
+          @if (photoErreur()) {
+            <p class="diag__err-msg">{{ photoErreur() }}</p>
+          }
+        </div>
       } @else {
         <p class="diag__lead">Quelques précisions pour affiner. « Je ne sais pas » est toujours accepté.</p>
         @for (q of s.questions; track q.id) {
@@ -102,6 +123,9 @@
       >
         Continuer →
       </button>
+      <a class="diag__parler" [href]="lienParlerDirect()" target="_blank" rel="noopener">
+        💬 Je préfère en parler directement
+      </a>
     }
 
     <!-- ============ ÉTAPE : COORDONNÉES + CONSENTEMENT ============ -->
@@ -163,6 +187,9 @@
       <button type="button" class="diag__skip" (click)="voirSansCoordonnees()">
         Voir mon résultat sans laisser mes coordonnées
       </button>
+      <a class="diag__parler" [href]="lienParlerDirect()" target="_blank" rel="noopener">
+        💬 Je préfère en parler directement
+      </a>
     }
 
     <!-- ============ ÉTAPE : RÉSULTAT ============ -->
@@ -170,26 +197,57 @@
       <button type="button" class="diag__back" (click)="retour()">← Retour</button>
 
       <div class="diag__resultat">
-        <span class="diag__grav" [class]="'diag__grav--' + r.gravite">
-          {{ gravites[r.gravite].icone }} {{ gravites[r.gravite].label }}
-        </span>
-        <h1 class="diag__h">Voici ce que nous pensons</h1>
-        <p class="diag__explication">{{ r.explication }}</p>
+        @if (r.champLibre) {
+          <!-- Cas 2 : symptôme absent de la liste (« Autre ») -->
+          <span class="diag__grav diag__grav--info">📨 Bien reçu</span>
+          <h1 class="diag__h">Merci, c'est transmis</h1>
+          <p class="diag__explication">
+            Merci, votre description a bien été transmise. Chaque situation est différente —
+            nous vous répondons personnellement pour comprendre votre problème.
+          </p>
+        } @else {
+          <!-- Non concluant : pas de gravité affirmée (on ne tranche pas). -->
+          @if (r.inconclusif) {
+            <span class="diag__grav diag__grav--info">❓ À confirmer</span>
+          } @else {
+            <span class="diag__grav" [class]="'diag__grav--' + r.gravite">
+              {{ gravites[r.gravite].icone }} {{ gravites[r.gravite].label }}
+            </span>
+          }
+          <h1 class="diag__h">{{ r.inconclusif ? 'Plusieurs causes possibles' : 'Voici ce que nous pensons' }}</h1>
+          <p class="diag__explication">{{ r.explication }}</p>
 
-        @if (r.alerte) {
-          <div class="diag__alerte" role="alert">
-            <span aria-hidden="true">⚠️</span>
-            <p>{{ r.alerte }}</p>
+          @if (r.alerte) {
+            <div class="diag__alerte" role="alert">
+              <span aria-hidden="true">⚠️</span>
+              <p>{{ r.alerte }}</p>
+            </div>
+          }
+
+          @if (r.inconclusif && r.causes.length) {
+            <div class="diag__causes">
+              <h2>Causes possibles</h2>
+              <ul>
+                @for (c of r.causes; track c.serviceId; let i = $index) {
+                  <li>
+                    <span class="diag__cause-prob">{{ i === 0 ? 'La plus fréquente' : (i === 1 ? 'Possible' : 'Moins probable') }}</span>
+                    {{ c.libelle }}
+                    @if (nomService(c.serviceId); as ns) { <em>({{ ns }})</em> }
+                  </li>
+                }
+              </ul>
+              <p class="diag__causes-note">Aucune n'est certaine : seule une vérification sur place permet de trancher.</p>
+            </div>
+          }
+
+          <div class="diag__estim">
+            <span class="diag__estim-label">Estimation</span>
+            <strong>{{ r.prixEstime }}</strong>
+            <span class="diag__estim-note">
+              Le prix final est confirmé après vérification sur place.
+            </span>
           </div>
         }
-
-        <div class="diag__estim">
-          <span class="diag__estim-label">Estimation</span>
-          <strong>{{ r.prixEstime }}</strong>
-          <span class="diag__estim-note">
-            Le prix final est confirmé après vérification sur place.
-          </span>
-        </div>
 
         @if (serviceRecommande(); as service) {
           <h2 class="diag__sous-titre">Service recommandé</h2>

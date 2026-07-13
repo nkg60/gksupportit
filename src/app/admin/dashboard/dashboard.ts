@@ -50,6 +50,49 @@ export class DashboardComponent {
   /** Entrées publiques orphelines (panne référencée supprimée). */
   readonly diagOrphelins = computed(() => entreesOrphelines(this.arbre(), this.pannes()).length);
 
+  /** Cas non répertoriés (diagnostics non concluants / « Autre »). */
+  private readonly casInconnus = computed(() =>
+    this.demandes().filter((d) => d.casInconnu || d.statut === 'cas-inconnu'),
+  );
+  readonly nbCasInconnus = computed(() => this.casInconnus().length);
+  /** Taux de cas non concluants sur l'ensemble des diagnostics en ligne. */
+  readonly tauxCasInconnus = computed(() => {
+    const diag = this.demandes().filter((d) => d.source === 'diagnostic-en-ligne').length;
+    return diag ? Math.round((this.nbCasInconnus() / diag) * 100) : 0;
+  });
+  /** Mots les plus fréquents dans les descriptions des cas non répertoriés. */
+  readonly motsFrequents = computed(() => this.analyserMots());
+  /** Mots revenant dans au moins 3 cas → suggestion d'ajout au guide. */
+  readonly recurrents = computed(() => this.motsFrequents().filter((m) => m.n >= 3));
+
+  private readonly stopwords = new Set([
+    'avec', 'pour', 'dans', 'mon', 'ordinateur', 'ordi', 'plus', 'pas', 'que', 'qui', 'les', 'des',
+    'une', 'sur', 'est', 'sont', 'tout', 'tous', 'mais', 'quand', 'depuis', 'quoi', 'cela', 'cette',
+    'mes', 'nous', 'vous', 'aux', 'par', 'ne', 'se', 'ça', 'fait', 'faire', 'très', 'bien', 'aussi',
+    'pc', 'portable', 'écran', 'ecran',
+  ]);
+
+  /** Compte les mots significatifs (une fois par cas). */
+  private analyserMots(): { mot: string; n: number }[] {
+    const compte = new Map<string, number>();
+    for (const d of this.casInconnus()) {
+      const txt = (d.descriptionLibre || d.symptomeChoisi || '').toLowerCase();
+      const mots = new Set(
+        txt
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9 ]/g, ' ')
+          .split(/\s+/)
+          .filter((w) => w.length > 3 && !this.stopwords.has(w)),
+      );
+      for (const m of mots) compte.set(m, (compte.get(m) ?? 0) + 1);
+    }
+    return [...compte.entries()]
+      .map(([mot, n]) => ({ mot, n }))
+      .sort((a, b) => b.n - a.n)
+      .slice(0, 5);
+  }
+
   /** Diagnostics en ligne enregistrés (avec coordonnées + consentement). */
   readonly diagnosticsEffectues = computed(
     () => this.demandes().filter((d) => d.source === 'diagnostic-en-ligne').length,

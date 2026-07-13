@@ -22,6 +22,8 @@ export class AdminLayoutComponent {
 
   /** Compteur de nouvelles demandes (badge de navigation). */
   readonly nouvellesDemandes = this.badge.nouvelles;
+  /** Compteur de cas non répertoriés (badge de navigation). */
+  readonly casInconnus = this.badge.casInconnus;
 
   /** Menu latéral ouvert (mobile). */
   readonly menuOuvert = signal(false);
@@ -29,6 +31,7 @@ export class AdminLayoutComponent {
   readonly liens = [
     { chemin: 'dashboard', libelle: 'Tableau de bord', icone: '📊' },
     { chemin: 'demandes', libelle: 'Demandes', icone: '📨' },
+    { chemin: 'cas-inconnus', libelle: 'Cas inconnus', icone: '❓' },
     { chemin: 'tresorerie', libelle: 'Trésorerie', icone: '💰' },
     { chemin: 'interventions', libelle: 'Interventions', icone: '🛠️' },
     { chemin: 'depannage', libelle: 'Dépannage', icone: '🩺' },

@@ -38,17 +38,17 @@ export default async (req: Request, context: Context): Promise<Response> => {
   const demandes = await readJson<Record<string, unknown>[]>('demandes', []);
   const cible = demandes.find((d) => d.id === id);
 
-  // Bornage strict : seule une demande de diagnostic au statut « prospect ».
-  if (
-    !cible ||
-    cible.source !== 'diagnostic-en-ligne' ||
-    (cible.statut !== 'prospect' && cible.statut !== 'nouvelle-demande')
-  ) {
+  // Bornage strict : uniquement une demande issue du diagnostic, non finalisée.
+  const statutsPromouvables = ['prospect', 'nouvelle-demande', 'cas-inconnu'];
+  if (!cible || cible.source !== 'diagnostic-en-ligne' || !statutsPromouvables.includes(String(cible.statut))) {
     return Response.json({ ok: false, error: 'Demande introuvable' }, { status: 404 });
   }
 
-  cible.statut = 'nouvelle-demande';
-  await writeJson('demandes', demandes);
+  // Un prospect passe en « nouvelle-demande » ; un cas-inconnu reste prioritaire.
+  if (cible.statut === 'prospect') {
+    cible.statut = 'nouvelle-demande';
+    await writeJson('demandes', demandes);
+  }
 
   return Response.json({ ok: true });
 };

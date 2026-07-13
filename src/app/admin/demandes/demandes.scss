@@ -132,6 +132,11 @@
   color: var(--gk-ink-soft);
   border: 1.5px solid var(--gk-border);
 }
+.dem-statut-tag--cas-inconnu {
+  background: rgba(214, 69, 69, 0.12);
+  color: var(--gk-danger);
+  border-color: rgba(214, 69, 69, 0.4);
+}
 .dem-statut-tag--nouvelle-demande {
   background: rgba(242, 169, 0, 0.16);
   color: #8a5a00;

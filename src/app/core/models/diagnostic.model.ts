@@ -36,6 +36,8 @@ export interface ResultatRegle {
   explication: string;
   /** Alerte de prudence éventuelle (ex. « n'utilisez plus l'ordinateur »). */
   alerte: string | null;
+  /** Résultat volontairement non concluant (« plusieurs causes possibles »). */
+  inconclusif?: boolean;
 }
 
 /** Règle : si toutes les conditions sont vraies, alors ce résultat. */
@@ -67,10 +69,24 @@ export interface ArbreDiagnostic {
   symptomes: SymptomeDiagnostic[];
 }
 
+/** Une cause possible présentée quand le diagnostic est non concluant. */
+export interface CausePossible {
+  serviceId: string;
+  gravite: GraviteDiagnostic;
+  /** Formulation courte de la cause (langage simple). */
+  libelle: string;
+}
+
 /** Résultat final résolu, enrichi du contexte du symptôme choisi. */
 export interface DiagnosticResolu extends ResultatRegle {
   symptomeId: string;
   symptomeLibelle: string;
+  /** Vrai si aucune règle n'a permis de trancher (Cas 1). */
+  inconclusif: boolean;
+  /** Vrai pour le symptôme « Autre » à champ libre (Cas 2). */
+  champLibre: boolean;
+  /** 2-3 causes possibles à présenter quand c'est non concluant. */
+  causes: CausePossible[];
 }
 
 /** Charge utile envoyée à /api/submit-diagnostic (contact + diagnostic résolu). */
@@ -90,6 +106,14 @@ export interface DiagnosticSubmission {
   consentement: boolean;
   /** « prospect » (diagnostic seul) ou « nouvelle-demande » (intervention). */
   statut: 'prospect' | 'nouvelle-demande';
+  /** Cas non répertorié (non concluant ou « Autre ») → priorité admin. */
+  casInconnu: boolean;
+  /** Description libre saisie par le visiteur (Cas 2 « Autre »). */
+  descriptionLibre: string;
+  /** Photo facultative (Cas 2), redimensionnée côté client — base64 sans préfixe. */
+  photoBase64: string;
+  /** Type MIME de la photo (« image/webp », « image/jpeg »…). */
+  photoType: string;
   /** Honeypot anti-robot (toujours vide côté humain). */
   website: string;
 }

@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { SessionDepannageComponent } from './session-depannage';
 import { GuidePannesComponent } from './guide-pannes';
 import { ReferenceDepannageComponent } from './reference-depannage';
 import { DiagnosticEditorComponent } from './diagnostic-editor';
+import { PanneDraftService } from '../services/panne-draft.service';
 
 /**
  * Espace « Dépannage » : session guidée, gestion du guide des pannes (CRUD),
@@ -73,5 +74,11 @@ import { DiagnosticEditorComponent } from './diagnostic-editor';
   ],
 })
 export class DepannageComponent {
+  private draftSvc = inject(PanneDraftService);
   readonly onglet = signal<'session' | 'guide' | 'reference' | 'diagnostic'>('session');
+
+  constructor() {
+    // Arrivée depuis « Créer une panne à partir de ce cas » → onglet Guide.
+    if (this.draftSvc.draft()) this.onglet.set('guide');
+  }
 }

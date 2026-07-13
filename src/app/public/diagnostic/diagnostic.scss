@@ -205,6 +205,48 @@
   outline: none;
   border-color: var(--gk-amber);
 }
+
+/* Photo facultative (Cas 2 « Autre problème ») */
+.diag__photo {
+  margin: -0.5rem 0 1.5rem;
+}
+.diag__photo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1.5px dashed var(--gk-border);
+  border-radius: var(--gk-radius);
+  padding: 0.7rem 1rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--gk-ink-soft);
+  cursor: pointer;
+}
+.diag__photo-btn:hover {
+  border-color: var(--gk-amber);
+  color: var(--gk-ink);
+}
+.diag__photo-btn small {
+  font-weight: 400;
+}
+.diag__photo-apercu {
+  display: block;
+  max-width: 240px;
+  max-height: 180px;
+  border-radius: var(--gk-radius);
+  border: 1.5px solid var(--gk-border);
+  object-fit: cover;
+}
+.diag__photo-retirer {
+  margin-top: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--gk-danger);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
 .diag__cta[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
@@ -342,6 +384,69 @@
 .diag__grav--urgent {
   background: rgba(214, 69, 69, 0.14);
   color: var(--gk-danger);
+}
+.diag__grav--info {
+  background: rgba(15, 45, 82, 0.08);
+  color: var(--gk-navy);
+}
+
+/* Causes possibles (Cas 1 non concluant) */
+.diag__causes {
+  background: var(--gk-light);
+  border: 1.5px solid var(--gk-border);
+  border-radius: var(--gk-radius);
+  padding: 1rem 1.2rem;
+  margin: 1.25rem 0;
+}
+.diag__causes h2 {
+  font-size: 1rem;
+  margin: 0 0 0.6rem;
+}
+.diag__causes ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.diag__causes li {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.diag__causes li em {
+  color: var(--gk-ink-soft);
+  font-style: normal;
+}
+.diag__cause-prob {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--gk-navy);
+  background: rgba(242, 169, 0, 0.18);
+  border-radius: var(--gk-radius-pill);
+  padding: 0.1rem 0.5rem;
+  margin-right: 0.4rem;
+}
+.diag__causes-note {
+  margin: 0.7rem 0 0;
+  font-size: 0.85rem;
+  color: var(--gk-ink-soft);
+}
+
+/* Lien « je préfère en parler directement » */
+.diag__parler {
+  display: inline-block;
+  margin-top: 1.1rem;
+  color: #128c3e;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.diag__parler:hover {
+  text-decoration: underline;
 }
 .diag__explication {
   font-size: 1.12rem;

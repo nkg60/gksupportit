@@ -21,6 +21,22 @@
   </a>
 }
 
+<!-- Cas non répertoriés à traiter -->
+@if (nbCasInconnus() > 0) {
+  <a routerLink="/admin/cas-inconnus" class="dash-casinconnus">
+    ❓ <strong>{{ nbCasInconnus() }}</strong>
+    cas non répertorié(s) — ces prospects sans réponse sont à rappeler en premier →
+  </a>
+}
+
+<!-- Récurrence : un problème revient souvent -->
+@if (recurrents().length) {
+  <a routerLink="/admin/cas-inconnus" class="dash-recurrence">
+    🔁 Ce problème revient souvent (« <strong>{{ recurrents()[0].mot }}</strong> » dans
+    {{ recurrents()[0].n }} cas) — envisagez de l'ajouter au guide →
+  </a>
+}
+
 <!-- Cohérence pannes ↔ diagnostic client -->
 @if (pannesSansDiag() > 0 || diagOrphelins() > 0) {
   <a routerLink="/admin/depannage" class="dash-coherence">
@@ -97,4 +113,25 @@
     <p class="adm-kpi__value">{{ tauxConversion() }} %</p>
     <p class="adm-kpi__hint">Diagnostics → interventions</p>
   </div>
+
+  <div class="adm-kpi">
+    <p class="adm-kpi__label">Cas non répertoriés</p>
+    <p class="adm-kpi__value">{{ nbCasInconnus() }}</p>
+    <p class="adm-kpi__hint">Diagnostics sans réponse claire</p>
+  </div>
+
+  <div class="adm-kpi">
+    <p class="adm-kpi__label">Taux de cas inconnus</p>
+    <p class="adm-kpi__value">{{ tauxCasInconnus() }} %</p>
+    <p class="adm-kpi__hint">Sur les diagnostics en ligne</p>
+  </div>
 </div>
+
+@if (motsFrequents().length) {
+  <div class="dash-mots">
+    <span class="dash-mots__label">Mots fréquents en « Autre » :</span>
+    @for (m of motsFrequents(); track m.mot) {
+      <span class="dash-mots__chip">{{ m.mot }} <b>{{ m.n }}</b></span>
+    }
+  </div>
+}

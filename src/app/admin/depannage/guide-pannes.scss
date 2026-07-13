@@ -53,6 +53,30 @@
   font-weight: 600;
 }
 
+/* Photo du client (panne créée depuis un cas non répertorié) */
+.gp-photo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--gk-ink-soft);
+  text-decoration: none;
+}
+.gp-photo:hover {
+  text-decoration: none;
+  color: var(--gk-ink);
+}
+.gp-photo img {
+  display: block;
+  max-width: 120px;
+  max-height: 90px;
+  border-radius: var(--gk-radius-sm);
+  border: 1.5px solid var(--gk-border);
+  object-fit: cover;
+}
+
 /* Badges de statut « diagnostic client » */
 .gp-badge {
   display: inline-block;

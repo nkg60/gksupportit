@@ -87,6 +87,12 @@ export const routes: Routes = [
         title: 'Demandes — GK SupportIT',
       },
       {
+        path: 'cas-inconnus',
+        loadComponent: () =>
+          import('./admin/cas-inconnus/cas-inconnus').then((m) => m.CasInconnusComponent),
+        title: 'Cas non répertoriés — GK SupportIT',
+      },
+      {
         path: 'tresorerie',
         loadComponent: () =>
           import('./admin/tresorerie/tresorerie').then((m) => m.TresorerieComponent),

@@ -1,4 +1,5 @@
 import type { Config, Context } from '@netlify/functions';
+import { getStore } from '@netlify/blobs';
 import { readJson, writeJson } from './_lib/blobs.mjs';
 import { estRobot, ipCliente, limiteDepassee } from './_lib/antispam.mjs';
 
@@ -30,11 +31,40 @@ interface Entrante {
   explication?: string;
   consentement?: boolean;
   statut?: string;
+  casInconnu?: boolean;
+  descriptionLibre?: string;
+  /** Photo facultative (Cas 2), base64 sans préfixe + type MIME. */
+  photoBase64?: string;
+  photoType?: string;
   /** Honeypot anti-robot (doit rester vide). */
   website?: string;
 }
 
 const STATUTS_AUTORISES = ['prospect', 'nouvelle-demande'];
+const TYPES_PHOTO = ['image/webp', 'image/jpeg', 'image/png'];
+const TAILLE_MAX_PHOTO = 2 * 1024 * 1024; // 2 Mo (déjà redimensionnée côté client)
+
+/**
+ * Stocke la photo d'un cas inconnu dans le store « gk-images » et renvoie son
+ * URL publique (/api/image/:key), ou null si la photo est absente ou invalide.
+ * Une photo invalide n'empêche JAMAIS l'enregistrement de la demande.
+ */
+async function stockerPhoto(body: Entrante, demandeId: string): Promise<string | null> {
+  const base64 = String(body.photoBase64 ?? '');
+  const contentType = String(body.photoType ?? '');
+  if (!base64 || !TYPES_PHOTO.includes(contentType)) return null;
+  try {
+    const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+    if (bytes.byteLength === 0 || bytes.byteLength > TAILLE_MAX_PHOTO) return null;
+    const ext = contentType.split('/')[1];
+    const key = `cas-${demandeId}.${ext}`;
+    const store = getStore('gk-images');
+    await store.set(key, bytes.buffer, { metadata: { contentType, filename: key } });
+    return `/api/image/${key}`;
+  } catch {
+    return null;
+  }
+}
 
 function txt(v: unknown, max = 500): string {
   return String(v ?? '')
@@ -89,7 +119,13 @@ export default async (req: Request, context: Context): Promise<Response> => {
     );
   }
 
-  const statut = STATUTS_AUTORISES.includes(String(body.statut)) ? String(body.statut) : 'prospect';
+  // Un cas non répertorié (non concluant ou « Autre ») est prioritaire côté admin.
+  const casInconnu = body.casInconnu === true;
+  const statut = casInconnu
+    ? 'cas-inconnu'
+    : STATUTS_AUTORISES.includes(String(body.statut))
+      ? String(body.statut)
+      : 'prospect';
   const symptome = txt(body.symptomeChoisi, 160);
   const service = txt(body.serviceRecommande, 160);
   const estimation = txt(body.prixEstime, 160);
@@ -100,8 +136,11 @@ export default async (req: Request, context: Context): Promise<Response> => {
     : [];
 
   const maintenant = new Date().toISOString();
+  const id = crypto.randomUUID();
+  // Photo acceptée uniquement pour un cas inconnu (champ libre « Autre »).
+  const photoUrl = casInconnu ? await stockerPhoto(body, id) : null;
   const demande = {
-    id: crypto.randomUUID(),
+    id,
     date: maintenant,
     // Champs hérités (compatibilité vue admin actuelle).
     nom,
@@ -127,6 +166,9 @@ export default async (req: Request, context: Context): Promise<Response> => {
     dateConsentement: maintenant,
     source: 'diagnostic-en-ligne',
     statut,
+    casInconnu,
+    descriptionLibre: txt(body.descriptionLibre, 1000),
+    photoUrl,
     notesAdmin: '',
   };
 

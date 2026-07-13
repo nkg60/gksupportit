@@ -4,6 +4,12 @@
 </div>
 
 @if (messageDiag()) { <p class="gp-msg">{{ messageDiag() }}</p> }
+@if (draftPhotoUrl()) {
+  <a class="gp-photo" [href]="draftPhotoUrl()" target="_blank" rel="noopener" title="Ouvrir la photo en grand">
+    <img [src]="draftPhotoUrl()" alt="Photo envoyée par le client" loading="lazy" />
+    <span>📷 Photo envoyée par le client</span>
+  </a>
+}
 
 <div class="adm-table-wrap">
   <table class="adm-table">
