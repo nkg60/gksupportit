@@ -95,6 +95,7 @@ export class DiagnosticEditorComponent {
       prixEstime: [r.prixEstime, Validators.required],
       explication: [r.explication, Validators.required],
       alerte: [r.alerte ?? ''],
+      inconclusif: [!!r.inconclusif],
     });
   }
 
@@ -232,18 +233,21 @@ export class DiagnosticEditorComponent {
       questions: { id: string; libelle: string; options: { label: string; valeur: string }[] }[];
       regles: {
         conditions: { questionId: string; valeur: string }[];
-        alors: ResultatRegle & { panneId: string };
+        alors: ResultatRegle & { panneId: string; inconclusif: boolean };
       }[];
-      resultatParDefaut: ResultatRegle & { panneId: string };
+      resultatParDefaut: ResultatRegle & { panneId: string; inconclusif: boolean };
     };
 
-    const nettoyerResultat = (r: ResultatRegle & { panneId: string }): ResultatRegle => ({
+    const nettoyerResultat = (
+      r: ResultatRegle & { panneId: string; inconclusif: boolean },
+    ): ResultatRegle => ({
       panneId: r.panneId ? r.panneId : null,
       gravite: r.gravite,
       serviceId: r.serviceId,
       prixEstime: r.prixEstime,
       explication: r.explication,
       alerte: r.alerte ? r.alerte : null,
+      ...(r.inconclusif ? { inconclusif: true } : {}),
     });
 
     const symptome: SymptomeDiagnostic = {

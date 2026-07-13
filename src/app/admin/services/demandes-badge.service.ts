@@ -11,16 +11,20 @@ import { Demande, STATUTS_A_TRAITER } from '../../core/models/demande.model';
 export class DemandesBadgeService {
   private api = inject(AdminApiService);
 
-  /** Nombre de demandes « à traiter » (prospect + nouvelle-demande). */
+  /** Nombre de demandes « à traiter » (cas-inconnu + prospect + nouvelle-demande). */
   readonly nouvelles = signal(0);
+  /** Nombre de cas non répertoriés encore à traiter. */
+  readonly casInconnus = signal(0);
 
-  /** Recharge le compteur depuis l'API. */
+  /** Recharge les compteurs depuis l'API. */
   refresh(): void {
     this.api.list<Demande>('demandes').subscribe({
-      next: (list) =>
+      next: (list) => {
         this.nouvelles.set(
           list.filter((d) => STATUTS_A_TRAITER.includes(d.statut ?? 'nouvelle-demande')).length,
-        ),
+        );
+        this.casInconnus.set(list.filter((d) => (d.statut ?? '') === 'cas-inconnu').length);
+      },
       error: () => {},
     });
   }

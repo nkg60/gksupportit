@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminApiService } from '../services/admin-api.service';
+import { PanneDraftService } from '../services/panne-draft.service';
 import { FAMILLES_PANNE, Panne } from '../../core/models/panne.model';
 import { ArbreDiagnostic, SymptomeDiagnostic } from '../../core/models/diagnostic.model';
 import {
@@ -26,6 +27,7 @@ import {
 export class GuidePannesComponent {
   private api = inject(AdminApiService);
   private fb = inject(FormBuilder);
+  private draftSvc = inject(PanneDraftService);
 
   readonly familles = FAMILLES_PANNE;
   readonly famillesKeys = Object.keys(FAMILLES_PANNE);
@@ -34,6 +36,8 @@ export class GuidePannesComponent {
   readonly chargement = signal(true);
   readonly editionId = signal<string | null>(null);
   readonly messageDiag = signal('');
+  /** Photo du client quand la panne est créée depuis un cas non répertorié. */
+  readonly draftPhotoUrl = signal('');
 
   readonly form = this.fb.nonNullable.group({
     famille: ['A', [Validators.required]],
@@ -52,6 +56,19 @@ export class GuidePannesComponent {
 
   constructor() {
     this.charger();
+    // Brouillon issu d'un « cas non répertorié » → ouvre le formulaire pré-rempli
+    // avec les mots du client, ses réponses et sa photo éventuelle.
+    const draft = this.draftSvc.consommer();
+    if (draft) {
+      this.ouvrirNouveau();
+      const reponses = (draft.reponses ?? [])
+        .map((r) => `${r.question} → ${r.reponse}`)
+        .join(' ; ');
+      const symptome = draft.symptome + (reponses ? ` (Réponses du client : ${reponses}.)` : '');
+      this.form.patchValue({ titre: draft.titre, symptome, detectable: true });
+      this.draftPhotoUrl.set(draft.photoUrl ?? '');
+      this.messageDiag.set('Nouvelle panne pré-remplie depuis un cas client — complétez les étapes puis enregistrez.');
+    }
   }
 
   /** Pannes triées par numéro. */

@@ -1,0 +1,81 @@
+<div class="adm-head">
+  <h1>Cas non répertoriés</h1>
+  <p class="ci-count">{{ aTraiter() }} à traiter · {{ liste().length }} au total</p>
+</div>
+
+<p class="ci-intro">
+  Diagnostics non concluants et « Autre problème ». Ces visiteurs ont un vrai souci et n'ont
+  pas eu de réponse claire — <strong>rappelez-les en priorité</strong>. Chaque cas peut enrichir
+  le guide des pannes.
+</p>
+
+<div class="ci-liste">
+  @for (d of liste(); track d.id) {
+    <article class="ci-carte" [class.ci-carte--neuf]="(d.statut ?? '') === 'cas-inconnu'">
+      <header class="ci-carte__head">
+        <div>
+          <h2>{{ d.nom }}</h2>
+          <p class="ci-meta">
+            {{ fmtDate(d.date ?? '') }}
+            @if (d.descriptionLibre) {
+              <span class="ci-src ci-src--autre">✍️ Autre problème</span>
+            } @else {
+              <span class="ci-src">❓ Non concluant</span>
+            }
+          </p>
+        </div>
+        <span class="ci-tag" [class.ci-tag--neuf]="(d.statut ?? '') === 'cas-inconnu'">{{ d.statut }}</span>
+      </header>
+
+      <!-- Description libre (mots du client) — l'essentiel -->
+      @if (d.descriptionLibre) {
+        <blockquote class="ci-desc">« {{ d.descriptionLibre }} »</blockquote>
+      }
+      @if (d.photoUrl) {
+        <a class="ci-photo" [href]="d.photoUrl" target="_blank" rel="noopener" title="Ouvrir la photo en grand">
+          <img [src]="d.photoUrl" alt="Photo envoyée par le client" loading="lazy" />
+        </a>
+      }
+      @if (d.symptomeChoisi) {
+        <p class="ci-sympt">Symptôme choisi : <strong>{{ d.symptomeChoisi }}</strong></p>
+      }
+      @if (d.reponses?.length) {
+        <ul class="ci-reponses">
+          @for (r of d.reponses; track r.question) {
+            <li>{{ r.question }} → <strong>{{ r.reponse }}</strong></li>
+          }
+        </ul>
+      }
+
+      <p class="ci-contact">
+        @if (d.telephone) { 📞 {{ d.telephone }} }
+        @if (d.email) { ✉️ {{ d.email }} }
+        @if (d.secteur) { · {{ d.secteur }} }
+        @if (d.typeMachine) { · {{ d.typeMachine }} }
+      </p>
+
+      <div class="adm-field ci-note">
+        <label>Note interne</label>
+        <textarea rows="2" placeholder="Note…" [value]="d.notesAdmin ?? ''"
+          (blur)="enregistrerNote(d, $any($event.target).value)"></textarea>
+      </div>
+
+      <footer class="ci-actions">
+        @if (lienTel(d); as tel) { <a class="ci-btn" [href]="tel">📞 Appeler</a> }
+        @if (lienWa(d); as wa) { <a class="ci-btn ci-btn--wa" [href]="wa" target="_blank" rel="noopener">💬 WhatsApp</a> }
+        <button type="button" class="ci-btn ci-btn--primary" (click)="creerPanne(d)">
+          ➕ Créer une panne à partir de ce cas
+        </button>
+        <select class="ci-statut" [value]="d.statut" (change)="changerStatut(d, $any($event.target).value)" aria-label="Statut">
+          <option value="cas-inconnu">cas-inconnu</option>
+          <option value="contacté">contacté</option>
+          <option value="converti">converti</option>
+          <option value="perdu">perdu</option>
+        </select>
+        <button type="button" class="ci-btn ci-btn--danger" (click)="supprimer(d)" title="Supprimer">🗑️</button>
+      </footer>
+    </article>
+  } @empty {
+    <p class="adm-empty">{{ chargement() ? 'Chargement…' : 'Aucun cas non répertorié pour le moment. 🎉' }}</p>
+  }
+</div>

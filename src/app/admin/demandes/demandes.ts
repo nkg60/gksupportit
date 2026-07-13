@@ -42,11 +42,12 @@ export class DemandesComponent {
 
   /** Priorité d'affichage : les demandes chaudes remontent. */
   private readonly ordreStatut: Record<string, number> = {
-    'nouvelle-demande': 0,
-    prospect: 1,
-    contacté: 2,
-    converti: 3,
-    perdu: 4,
+    'cas-inconnu': 0,
+    'nouvelle-demande': 1,
+    prospect: 2,
+    contacté: 3,
+    converti: 4,
+    perdu: 5,
   };
 
   /** Demandes filtrées puis triées (chaudes d'abord, puis récentes). */

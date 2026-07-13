@@ -69,6 +69,14 @@
   background: var(--gk-navy);
   color: var(--gk-amber);
 }
+.admin__badge--alert {
+  background: var(--gk-danger);
+  color: #fff;
+}
+.admin__nav a.is-active .admin__badge--alert {
+  background: var(--gk-danger);
+  color: #fff;
+}
 .admin__logout {
   margin-top: 1rem;
   background: transparent;

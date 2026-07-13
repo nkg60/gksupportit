@@ -59,6 +59,12 @@ export interface Demande {
   notesAdmin?: string;
   /** Marqué « à relancer » par l'admin (réserve commerciale). */
   aRelancer?: boolean;
+  /** Cas non répertorié (diagnostic non concluant ou « Autre »). */
+  casInconnu?: boolean;
+  /** Description libre du visiteur (Cas 2 « Autre »). */
+  descriptionLibre?: string;
+  /** Photo envoyée par le visiteur (URL /api/image/…). */
+  photoUrl?: string;
 }
 
 /** Réponse en clair, telle qu'affichée à l'admin. */
@@ -77,6 +83,7 @@ export type DemandeSource = 'formulaire-libre' | 'diagnostic-en-ligne';
  *  - contacté / converti / perdu : suivi.
  */
 export const STATUTS_DEMANDE = [
+  'cas-inconnu',
   'prospect',
   'nouvelle-demande',
   'contacté',
@@ -85,4 +92,8 @@ export const STATUTS_DEMANDE = [
 ] as const;
 
 /** Statuts considérés comme « à traiter » (pour le badge de navigation). */
-export const STATUTS_A_TRAITER: readonly string[] = ['prospect', 'nouvelle-demande'];
+export const STATUTS_A_TRAITER: readonly string[] = [
+  'cas-inconnu',
+  'prospect',
+  'nouvelle-demande',
+];

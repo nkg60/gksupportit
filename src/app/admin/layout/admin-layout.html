@@ -11,6 +11,9 @@
           @if (l.chemin === 'demandes' && nouvellesDemandes() > 0) {
             <span class="admin__badge">{{ nouvellesDemandes() }}</span>
           }
+          @if (l.chemin === 'cas-inconnus' && casInconnus() > 0) {
+            <span class="admin__badge admin__badge--alert">{{ casInconnus() }}</span>
+          }
         </a>
       }
     </nav>
