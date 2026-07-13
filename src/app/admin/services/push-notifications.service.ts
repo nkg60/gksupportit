@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { SwPush } from '@angular/service-worker';
 import { firstValueFrom } from 'rxjs';
@@ -56,22 +56,61 @@ export class PushNotificationsService {
     this.occupe.set(true);
     this.message.set('');
     try {
-      const { ok, key } = await firstValueFrom(
-        this.http.get<{ ok: boolean; key: string }>('/api/admin/push/key'),
-      );
-      if (!ok || !key) {
-        this.message.set('Notifications non configurées côté serveur (clé VAPID manquante).');
+      // Étape 1 — autorisation du navigateur (déclenchée par le clic).
+      const perm = await Notification.requestPermission();
+      if (perm !== 'granted') {
+        this.message.set('Autorisation des notifications refusée.');
         return;
       }
-      const sub = await this.swPush.requestSubscription({ serverPublicKey: key });
-      await firstValueFrom(this.http.post('/api/admin/push/subscribe', sub));
+
+      // Étape 2 — clé publique VAPID depuis le serveur.
+      let key: string;
+      try {
+        const res = await firstValueFrom(
+          this.http.get<{ ok: boolean; key: string }>('/api/admin/push/key'),
+        );
+        key = res?.key ?? '';
+      } catch (e) {
+        this.message.set(`Serveur injoignable pour la clé (${this.statut(e)}).`);
+        return;
+      }
+      if (!key) {
+        this.message.set('Clé VAPID absente côté serveur — vérifiez les variables VAPID_* sur Netlify.');
+        return;
+      }
+
+      // Étape 3 — abonnement push auprès du navigateur.
+      let sub: PushSubscription;
+      try {
+        sub = await this.swPush.requestSubscription({ serverPublicKey: key });
+      } catch {
+        this.message.set("Le navigateur n'a pas pu créer l'abonnement push (réessayez, ou vérifiez que l'app est installée sur iPhone).");
+        return;
+      }
+
+      // Étape 4 — enregistrement de l'abonnement côté serveur.
+      try {
+        await firstValueFrom(this.http.post('/api/admin/push/subscribe', sub));
+      } catch (e) {
+        this.message.set(`Abonnement créé mais non enregistré (${this.statut(e)}).`);
+        return;
+      }
+
       this.active.set(true);
       this.message.set('Notifications activées sur cet appareil.');
-    } catch {
-      this.message.set("Impossible d'activer les notifications (permission refusée ?).");
     } finally {
       this.occupe.set(false);
     }
+  }
+
+  /** Décrit brièvement une erreur HTTP (code + libellé) pour le message admin. */
+  private statut(e: unknown): string {
+    if (e instanceof HttpErrorResponse) {
+      if (e.status === 0) return 'réseau/hors-ligne';
+      if (e.status === 504) return 'délai dépassé (504)';
+      return `HTTP ${e.status}`;
+    }
+    return 'erreur inconnue';
   }
 
   private async desactiver(): Promise<void> {
